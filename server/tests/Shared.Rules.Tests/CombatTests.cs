@@ -126,6 +126,62 @@ public class CombatTests
         Assert.True(enemy.Hp < enemy.MaxHp);
     }
 
+    private static (Encounter Encounter, Combatant Mob) MobNextTo(ContentCatalog catalog, string abilityId, GridPosition heroCell)
+    {
+        Encounter encounter = NewEncounter(catalog);
+        Combatant mob = Fighter(2, MobTeam, false);
+        mob.KnownAbilities = new List<string> { abilityId };
+        mob.HasAction = true;
+        mob.HasBonusAction = true;
+        encounter.Join(Fighter(1, PlayerTeam, true), heroCell);
+        encounter.Join(mob, new GridPosition(5, 5));
+        return (encounter, mob);
+    }
+
+    [Fact]
+    public void Mob_uses_caster_centred_area_only_when_enemies_are_close()
+    {
+        var catalog = TestCatalog.Create();
+        catalog.Abilities["tail_sweep"] = new AbilityDefinition
+        {
+            Id = "tail_sweep",
+            Target = TargetKind.Area,
+            RangeCells = 0,
+            AreaRadiusCells = 2,
+            Effects = { new EffectDefinition { Type = EffectType.Damage, Dice = "2d8" } },
+        };
+
+        (Encounter close, Combatant closeMob) = MobNextTo(catalog, "tail_sweep", new GridPosition(6, 6));
+        CombatCommand sweep = MobBrain.NextCommand(close, closeMob, catalog);
+        (Encounter far, Combatant farMob) = MobNextTo(catalog, "tail_sweep", new GridPosition(10, 10));
+
+        Assert.Equal(CombatCommandType.UseAbility, sweep.Type);
+        Assert.Equal(closeMob.Position, sweep.Cell);
+        Assert.NotEqual(CombatCommandType.UseAbility, MobBrain.NextCommand(far, farMob, catalog).Type);
+    }
+
+    [Fact]
+    public void Mob_raises_self_buff_once_when_engaged()
+    {
+        var catalog = TestCatalog.Create();
+        catalog.Abilities["bone_shield"] = new AbilityDefinition
+        {
+            Id = "bone_shield",
+            Target = TargetKind.Self,
+            Cost = ActionCost.BonusAction,
+            Effects = { new EffectDefinition { Type = EffectType.Condition, Condition = Condition.Shielded, DurationRounds = 2 } },
+        };
+        (Encounter encounter, Combatant mob) = MobNextTo(catalog, "bone_shield", new GridPosition(6, 6));
+
+        CombatCommand first = MobBrain.NextCommand(encounter, mob, catalog);
+        mob.AddCondition(Condition.Shielded, 2, mob.EntityId);
+        CombatCommand second = MobBrain.NextCommand(encounter, mob, catalog);
+
+        Assert.Equal(CombatCommandType.UseAbility, first.Type);
+        Assert.Equal(mob.EntityId, first.TargetId);
+        Assert.NotEqual(CombatCommandType.UseAbility, second.Type);
+    }
+
     [Fact]
     public void Late_joiner_enters_turn_order()
     {

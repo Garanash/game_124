@@ -49,31 +49,71 @@ namespace Realmforge.Rules.Combat
         {
             foreach (string abilityId in self.KnownAbilities)
             {
-                if (!catalog.Abilities.TryGetValue(abilityId, out AbilityDefinition? ability)
-                    || !self.HasResourceFor(ability.Cost)
-                    || (self.Cooldowns.TryGetValue(abilityId, out int cooldown) && cooldown > 0)
-                    || (ability.SpellLevel > 0 && !self.SpellSlots.Skip(ability.SpellLevel - 1).Any(slots => slots > 0)))
+                if (!catalog.Abilities.TryGetValue(abilityId, out AbilityDefinition? ability) || !IsReady(self, ability))
                 {
                     continue;
                 }
-                bool heals = ability.Effects.Any(effect => effect.Type == EffectType.Heal);
-                if (heals && ability.Target == TargetKind.Ally)
+                CombatCommand? command = ability.Target switch
                 {
-                    Combatant? hurtAlly = encounter.Combatants.FirstOrDefault(c => c.IsAlive && c.Team == self.Team
-                        && c.Hp < c.MaxHp * HealThreshold && c.Position.DistanceTo(self.Position) <= ability.RangeCells);
-                    if (hurtAlly != null)
-                    {
-                        return CombatCommand.Use(abilityId, hurtAlly.EntityId, hurtAlly.Position);
-                    }
-                    continue;
-                }
-                bool inRange = self.Position.DistanceTo(target.Position) <= ability.RangeCells;
-                if ((ability.Target == TargetKind.Enemy || ability.Target == TargetKind.Area) && inRange)
+                    TargetKind.Ally => ChooseAllyTarget(encounter, self, ability),
+                    TargetKind.Self => ChooseSelfBuff(self, target, ability),
+                    TargetKind.Area => ChooseAreaCell(encounter, self, target, ability),
+                    _ => self.Position.DistanceTo(target.Position) <= ability.RangeCells
+                        ? CombatCommand.Use(ability.Id, target.EntityId, target.Position)
+                        : null,
+                };
+                if (command != null)
                 {
-                    return CombatCommand.Use(abilityId, target.EntityId, target.Position);
+                    return command;
                 }
             }
             return null;
+        }
+
+        private static bool IsReady(Combatant self, AbilityDefinition ability)
+        {
+            bool onCooldown = self.Cooldowns.TryGetValue(ability.Id, out int cooldown) && cooldown > 0;
+            bool hasSlot = ability.SpellLevel == 0 || self.SpellSlots.Skip(ability.SpellLevel - 1).Any(slots => slots > 0);
+            return self.HasResourceFor(ability.Cost) && !onCooldown && hasSlot;
+        }
+
+        private static CombatCommand? ChooseAllyTarget(Encounter encounter, Combatant self, AbilityDefinition ability)
+        {
+            IEnumerable<Combatant> alliesInRange = encounter.Combatants
+                .Where(c => c.IsAlive && c.Team == self.Team && c.Position.DistanceTo(self.Position) <= ability.RangeCells);
+            bool heals = ability.Effects.Any(effect => effect.Type == EffectType.Heal);
+            Combatant? ally = heals
+                ? alliesInRange.FirstOrDefault(c => c.Hp < c.MaxHp * HealThreshold)
+                : alliesInRange.FirstOrDefault(c => !HasAllConditions(c, ability));
+            return ally != null ? CombatCommand.Use(ability.Id, ally.EntityId, ally.Position) : null;
+        }
+
+        /// <summary>Buffs are worth a turn only once the fight is about to reach the mob, and never while still active.</summary>
+        private static CombatCommand? ChooseSelfBuff(Combatant self, Combatant nearestEnemy, AbilityDefinition ability)
+        {
+            int threatRange = self.SpeedCells + self.Attack.RangeCells;
+            bool engaged = self.Position.DistanceTo(nearestEnemy.Position) <= threatRange;
+            return engaged && !HasAllConditions(self, ability) ? CombatCommand.Use(ability.Id, self.EntityId, self.Position) : null;
+        }
+
+        /// <summary>Range 0 means the area is centred on the caster (howls, tail sweeps), so it needs enemies close by.</summary>
+        private static CombatCommand? ChooseAreaCell(Encounter encounter, Combatant self, Combatant target, AbilityDefinition ability)
+        {
+            if (ability.RangeCells == 0)
+            {
+                bool enemyNearby = encounter.Combatants.Any(c => c.IsAlive && c.Team != self.Team
+                    && c.Position.DistanceTo(self.Position) <= ability.AreaRadiusCells);
+                return enemyNearby ? CombatCommand.Use(ability.Id, self.EntityId, self.Position) : null;
+            }
+            return self.Position.DistanceTo(target.Position) <= ability.RangeCells
+                ? CombatCommand.Use(ability.Id, target.EntityId, target.Position)
+                : null;
+        }
+
+        private static bool HasAllConditions(Combatant combatant, AbilityDefinition ability)
+        {
+            List<EffectDefinition> conditions = ability.Effects.Where(effect => effect.Type == EffectType.Condition).ToList();
+            return conditions.Count > 0 && conditions.All(effect => combatant.Has(effect.Condition));
         }
 
         private static GridPosition? BestApproachCell(Encounter encounter, Combatant self, Combatant target)
