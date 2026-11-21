@@ -1,0 +1,22 @@
+{
+    "name": "Realmforge.Client.Core",
+    "rootNamespace": "Realmforge.Client.Core",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Realmforge.Rules.dll",
+        "Realmforge.Protocol.dll",
+        "Realmforge.Content.dll",
+        "MemoryPack.Core.dll",
+        "YamlDotNet.dll",
+        "LiteNetLib.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

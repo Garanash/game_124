@@ -9,7 +9,7 @@ from PIL import Image
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONCEPTS = os.path.join(REPO, "art", "concepts")
-DEFAULT_OUTPUT = os.path.join(REPO, "client", "Assets", "Game", "Art", "Portraits")
+DEFAULT_OUTPUT = os.path.join(REPO, "client", "Assets", "Game", "Resources", "Portraits")
 
 COLUMNS = 6
 # Measured on the 512x512 concept sheets: framed portrait origin, size and grid pitch in pixels.
