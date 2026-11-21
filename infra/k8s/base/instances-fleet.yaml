@@ -1,0 +1,44 @@
+# Dungeon/raid instances (1/3/5/25 players) run on Agones game servers. The matchmaker allocates a Ready
+# server with the run id as a label; the zone process detects AGONES_SDK_HTTP_PORT, hosts only that run
+# and calls shutdown when it empties, after which the fleet replaces it with a fresh server.
+apiVersion: agones.dev/v1
+kind: Fleet
+metadata:
+  name: realmforge-instances
+spec:
+  replicas: 4
+  scheduling: Packed
+  template:
+    spec:
+      ports:
+        - { name: game, containerPort: 7777, protocol: UDP }
+        - { name: ws, containerPort: 7778, protocol: TCP }
+      health:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        failureThreshold: 3
+      template:
+        spec:
+          containers:
+            - name: zone
+              image: realmforge/server-zone
+              envFrom:
+                - secretRef: { name: realmforge-config }
+              env:
+                - name: Zone__ServerId
+                  valueFrom: { fieldRef: { fieldPath: metadata.name } }
+              resources:
+                requests: { cpu: 500m, memory: 512Mi }
+---
+apiVersion: autoscaling.agones.dev/v1
+kind: FleetAutoscaler
+metadata:
+  name: realmforge-instances
+spec:
+  fleetName: realmforge-instances
+  policy:
+    type: Buffer
+    buffer:
+      bufferSize: 3
+      minReplicas: 3
+      maxReplicas: 200

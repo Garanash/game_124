@@ -1,0 +1,23 @@
+# Production-shaped deployment: kubectl apply -k infra/k8s/base
+# Requires Agones (https://agones.dev) in the cluster for instance game servers, plus managed
+# Postgres/Redis/NATS whose addresses go into the realmforge-config secret.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: realmforge
+resources:
+  - namespace.yaml
+  - config.yaml
+  - silo.yaml
+  - gateway.yaml
+  - store.yaml
+  - zone-world.yaml
+  - instances-fleet.yaml
+images:
+  - name: realmforge/server-silo
+    newTag: latest
+  - name: realmforge/server-gateway
+    newTag: latest
+  - name: realmforge/server-store
+    newTag: latest
+  - name: realmforge/server-zone
+    newTag: latest

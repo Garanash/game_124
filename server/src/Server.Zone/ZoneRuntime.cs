@@ -33,6 +33,7 @@ public sealed class ZoneRuntime : BackgroundService, IZoneOutput
     private readonly IMessageBus _bus;
     private readonly ILogger<ZoneRuntime> _logger;
     private readonly EffectDispatcher _effects;
+    private readonly IGameServerLifecycle _lifecycle;
     private readonly ConcurrentQueue<Action> _loopActions = new();
     private readonly Dictionary<string, ZoneSimulation> _zones = new();
     private readonly Dictionary<Guid, HostedInstance> _instances = new();
@@ -50,9 +51,11 @@ public sealed class ZoneRuntime : BackgroundService, IZoneOutput
         IGrainFactory grains,
         TokenService tokens,
         IMessageBus bus,
+        IGameServerLifecycle lifecycle,
         ILogger<ZoneRuntime> logger)
     {
         _options = options;
+        _lifecycle = lifecycle;
         _catalog = catalog;
         _inbox = inbox;
         _transports = transports.ToList();
@@ -355,6 +358,10 @@ public sealed class ZoneRuntime : BackgroundService, IZoneOutput
 
     private IEnumerable<ZoneDefinition> HostedZones()
     {
+        if (_lifecycle.IsDedicatedInstanceServer)
+        {
+            return Enumerable.Empty<ZoneDefinition>();
+        }
         IEnumerable<ZoneDefinition> openWorld = _catalog.Zones.Values.Where(zone => zone.Kind != ZoneKind.Instance);
         return _options.ZoneIds.Count == 0 ? openWorld : openWorld.Where(zone => _options.ZoneIds.Contains(zone.Id));
     }
@@ -385,6 +392,10 @@ public sealed class ZoneRuntime : BackgroundService, IZoneOutput
             {
                 _instances.Remove(runId);
                 _logger.LogInformation("Instance run {Run} closed", runId);
+                if (_lifecycle.IsDedicatedInstanceServer && _instances.Count == 0)
+                {
+                    _ = SafeAsync(() => _lifecycle.RequestShutdown(CancellationToken.None), "agones shutdown");
+                }
             }
         }
     }

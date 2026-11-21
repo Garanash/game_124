@@ -1,0 +1,42 @@
+# One open-world zone server per continent shard. Each pod lists its zones in Zone__ZoneIds__N and is
+# exposed through its own LoadBalancer so clients can reach UDP and WebSocket ports directly.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zone-world
+spec:
+  serviceName: zone-world
+  replicas: 1
+  selector:
+    matchLabels: { app: zone-world }
+  template:
+    metadata:
+      labels: { app: zone-world }
+    spec:
+      containers:
+        - name: zone
+          image: realmforge/server-zone
+          envFrom:
+            - secretRef: { name: realmforge-config }
+          env:
+            - name: Zone__ServerId
+              valueFrom: { fieldRef: { fieldPath: metadata.name } }
+            - { name: Zone__PublicHost, value: "zones.example.com" }
+          ports:
+            - { name: game, containerPort: 7777, protocol: UDP }
+            - { name: ws, containerPort: 7778, protocol: TCP }
+          readinessProbe:
+            httpGet: { path: /health, port: ws }
+          resources:
+            requests: { cpu: "1", memory: 1Gi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zone-world
+spec:
+  type: LoadBalancer
+  selector: { app: zone-world }
+  ports:
+    - { name: game, port: 7777, targetPort: game, protocol: UDP }
+    - { name: ws, port: 7778, targetPort: ws, protocol: TCP }

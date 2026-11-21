@@ -1,0 +1,12 @@
+# Placeholder values: replace through an overlay or a sealed/external secret before deploying.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: realmforge-config
+type: Opaque
+stringData:
+  ConnectionStrings__Postgres: Host=postgres;Database=realmforge;Username=realmforge;Password=change-me
+  ConnectionStrings__Redis: redis:6379
+  ConnectionStrings__Nats: nats://nats:4222
+  Auth__SigningKey: change-me-to-a-random-key-of-at-least-32-bytes
+  Store__XsollaWebhookSecret: change-me

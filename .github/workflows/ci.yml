@@ -32,8 +32,13 @@ jobs:
     if: github.ref == 'refs/heads/main'
     strategy:
       matrix:
-        service: [Server.Gateway, Server.Silo, Server.Zone, Server.Instance, Server.Store]
+        include:
+          - { project: Server.Gateway, image: server-gateway }
+          - { project: Server.Silo, image: server-silo }
+          # The zone image also runs dungeon/raid instances on the Agones fleet.
+          - { project: Server.Zone, image: server-zone }
+          - { project: Server.Store, image: server-store }
     steps:
       - uses: actions/checkout@v4
       - name: Build image
-        run: docker build -f infra/docker/Dockerfile --build-arg PROJECT=${{ matrix.service }} -t realmforge/${{ matrix.service }}:${{ github.sha }} .
+        run: docker build -f infra/docker/Dockerfile --build-arg PROJECT=${{ matrix.project }} -t realmforge/${{ matrix.image }}:${{ github.sha }} .

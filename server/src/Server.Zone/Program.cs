@@ -22,7 +22,9 @@ builder.Services.AddSingleton<WebSocketTransport>();
 builder.Services.AddSingleton<IZoneTransport>(services => services.GetRequiredService<UdpTransport>());
 builder.Services.AddSingleton<IZoneTransport>(services => services.GetRequiredService<WebSocketTransport>());
 builder.Services.AddRealmforgeMessageBus(builder.Configuration);
+AddGameServerLifecycle(builder.Services);
 builder.Services.AddHostedService<ZoneRuntime>();
+builder.Services.AddHostedService<GameServerHealthReporter>();
 
 WebApplication app = builder.Build();
 app.UseWebSockets();
@@ -30,3 +32,18 @@ app.MapGet("/health", () => Results.Ok());
 app.Map(WebSocketTransport.Path, (HttpContext http, WebSocketTransport transport) => transport.Accept(http));
 
 await app.RunAsync();
+
+static void AddGameServerLifecycle(IServiceCollection services)
+{
+    int? agonesPort = AgonesSdkLifecycle.SdkPortFromEnvironment();
+    if (agonesPort == null)
+    {
+        services.AddSingleton<IGameServerLifecycle, StandaloneLifecycle>();
+        return;
+    }
+    services.AddHttpClient(nameof(AgonesSdkLifecycle));
+    services.AddSingleton<IGameServerLifecycle>(provider => new AgonesSdkLifecycle(
+        provider.GetRequiredService<IHttpClientFactory>().CreateClient(nameof(AgonesSdkLifecycle)),
+        agonesPort.Value,
+        provider.GetRequiredService<ILogger<AgonesSdkLifecycle>>()));
+}

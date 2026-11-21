@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: store }
+  template:
+    metadata:
+      labels: { app: store }
+    spec:
+      containers:
+        - name: store
+          image: realmforge/server-store
+          envFrom:
+            - secretRef: { name: realmforge-config }
+          env:
+            - { name: ASPNETCORE_URLS, value: "http://0.0.0.0:5090" }
+          ports:
+            - { name: http, containerPort: 5090 }
+          readinessProbe:
+            httpGet: { path: /health, port: http }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: store
+spec:
+  selector: { app: store }
+  ports:
+    - { name: http, port: 80, targetPort: http }
