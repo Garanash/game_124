@@ -16,9 +16,12 @@
     <PackageVersion Include="Microsoft.Orleans.Sdk" Version="$(OrleansVersion)" />
     <PackageVersion Include="Microsoft.Orleans.Serialization.SystemTextJson" Version="$(OrleansVersion)" />
     <PackageVersion Include="Microsoft.Orleans.Clustering.Redis" Version="$(OrleansVersion)" />
+    <PackageVersion Include="Microsoft.Orleans.Reminders" Version="$(OrleansVersion)" />
     <PackageVersion Include="Microsoft.Orleans.Reminders.Redis" Version="$(OrleansVersion)" />
     <PackageVersion Include="Microsoft.Orleans.TestingHost" Version="$(OrleansVersion)" />
     <PackageVersion Include="Npgsql" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
     <PackageVersion Include="NATS.Net" Version="2.8.2" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.23" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.23.0" />

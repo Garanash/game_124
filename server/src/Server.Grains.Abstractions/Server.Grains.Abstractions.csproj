@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>$(ServerTargetFramework)</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Realmforge.Server.Grains.Abstractions</AssemblyName>
+    <RootNamespace>Realmforge.Server.Grains</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Orleans.Sdk" />
+    <PackageReference Include="Microsoft.Orleans.Serialization.SystemTextJson" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Server.Core\Server.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -2,6 +2,12 @@ using Realmforge.Rules.Definitions;
 
 namespace Realmforge.Server.Core.Store;
 
+public sealed record EntitlementView(long Crystals, IReadOnlyCollection<string> OwnedCosmetics, int CharacterSlots, int BankTabs)
+{
+    public static EntitlementView Of(EntitlementLedger ledger) =>
+        new(ledger.Crystals, ledger.OwnedCosmetics.ToList(), ledger.CharacterSlots, ledger.BankTabs);
+}
+
 /// <summary>
 /// Per-account record of premium purchases. Platform transactions are applied idempotently so a retried
 /// receipt or webhook can never grant twice.
