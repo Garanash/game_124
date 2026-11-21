@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>$(ServerTargetFramework)</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Realmforge.Server.Silo</AssemblyName>
+    <RootNamespace>Realmforge.Server.Silo</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Server.Grains\Server.Grains.csproj" />
+    <ProjectReference Include="..\Server.Hosting\Server.Hosting.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

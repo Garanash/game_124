@@ -16,5 +16,7 @@
     <ProjectReference Include="..\..\src\Server.Core\Server.Core.csproj" />
     <ProjectReference Include="..\..\src\Server.World\Server.World.csproj" />
     <ProjectReference Include="..\..\src\Server.Grains\Server.Grains.csproj" />
+    <ProjectReference Include="..\..\src\Server.Zone\Server.Zone.csproj" />
+    <ProjectReference Include="..\..\src\Server.Gateway\Server.Gateway.csproj" />
   </ItemGroup>
 </Project>

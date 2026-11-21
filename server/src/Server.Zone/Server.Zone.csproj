@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>$(ServerTargetFramework)</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Realmforge.Server.Zone</AssemblyName>
+    <RootNamespace>Realmforge.Server.Zone</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="LiteNetLib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Server.Hosting\Server.Hosting.csproj" />
+    <ProjectReference Include="..\Server.World\Server.World.csproj" />
+  </ItemGroup>
+</Project>

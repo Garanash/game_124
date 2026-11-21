@@ -13,7 +13,6 @@ namespace Realmforge.Server.Grains;
 
 public static class SiloSetup
 {
-    public const string PostgresConnectionName = "Postgres";
 
     /// <summary>
     /// Registers content, rules services, grain storage and the instance allocator. Without a Postgres
@@ -26,7 +25,7 @@ public static class SiloSetup
         silo.Services.AddSingleton(TimeProvider.System);
         silo.Services.AddSerializer(serializer => serializer.AddRealmforgeSerializers());
 
-        string? postgres = configuration.GetConnectionString(PostgresConnectionName);
+        string? postgres = configuration.GetConnectionString(ConnectionNames.Postgres);
         if (string.IsNullOrWhiteSpace(postgres))
         {
             silo.AddMemoryGrainStorage(GrainStorageNames.Main);

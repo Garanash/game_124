@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>$(ServerTargetFramework)</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Realmforge.Server.Gateway</AssemblyName>
+    <RootNamespace>Realmforge.Server.Gateway</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Npgsql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Server.Hosting\Server.Hosting.csproj" />
+  </ItemGroup>
+</Project>

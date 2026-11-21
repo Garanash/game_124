@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>$(ServerTargetFramework)</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Realmforge.Tools.BotClient</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="LiteNetLib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\server\src\Shared.Protocol\Shared.Protocol.csproj" />
+  </ItemGroup>
+</Project>

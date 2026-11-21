@@ -306,6 +306,15 @@ public sealed partial class ZoneSimulation
         }
         Emit(new TransferToZone(player.CharacterId, portal.ToZoneId, portal.Arrival.X, portal.Arrival.Z));
         Emit(new ReportQuestEvent(player.CharacterId, new QuestEvent(QuestStepType.Reach, portal.ToZoneId)));
+        LeaveWithoutSaving(player);
+    }
+
+    /// <summary>The transfer handler persists the arrival point, so saving the old position here would overwrite it.</summary>
+    private void LeaveWithoutSaving(PlayerEntity player)
+    {
+        player.IsConnected = false;
+        _outbox.Remove(player.Id);
+        RemoveEntity(player);
     }
 
     private void HandleChat(PlayerEntity player, ChatSendRequest chat)

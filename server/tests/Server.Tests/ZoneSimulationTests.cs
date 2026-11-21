@@ -182,8 +182,11 @@ public class ZoneSimulationTests
 
         simulation.Handle(player.Id, new UsePortalRequest { PortalIndex = 0 });
 
-        TransferToZone transfer = simulation.DrainEffects().OfType<TransferToZone>().Single();
+        IReadOnlyList<ZoneEffect> effects = simulation.DrainEffects();
+        TransferToZone transfer = effects.OfType<TransferToZone>().Single();
         Assert.Equal("other_zone", transfer.ZoneId);
+        Assert.Empty(effects.OfType<SavePosition>());
+        Assert.Null(simulation.Find(player.Id));
     }
 
     [Fact]
