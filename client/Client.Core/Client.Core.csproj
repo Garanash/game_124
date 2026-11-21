@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Builds the Unity-side client logic outside the editor so it can be compiled and unit-tested in CI.
+       The same sources are compiled by Unity through Realmforge.Client.Core.asmdef. -->
+  <PropertyGroup>
+    <TargetFramework>$(SharedTargetFramework)</TargetFramework>
+    <LangVersion>$(SharedLangVersion)</LangVersion>
+    <AssemblyName>Realmforge.Client.Core</AssemblyName>
+    <RootNamespace>Realmforge.Client.Core</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Assets/Game/Scripts/Core/**/*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="LiteNetLib" />
+    <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../server/src/Shared.Rules/Shared.Rules.csproj" />
+    <ProjectReference Include="../../server/src/Shared.Protocol/Shared.Protocol.csproj" />
+    <ProjectReference Include="../../server/src/Shared.Content/Shared.Content.csproj" />
+  </ItemGroup>
+</Project>

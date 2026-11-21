@@ -163,7 +163,7 @@ public sealed class EffectDispatcher
             return;
         }
         string ticket = _tokens.IssueZoneTicket(new ZoneTicket(accountId.Value, transfer.CharacterId, transfer.ZoneId, null));
-        Send(transfer.CharacterId, new ZoneTransferMessage { ZoneId = transfer.ZoneId, Host = server.Host, Port = server.UdpPort, Ticket = ticket });
+        Send(transfer.CharacterId, new ZoneTransferMessage { ZoneId = transfer.ZoneId, Host = server.Host, Port = server.UdpPort, WebSocketPort = server.WebSocketPort, Ticket = ticket });
     }
 
     private async Task SettlePvpKill(PvpKill kill)
