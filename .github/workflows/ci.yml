@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - name: Restore
+        run: dotnet restore Realmforge.sln
+      - name: Build
+        run: dotnet build Realmforge.sln --no-restore -c Release
+      - name: Validate content
+        run: dotnet run --project tools/ContentTool -c Release --no-build -- validate content
+      - name: Check generated content ids are up to date
+        run: |
+          dotnet run --project tools/ContentTool -c Release --no-build -- codegen content server/src/Shared.Content/Generated/ContentIds.g.cs
+          git diff --exit-code server/src/Shared.Content/Generated
+      - name: Test
+        run: dotnet test Realmforge.sln --no-build -c Release
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: server
+    if: github.ref == 'refs/heads/main'
+    strategy:
+      matrix:
+        service: [Server.Gateway, Server.Silo, Server.Zone, Server.Instance, Server.Store]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -f infra/docker/Dockerfile --build-arg PROJECT=${{ matrix.service }} -t realmforge/${{ matrix.service }}:${{ github.sha }} .

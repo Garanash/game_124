@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>$(SharedTargetFramework)</TargetFramework>
+    <LangVersion>$(SharedLangVersion)</LangVersion>
+    <AssemblyName>Realmforge.Rules</AssemblyName>
+    <RootNamespace>Realmforge.Rules</RootNamespace>
+  </PropertyGroup>
+</Project>

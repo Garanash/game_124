@@ -1,0 +1,29 @@
+# .NET
+bin/
+obj/
+*.user
+.vs/
+TestResults/
+artifacts/
+
+# Unity
+client/[Ll]ibrary/
+client/[Tt]emp/
+client/[Oo]bj/
+client/[Bb]uild/
+client/[Bb]uilds/
+client/[Ll]ogs/
+client/[Uu]ser[Ss]ettings/
+client/*.csproj
+client/*.sln
+client/Assets/Plugins/Realmforge/*.dll
+client/Assets/Plugins/Realmforge/*.dll.meta
+
+# OS / IDE
+.DS_Store
+.idea/
+*.swp
+
+# Local secrets
+.env
+infra/.env

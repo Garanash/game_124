@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- MemoryPack generates different formatter registration for netstandard (Unity) and net9 (server). -->
+    <TargetFrameworks>$(SharedTargetFramework);$(ServerTargetFramework)</TargetFrameworks>
+    <LangVersion>$(SharedLangVersion)</LangVersion>
+    <LangVersion Condition="'$(TargetFramework)' == '$(ServerTargetFramework)'">latest</LangVersion>
+    <AssemblyName>Realmforge.Protocol</AssemblyName>
+    <RootNamespace>Realmforge.Protocol</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MemoryPack" Version="1.21.4" />
+  </ItemGroup>
+</Project>

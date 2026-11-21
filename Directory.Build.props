@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <RootNamespace>Realmforge</RootNamespace>
+    <!-- Unity 6 compiles C# 9 only, so libraries shared with the client must not use newer syntax. -->
+    <SharedLangVersion>9.0</SharedLangVersion>
+    <ServerTargetFramework>net9.0</ServerTargetFramework>
+    <SharedTargetFramework>netstandard2.1</SharedTargetFramework>
+  </PropertyGroup>
+</Project>
