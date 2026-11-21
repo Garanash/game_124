@@ -207,4 +207,42 @@ public class ZoneSimulationTests
         Assert.Null(simulation.Find(player.Id));
         Assert.Contains(simulation.DrainEffects().OfType<SavePosition>(), save => save.CharacterId == player.CharacterId);
     }
+
+    [Fact]
+    public void ArenaBoutReportsRatedResultWithoutAlignmentPenalty()
+    {
+        ContentCatalog catalog = Catalog();
+        catalog.Zones[ZoneId].Pvp = PvpRule.Arena;
+        ZoneSimulation simulation = Simulation(catalog);
+        PlayerEntity challenger = simulation.AddPlayer(Join("Brom"));
+        PlayerEntity rival = simulation.AddPlayer(Join("Hilda"));
+
+        simulation.Handle(challenger.Id, new InteractRequest { TargetEntityId = rival.Id });
+        Assert.True(challenger.InCombat && rival.InCombat);
+        for (int tick = 0; tick < MaxTicksPerFight && challenger.InCombat; tick++)
+        {
+            WorldEncounter encounter = simulation.Encounters[challenger.EncounterId!.Value];
+            long? current = encounter.Encounter.Current?.EntityId;
+            PlayerEntity? actor = current == challenger.Id ? challenger : current == rival.Id ? rival : null;
+            if (actor != null)
+            {
+                PlayerEntity target = actor == challenger ? rival : challenger;
+                Combatant self = encounter.Encounter.Find(actor.Id)!;
+                GridPosition targetCell = encounter.Encounter.Find(target.Id)!.Position;
+                GridPosition approach = encounter.Encounter.Grid.NearestFreeCell(targetCell, encounter.Encounter.IsOccupied) ?? targetCell;
+                if (self.Position.DistanceTo(targetCell) > 1)
+                {
+                    simulation.Handle(actor.Id, new CombatCommandRequest { CommandType = (byte)CombatCommandType.Move, CellX = approach.X, CellY = approach.Y });
+                }
+                simulation.Handle(actor.Id, new CombatCommandRequest { CommandType = (byte)CombatCommandType.Attack, TargetId = target.Id });
+                simulation.Handle(actor.Id, new CombatCommandRequest { CommandType = (byte)CombatCommandType.EndTurn });
+            }
+            simulation.Tick();
+        }
+
+        IReadOnlyList<ZoneEffect> effects = simulation.DrainEffects();
+        ArenaMatchFinished result = effects.OfType<ArenaMatchFinished>().Single();
+        Assert.NotEqual(result.CharacterId, result.LoserCharacterId);
+        Assert.All(effects.OfType<PvpKill>(), kill => Assert.Equal((0, 0, 0), (kill.KillerGoodShift, kill.KillerLawShift, kill.VictimGoldLossPercent)));
+    }
 }

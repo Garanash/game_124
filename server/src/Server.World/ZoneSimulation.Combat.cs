@@ -303,6 +303,10 @@ public sealed partial class ZoneSimulation
         if (encounter.Kind == EncounterKind.Pvp && winningTeam.HasValue)
         {
             CreditPvpKills(encounter, winningTeam.Value);
+            if (Zone.Pvp == PvpRule.Arena)
+            {
+                ReportArenaResults(encounter, winningTeam.Value);
+            }
         }
         foreach (Combatant combatant in encounter.Encounter.Combatants)
         {
@@ -392,6 +396,32 @@ public sealed partial class ZoneSimulation
             Emit(new PvpKill(killer.CharacterId, victimPlayer.CharacterId, consequence.KillerGoodShift, consequence.KillerLawShift, consequence.VictimGoldLossPercent));
         }
     }
+
+    /// <summary>
+    /// Team bouts are rated as paired duels (first winner against first loser, and so on), so a 3v3 moves
+    /// each rating as much as a 1v1 instead of multiplying the Elo swing by the team size.
+    /// </summary>
+    private void ReportArenaResults(WorldEncounter encounter, int winningTeam)
+    {
+        List<Guid> winners = TeamCharacters(encounter, team => team == winningTeam);
+        List<Guid> losers = TeamCharacters(encounter, team => team != winningTeam);
+        if (winners.Count == 0 || losers.Count == 0)
+        {
+            return;
+        }
+        int bouts = Math.Max(winners.Count, losers.Count);
+        for (int bout = 0; bout < bouts; bout++)
+        {
+            Emit(new ArenaMatchFinished(winners[bout % winners.Count], losers[bout % losers.Count]));
+        }
+    }
+
+    private static List<Guid> TeamCharacters(WorldEncounter encounter, Func<int, bool> teamFilter) =>
+        encounter.Encounter.Combatants
+            .Where(combatant => combatant.CharacterId.HasValue && teamFilter(combatant.Team))
+            .OrderBy(combatant => combatant.EntityId)
+            .Select(combatant => combatant.CharacterId!.Value)
+            .ToList();
 
     private void SettleMob(MobEntity mob, Combatant combatant)
     {

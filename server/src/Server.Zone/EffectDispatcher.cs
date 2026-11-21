@@ -80,6 +80,7 @@ public sealed class EffectDispatcher
         TransferToZone transfer => Transfer(transfer),
         PublishChat chat => _bus.PublishAsync(chat.Subject, new ChatEnvelope(chat.Channel, chat.SenderName, chat.Text, DateTimeOffset.UtcNow.ToUnixTimeSeconds())),
         PvpKill kill => SettlePvpKill(kill),
+        ArenaMatchFinished match => _grains.GetGrain<IArenaLadderGrain>(GrainKeys.Global).ReportResult(match.CharacterId, match.LoserCharacterId),
         InstanceBossDefeated boss => GrantInstanceLoot(boss),
         CharacterDied => Task.CompletedTask,
         _ => throw new NotSupportedException(effect.GetType().Name),

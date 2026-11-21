@@ -30,4 +30,7 @@ public sealed record PublishChat(Guid CharacterId, string Subject, string Channe
 public sealed record PvpKill(Guid CharacterId, Guid VictimCharacterId, int KillerGoodShift, int KillerLawShift, int VictimGoldLossPercent)
     : ZoneEffect(CharacterId);
 
+/// <summary>Rated arena bout; <see cref="ZoneEffect.CharacterId"/> is the winner.</summary>
+public sealed record ArenaMatchFinished(Guid CharacterId, Guid LoserCharacterId) : ZoneEffect(CharacterId);
+
 public sealed record InstanceBossDefeated(Guid CharacterId, string BossMobId) : ZoneEffect(CharacterId);
