@@ -40,14 +40,17 @@ namespace Realmforge.Rules.Characters
 
         public bool HasClass => ClassLevels.Count > 0;
 
-        public Alignment Alignment
+        // Methods rather than a property: a settable computed property would be round-tripped by JSON
+        // serializers and overwrite the stored axes with a default value on load.
+        public Alignment GetAlignment()
         {
-            get => new Alignment(LawChaos, GoodEvil);
-            set
-            {
-                LawChaos = value.LawChaos;
-                GoodEvil = value.GoodEvil;
-            }
+            return new Alignment(LawChaos, GoodEvil);
+        }
+
+        public void SetAlignment(Alignment alignment)
+        {
+            LawChaos = alignment.LawChaos;
+            GoodEvil = alignment.GoodEvil;
         }
 
         public AbilityScores Abilities(ContentCatalog catalog)

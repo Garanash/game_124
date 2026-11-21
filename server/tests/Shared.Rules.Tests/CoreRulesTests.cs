@@ -104,7 +104,7 @@ public class CoreRulesTests
 
         sheet.UnlockedClasses.Add("fighter");
         sheet.UnlockedClasses.Add("paladin");
-        sheet.Alignment = Alignment.FromCell(AlignmentCell.NeutralEvil);
+        sheet.SetAlignment(Alignment.FromCell(AlignmentCell.NeutralEvil));
         Assert.Equal("class.alignment", CharacterRules.CanTakeClassLevel(sheet, "paladin", catalog).Code);
 
         CharacterRules.TakeClassLevel(sheet, "fighter", catalog);

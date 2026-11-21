@@ -34,7 +34,7 @@ namespace Realmforge.Rules.Quests
         {
             bool hasAffinityRule = faction.Affinity.Law.Count > 0 || faction.Affinity.Moral.Count > 0;
             int alignmentBias = !hasAffinityRule ? 0
-                : faction.Affinity.IsSatisfiedBy(sheet.Alignment) ? AlignmentAffinityBonus : AlignmentMismatchPenalty;
+                : faction.Affinity.IsSatisfiedBy(sheet.GetAlignment()) ? AlignmentAffinityBonus : AlignmentMismatchPenalty;
             int effective = sheet.ReputationWith(faction.Id) + alignmentBias;
             if (effective < HostileBelow)
             {

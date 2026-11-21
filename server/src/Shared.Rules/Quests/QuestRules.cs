@@ -55,7 +55,7 @@ namespace Realmforge.Rules.Quests
             {
                 return RuleResult.Fail("quest.requires", "Complete prerequisite quests first.");
             }
-            if (!quest.Alignment.IsSatisfiedBy(sheet.Alignment))
+            if (!quest.Alignment.IsSatisfiedBy(sheet.GetAlignment()))
             {
                 return RuleResult.Fail("quest.alignment", "This quest-giver does not trust you.");
             }
@@ -109,7 +109,7 @@ namespace Realmforge.Rules.Quests
         /// <summary>Applies alignment, reputation and completion bookkeeping; item/gold/xp rewards are granted by the caller.</summary>
         public static void ApplyToSheet(CharacterSheet sheet, QuestDefinition quest, QuestAdvance advance)
         {
-            sheet.Alignment = sheet.Alignment.Shift(advance.LawShift, advance.GoodShift);
+            sheet.SetAlignment(sheet.GetAlignment().Shift(advance.LawShift, advance.GoodShift));
             IEnumerable<ReputationChange> reputation = advance.Reputation;
             if (advance.Completed)
             {

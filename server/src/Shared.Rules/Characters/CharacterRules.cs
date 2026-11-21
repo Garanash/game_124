@@ -59,13 +59,13 @@ namespace Realmforge.Rules.Characters
                 Name = request.Name.Trim(),
                 RaceId = race.Id,
                 BaseAbilities = (int[])request.Abilities.Clone(),
-                Alignment = Characters.Alignment.FromCell(request.Alignment),
                 Gold = StartingGold,
                 ZoneId = race.StartZoneId,
                 PositionX = startZone?.Spawn.X ?? 0,
                 PositionZ = startZone?.Spawn.Z ?? 0,
                 CreatedAtUtc = nowUtc,
             };
+            sheet.SetAlignment(Alignment.FromCell(request.Alignment));
             sheet.CurrentHp = MaxHp(sheet, catalog, new StatBlock());
             return sheet;
         }
@@ -105,7 +105,7 @@ namespace Realmforge.Rules.Characters
             {
                 return RuleResult.Fail("class.trial", "Complete the mentor trial first.");
             }
-            if (!definition.Alignment.IsSatisfiedBy(sheet.Alignment))
+            if (!definition.Alignment.IsSatisfiedBy(sheet.GetAlignment()))
             {
                 return RuleResult.Fail("class.alignment", "Your alignment does not fit this class.");
             }
