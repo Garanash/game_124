@@ -1,0 +1,83 @@
+# Full local stack: docker compose -f infra/docker-compose.yml up --build
+# Clients connect to the gateway at http://localhost:5080 and to zones at udp://localhost:7777 or ws://localhost:7778/ws.
+name: realmforge
+
+x-server-env: &server-env
+  ConnectionStrings__Postgres: Host=postgres;Database=realmforge;Username=realmforge;Password=realmforge
+  ConnectionStrings__Redis: redis:6379
+  ConnectionStrings__Nats: nats://nats:4222
+  Auth__SigningKey: ${REALMFORGE_SIGNING_KEY:-local-compose-signing-key-change-me-0123456789}
+
+x-server: &server
+  build:
+    context: ..
+    dockerfile: infra/docker/Dockerfile
+  restart: unless-stopped
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_started
+    nats:
+      condition: service_started
+
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: realmforge
+      POSTGRES_USER: realmforge
+      POSTGRES_PASSWORD: realmforge
+    ports: ["15432:5432"]
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U realmforge"]
+      interval: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports: ["16379:6379"]
+
+  nats:
+    image: nats:2.10-alpine
+    ports: ["14222:4222"]
+
+  silo:
+    <<: *server
+    build:
+      context: ..
+      dockerfile: infra/docker/Dockerfile
+      args: { PROJECT: Server.Silo }
+    environment:
+      <<: *server-env
+
+  gateway:
+    <<: *server
+    build:
+      context: ..
+      dockerfile: infra/docker/Dockerfile
+      args: { PROJECT: Server.Gateway }
+    environment:
+      <<: *server-env
+      ASPNETCORE_URLS: http://0.0.0.0:5080
+    ports: ["5080:5080"]
+
+  zone:
+    <<: *server
+    build:
+      context: ..
+      dockerfile: infra/docker/Dockerfile
+      args: { PROJECT: Server.Zone }
+    environment:
+      <<: *server-env
+      Zone__ServerId: zone-1
+      Zone__PublicHost: 127.0.0.1
+    ports:
+      - "7777:7777/udp"
+      - "7778:7778"
+
+volumes:
+  postgres-data:
