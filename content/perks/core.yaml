@@ -1,0 +1,75 @@
+- id: tough
+  name: Крепкий
+  description: +10 к максимуму здоровья.
+  min_level: 4
+  modifiers:
+    - { stat: MaxHp, value: 10 }
+- id: heavy_hitter
+  name: Тяжёлая рука
+  description: +2 к урону оружием.
+  min_level: 8
+  requires: [tough]
+  modifiers:
+    - { stat: DamageBonus, value: 2 }
+- id: sharpshooter
+  name: Меткий стрелок
+  description: +1 к броскам атаки.
+  min_level: 4
+  modifiers:
+    - { stat: AttackBonus, value: 1 }
+- id: war_caster
+  name: Боевой маг
+  description: +1 к Сл спасброска ваших заклинаний.
+  min_level: 4
+  modifiers:
+    - { stat: SpellSaveDc, value: 1 }
+- id: alert
+  name: Бдительный
+  description: +5 к инициативе.
+  min_level: 4
+  modifiers:
+    - { stat: Initiative, value: 5 }
+- id: fleet_footed
+  name: Быстроногий
+  description: +1 клетка скорости в бою.
+  min_level: 4
+  modifiers:
+    - { stat: SpeedCells, value: 1 }
+- id: arcane_adept
+  name: Посвящённый в тайны
+  description: Даёт заговор «Огненный снаряд» любому классу.
+  min_level: 4
+  grants_abilities: [fire_bolt]
+- id: herbalist_knack
+  name: Чутьё травника
+  description: +10% к добыче ресурсов.
+  min_level: 4
+  modifiers:
+    - { stat: GatheringYieldPercent, value: 10 }
+- id: master_crafter
+  name: Мастер-ремесленник
+  description: Ремесло на 15% быстрее.
+  min_level: 8
+  modifiers:
+    - { stat: CraftingSpeedPercent, value: 15 }
+- id: fortune_seeker
+  name: Искатель удачи
+  description: +10% золота с добычи.
+  min_level: 4
+  modifiers:
+    - { stat: GoldFindPercent, value: 10 }
+- id: dragon_slayer
+  name: Драконоборец
+  description: За победу над Пепельным драконом. +1 к атаке и +10 здоровья.
+  source: Achievement
+  achievement_id: raid_ashen_dragon
+  modifiers:
+    - { stat: AttackBonus, value: 1 }
+    - { stat: MaxHp, value: 10 }
+- id: arena_veteran
+  name: Ветеран арены
+  description: За 10 побед на арене. +2 к инициативе.
+  source: Achievement
+  achievement_id: arena_ten_wins
+  modifiers:
+    - { stat: Initiative, value: 2 }

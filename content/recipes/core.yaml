@@ -1,0 +1,97 @@
+- id: smelt_iron
+  profession_id: blacksmithing
+  inputs: [{ item_id: iron_ore, quantity: 2 }]
+  output: { item_id: iron_ingot, quantity: 1 }
+  craft_seconds: 6
+  xp: 10
+- id: forge_short_sword
+  profession_id: blacksmithing
+  min_skill: 5
+  inputs: [{ item_id: iron_ingot, quantity: 3 }, { item_id: leather, quantity: 1 }]
+  output: { item_id: short_sword, quantity: 1 }
+  craft_seconds: 20
+  xp: 30
+- id: forge_iron_shield
+  profession_id: blacksmithing
+  min_skill: 15
+  inputs: [{ item_id: iron_ingot, quantity: 5 }, { item_id: plank, quantity: 2 }]
+  output: { item_id: iron_shield, quantity: 1 }
+  craft_seconds: 30
+  xp: 50
+- id: forge_chain_shirt
+  profession_id: blacksmithing
+  min_skill: 25
+  inputs: [{ item_id: iron_ingot, quantity: 8 }]
+  output: { item_id: chain_shirt, quantity: 1 }
+  craft_seconds: 45
+  xp: 80
+- id: brew_healing_potion
+  profession_id: alchemy
+  inputs: [{ item_id: herb, quantity: 3 }]
+  output: { item_id: healing_potion, quantity: 1 }
+  craft_seconds: 8
+  xp: 12
+- id: brew_greater_healing_potion
+  profession_id: alchemy
+  min_skill: 20
+  inputs: [{ item_id: moonpetal, quantity: 2 }, { item_id: herb, quantity: 3 }]
+  output: { item_id: greater_healing_potion, quantity: 1 }
+  craft_seconds: 15
+  xp: 35
+- id: cook_meat
+  profession_id: cooking
+  inputs: [{ item_id: raw_meat, quantity: 1 }]
+  output: { item_id: cooked_meat, quantity: 1 }
+  craft_seconds: 4
+  xp: 5
+- id: grill_fish
+  profession_id: cooking
+  inputs: [{ item_id: fish, quantity: 1 }]
+  output: { item_id: grilled_fish, quantity: 1 }
+  craft_seconds: 4
+  xp: 5
+- id: weave_linen
+  profession_id: tailoring
+  inputs: [{ item_id: cotton, quantity: 3 }]
+  output: { item_id: linen, quantity: 1 }
+  craft_seconds: 6
+  xp: 8
+- id: tan_leather
+  profession_id: leatherworking
+  inputs: [{ item_id: hide, quantity: 2 }]
+  output: { item_id: leather, quantity: 1 }
+  craft_seconds: 6
+  xp: 8
+- id: stitch_leather_vest
+  profession_id: leatherworking
+  min_skill: 5
+  inputs: [{ item_id: leather, quantity: 4 }, { item_id: linen, quantity: 1 }]
+  output: { item_id: leather_vest, quantity: 1 }
+  craft_seconds: 20
+  xp: 30
+- id: condense_mana_crystal
+  profession_id: enchanting
+  min_skill: 10
+  inputs: [{ item_id: crystal_shard, quantity: 4 }]
+  output: { item_id: mana_crystal, quantity: 1 }
+  craft_seconds: 20
+  xp: 30
+- id: saw_planks
+  profession_id: carpentry
+  inputs: [{ item_id: wood_log, quantity: 2 }]
+  output: { item_id: plank, quantity: 1 }
+  craft_seconds: 5
+  xp: 8
+- id: carve_oak_staff
+  profession_id: carpentry
+  min_skill: 5
+  inputs: [{ item_id: plank, quantity: 3 }]
+  output: { item_id: oak_staff, quantity: 1 }
+  craft_seconds: 15
+  xp: 20
+- id: cut_stone_block
+  profession_id: masonry
+  inputs: [{ item_id: stone, quantity: 3 }]
+  output: { item_id: stone_block, quantity: 1 }
+  craft_seconds: 6
+  xp: 8

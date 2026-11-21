@@ -1,0 +1,14 @@
+# Pure visuals; addressable_key points to the Unity Addressables asset loaded over the base model.
+- { id: skin_shadow_cloak, name: Плащ теней, slot: Cloak, addressable_key: cosmetics/cloak/shadow }
+- { id: skin_starlight_robe, name: Звёздная мантия, slot: Body, addressable_key: cosmetics/body/starlight_robe }
+- { id: skin_crown_of_embers, name: Корона углей, slot: Head, addressable_key: cosmetics/head/crown_of_embers }
+- { id: skin_frost_weapon, name: Ледяной облик оружия, slot: Weapon, addressable_key: cosmetics/weapon/frost }
+- { id: skin_dwarven_runeplate, name: Рунические латы дварфов, slot: Body, race_ids: [dwarf], addressable_key: cosmetics/body/dwarven_runeplate }
+- { id: skin_fey_wings, name: Крылья фей, slot: Cloak, race_ids: [fairy, elf, high_elf], addressable_key: cosmetics/cloak/fey_wings }
+- { id: mount_spectral_wolf, name: Призрачный волк, slot: Mount, addressable_key: cosmetics/mount/spectral_wolf }
+- { id: mount_sand_strider, name: Песчаный бегун, slot: Mount, addressable_key: cosmetics/mount/sand_strider }
+- { id: pet_baby_dragon, name: Дракончик, slot: Pet, addressable_key: cosmetics/pet/baby_dragon }
+- { id: pet_owl, name: Совёнок, slot: Pet, addressable_key: cosmetics/pet/owl }
+- { id: emote_bow, name: Поклон, slot: Emote, addressable_key: cosmetics/emote/bow }
+- { id: emote_dance, name: Танец таверны, slot: Emote, addressable_key: cosmetics/emote/dance }
+- { id: decor_guild_banner, name: Гильдейский стяг, slot: HouseDecor, addressable_key: cosmetics/decor/guild_banner }

@@ -1,0 +1,537 @@
+# Generated once by the world scaffold, then edited by hand.
+- id: npc_silverleaf_mentor
+  name: "Наставник гильдии · Серебряный Лист"
+  zone_id: start_silverleaf
+  faction_id: faction_eldarwen
+  role: Mentor
+  race_id: elf
+  quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
+  schedule:
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+- id: npc_silverleaf_elder
+  name: "Староста · Серебряный Лист"
+  zone_id: start_silverleaf
+  faction_id: faction_eldarwen
+  role: QuestGiver
+  race_id: elf
+  quests: [quest_silverleaf_welcome]
+  schedule:
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+- id: npc_silverleaf_merchant
+  name: "Торговец · Серебряный Лист"
+  zone_id: start_silverleaf
+  faction_id: faction_eldarwen
+  role: Vendor
+  race_id: elf
+  sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
+  schedule:
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+- id: npc_silverleaf_guard
+  name: "Стражник · Серебряный Лист"
+  zone_id: start_silverleaf
+  faction_id: faction_eldarwen
+  role: Guard
+  race_id: elf
+  schedule:
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+- id: npc_silverleaf_auctioneer
+  name: "Аукционист · Серебряный Лист"
+  zone_id: start_silverleaf
+  faction_id: faction_eldarwen
+  role: Auctioneer
+  race_id: elf
+  schedule:
+    - { from_hour: 0, to_hour: 24, activity: auction, position: { x: 276.0, z: 276.0 } }
+- id: npc_silverleaf_trainer
+  name: "Мастер ремёсел · Серебряный Лист"
+  zone_id: start_silverleaf
+  faction_id: faction_eldarwen
+  role: Trainer
+  race_id: elf
+  schedule:
+    - { from_hour: 7, to_hour: 21, activity: workshop, position: { x: 226.0, z: 266.0 } }
+    - { from_hour: 21, to_hour: 7, activity: sleep, position: { x: 211.0, z: 281.0 } }
+- id: npc_feywild_glade_mentor
+  name: "Наставник гильдии · Круг Грибов"
+  zone_id: start_feywild_glade
+  faction_id: faction_eldarwen
+  role: Mentor
+  race_id: firbolg
+  quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
+  schedule:
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+- id: npc_feywild_glade_elder
+  name: "Староста · Круг Грибов"
+  zone_id: start_feywild_glade
+  faction_id: faction_eldarwen
+  role: QuestGiver
+  race_id: firbolg
+  quests: [quest_feywild_glade_welcome]
+  schedule:
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+- id: npc_feywild_glade_merchant
+  name: "Торговец · Круг Грибов"
+  zone_id: start_feywild_glade
+  faction_id: faction_eldarwen
+  role: Vendor
+  race_id: firbolg
+  sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
+  schedule:
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+- id: npc_feywild_glade_guard
+  name: "Стражник · Круг Грибов"
+  zone_id: start_feywild_glade
+  faction_id: faction_eldarwen
+  role: Guard
+  race_id: firbolg
+  schedule:
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+- id: npc_ironhold_mentor
+  name: "Наставник гильдии · Железная Твердыня"
+  zone_id: start_ironhold
+  faction_id: faction_kargath
+  role: Mentor
+  race_id: dwarf
+  quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
+  schedule:
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+- id: npc_ironhold_elder
+  name: "Староста · Железная Твердыня"
+  zone_id: start_ironhold
+  faction_id: faction_kargath
+  role: QuestGiver
+  race_id: dwarf
+  quests: [quest_ironhold_welcome, quest_trial_crypt, quest_goblin_tunnels]
+  schedule:
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+- id: npc_ironhold_merchant
+  name: "Торговец · Железная Твердыня"
+  zone_id: start_ironhold
+  faction_id: faction_kargath
+  role: Vendor
+  race_id: dwarf
+  sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
+  schedule:
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+- id: npc_ironhold_guard
+  name: "Стражник · Железная Твердыня"
+  zone_id: start_ironhold
+  faction_id: faction_kargath
+  role: Guard
+  race_id: dwarf
+  schedule:
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+- id: npc_ironhold_auctioneer
+  name: "Аукционист · Железная Твердыня"
+  zone_id: start_ironhold
+  faction_id: faction_kargath
+  role: Auctioneer
+  race_id: dwarf
+  schedule:
+    - { from_hour: 0, to_hour: 24, activity: auction, position: { x: 276.0, z: 276.0 } }
+- id: npc_ironhold_trainer
+  name: "Мастер ремёсел · Железная Твердыня"
+  zone_id: start_ironhold
+  faction_id: faction_kargath
+  role: Trainer
+  race_id: dwarf
+  schedule:
+    - { from_hour: 7, to_hour: 21, activity: workshop, position: { x: 226.0, z: 266.0 } }
+    - { from_hour: 21, to_hour: 7, activity: sleep, position: { x: 211.0, z: 281.0 } }
+- id: npc_goblin_warrens_mentor
+  name: "Наставник гильдии · Кривой Котёл"
+  zone_id: start_goblin_warrens
+  faction_id: faction_kargath
+  role: Mentor
+  race_id: goblin
+  quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
+  schedule:
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+- id: npc_goblin_warrens_elder
+  name: "Староста · Кривой Котёл"
+  zone_id: start_goblin_warrens
+  faction_id: faction_kargath
+  role: QuestGiver
+  race_id: goblin
+  quests: [quest_goblin_warrens_welcome]
+  schedule:
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+- id: npc_goblin_warrens_merchant
+  name: "Торговец · Кривой Котёл"
+  zone_id: start_goblin_warrens
+  faction_id: faction_kargath
+  role: Vendor
+  race_id: goblin
+  sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
+  schedule:
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+- id: npc_goblin_warrens_guard
+  name: "Стражник · Кривой Котёл"
+  zone_id: start_goblin_warrens
+  faction_id: faction_kargath
+  role: Guard
+  race_id: goblin
+  schedule:
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+- id: npc_hearthmeadow_mentor
+  name: "Наставник гильдии · Медовая Слобода"
+  zone_id: start_hearthmeadow
+  faction_id: faction_kargath
+  role: Mentor
+  race_id: halfling
+  quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
+  schedule:
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+- id: npc_hearthmeadow_elder
+  name: "Староста · Медовая Слобода"
+  zone_id: start_hearthmeadow
+  faction_id: faction_kargath
+  role: QuestGiver
+  race_id: halfling
+  quests: [quest_hearthmeadow_welcome]
+  schedule:
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+- id: npc_hearthmeadow_merchant
+  name: "Торговец · Медовая Слобода"
+  zone_id: start_hearthmeadow
+  faction_id: faction_kargath
+  role: Vendor
+  race_id: halfling
+  sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
+  schedule:
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+- id: npc_hearthmeadow_guard
+  name: "Стражник · Медовая Слобода"
+  zone_id: start_hearthmeadow
+  faction_id: faction_kargath
+  role: Guard
+  race_id: halfling
+  schedule:
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+- id: npc_sunmane_savanna_mentor
+  name: "Наставник гильдии · Прайдгард"
+  zone_id: start_sunmane_savanna
+  faction_id: faction_sarrat
+  role: Mentor
+  race_id: leonin
+  quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
+  schedule:
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+- id: npc_sunmane_savanna_elder
+  name: "Староста · Прайдгард"
+  zone_id: start_sunmane_savanna
+  faction_id: faction_sarrat
+  role: QuestGiver
+  race_id: leonin
+  quests: [quest_sunmane_savanna_welcome]
+  schedule:
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+- id: npc_sunmane_savanna_merchant
+  name: "Торговец · Прайдгард"
+  zone_id: start_sunmane_savanna
+  faction_id: faction_sarrat
+  role: Vendor
+  race_id: leonin
+  sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
+  schedule:
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+- id: npc_sunmane_savanna_guard
+  name: "Стражник · Прайдгард"
+  zone_id: start_sunmane_savanna
+  faction_id: faction_sarrat
+  role: Guard
+  race_id: leonin
+  schedule:
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+- id: npc_sunmane_savanna_auctioneer
+  name: "Аукционист · Прайдгард"
+  zone_id: start_sunmane_savanna
+  faction_id: faction_sarrat
+  role: Auctioneer
+  race_id: leonin
+  schedule:
+    - { from_hour: 0, to_hour: 24, activity: auction, position: { x: 276.0, z: 276.0 } }
+- id: npc_sunmane_savanna_trainer
+  name: "Мастер ремёсел · Прайдгард"
+  zone_id: start_sunmane_savanna
+  faction_id: faction_sarrat
+  role: Trainer
+  race_id: leonin
+  schedule:
+    - { from_hour: 7, to_hour: 21, activity: workshop, position: { x: 226.0, z: 266.0 } }
+    - { from_hour: 21, to_hour: 7, activity: sleep, position: { x: 211.0, z: 281.0 } }
+- id: npc_serpent_jungle_mentor
+  name: "Наставник гильдии · Чешуйчатый Зиккурат"
+  zone_id: start_serpent_jungle
+  faction_id: faction_sarrat
+  role: Mentor
+  race_id: lizardfolk
+  quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
+  schedule:
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+- id: npc_serpent_jungle_elder
+  name: "Староста · Чешуйчатый Зиккурат"
+  zone_id: start_serpent_jungle
+  faction_id: faction_sarrat
+  role: QuestGiver
+  race_id: lizardfolk
+  quests: [quest_serpent_jungle_welcome]
+  schedule:
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+- id: npc_serpent_jungle_merchant
+  name: "Торговец · Чешуйчатый Зиккурат"
+  zone_id: start_serpent_jungle
+  faction_id: faction_sarrat
+  role: Vendor
+  race_id: lizardfolk
+  sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
+  schedule:
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+- id: npc_serpent_jungle_guard
+  name: "Стражник · Чешуйчатый Зиккурат"
+  zone_id: start_serpent_jungle
+  faction_id: faction_sarrat
+  role: Guard
+  race_id: lizardfolk
+  schedule:
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+- id: npc_coral_reach_mentor
+  name: "Наставник гильдии · Жемчужный Купол"
+  zone_id: start_coral_reach
+  faction_id: faction_talmarin
+  role: Mentor
+  race_id: triton
+  quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
+  schedule:
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+- id: npc_coral_reach_elder
+  name: "Староста · Жемчужный Купол"
+  zone_id: start_coral_reach
+  faction_id: faction_talmarin
+  role: QuestGiver
+  race_id: triton
+  quests: [quest_coral_reach_welcome, quest_sunken_temple]
+  schedule:
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+- id: npc_coral_reach_merchant
+  name: "Торговец · Жемчужный Купол"
+  zone_id: start_coral_reach
+  faction_id: faction_talmarin
+  role: Vendor
+  race_id: triton
+  sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
+  schedule:
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+- id: npc_coral_reach_guard
+  name: "Стражник · Жемчужный Купол"
+  zone_id: start_coral_reach
+  faction_id: faction_talmarin
+  role: Guard
+  race_id: triton
+  schedule:
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+- id: npc_coral_reach_auctioneer
+  name: "Аукционист · Жемчужный Купол"
+  zone_id: start_coral_reach
+  faction_id: faction_talmarin
+  role: Auctioneer
+  race_id: triton
+  schedule:
+    - { from_hour: 0, to_hour: 24, activity: auction, position: { x: 276.0, z: 276.0 } }
+- id: npc_coral_reach_trainer
+  name: "Мастер ремёсел · Жемчужный Купол"
+  zone_id: start_coral_reach
+  faction_id: faction_talmarin
+  role: Trainer
+  race_id: triton
+  schedule:
+    - { from_hour: 7, to_hour: 21, activity: workshop, position: { x: 226.0, z: 266.0 } }
+    - { from_hour: 21, to_hour: 7, activity: sleep, position: { x: 211.0, z: 281.0 } }
+- id: npc_windspire_isles_mentor
+  name: "Наставник гильдии · Гнездо Бурь"
+  zone_id: start_windspire_isles
+  faction_id: faction_talmarin
+  role: Mentor
+  race_id: aarakocra
+  quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
+  schedule:
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+- id: npc_windspire_isles_elder
+  name: "Староста · Гнездо Бурь"
+  zone_id: start_windspire_isles
+  faction_id: faction_talmarin
+  role: QuestGiver
+  race_id: aarakocra
+  quests: [quest_windspire_isles_welcome]
+  schedule:
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+- id: npc_windspire_isles_merchant
+  name: "Торговец · Гнездо Бурь"
+  zone_id: start_windspire_isles
+  faction_id: faction_talmarin
+  role: Vendor
+  race_id: aarakocra
+  sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
+  schedule:
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+- id: npc_windspire_isles_guard
+  name: "Стражник · Гнездо Бурь"
+  zone_id: start_windspire_isles
+  faction_id: faction_talmarin
+  role: Guard
+  race_id: aarakocra
+  schedule:
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+- id: npc_ashen_frontier_mentor
+  name: "Наставник гильдии · Форт Сажи"
+  zone_id: start_ashen_frontier
+  faction_id: faction_veylmark
+  role: Mentor
+  race_id: half_orc
+  quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
+  schedule:
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+- id: npc_ashen_frontier_elder
+  name: "Староста · Форт Сажи"
+  zone_id: start_ashen_frontier
+  faction_id: faction_veylmark
+  role: QuestGiver
+  race_id: half_orc
+  quests: [quest_ashen_frontier_welcome, quest_ashen_maw]
+  schedule:
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+- id: npc_ashen_frontier_merchant
+  name: "Торговец · Форт Сажи"
+  zone_id: start_ashen_frontier
+  faction_id: faction_veylmark
+  role: Vendor
+  race_id: half_orc
+  sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
+  schedule:
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+- id: npc_ashen_frontier_guard
+  name: "Стражник · Форт Сажи"
+  zone_id: start_ashen_frontier
+  faction_id: faction_veylmark
+  role: Guard
+  race_id: half_orc
+  schedule:
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+- id: npc_ashen_frontier_auctioneer
+  name: "Аукционист · Форт Сажи"
+  zone_id: start_ashen_frontier
+  faction_id: faction_veylmark
+  role: Auctioneer
+  race_id: half_orc
+  schedule:
+    - { from_hour: 0, to_hour: 24, activity: auction, position: { x: 276.0, z: 276.0 } }
+- id: npc_ashen_frontier_trainer
+  name: "Мастер ремёсел · Форт Сажи"
+  zone_id: start_ashen_frontier
+  faction_id: faction_veylmark
+  role: Trainer
+  race_id: half_orc
+  schedule:
+    - { from_hour: 7, to_hour: 21, activity: workshop, position: { x: 226.0, z: 266.0 } }
+    - { from_hour: 21, to_hour: 7, activity: sleep, position: { x: 211.0, z: 281.0 } }
+- id: npc_astral_spire_mentor
+  name: "Наставник гильдии · Шпиль Звёздного Света"
+  zone_id: start_astral_spire
+  faction_id: faction_veylmark
+  role: Mentor
+  race_id: aasimar
+  quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
+  schedule:
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+- id: npc_astral_spire_elder
+  name: "Староста · Шпиль Звёздного Света"
+  zone_id: start_astral_spire
+  faction_id: faction_veylmark
+  role: QuestGiver
+  race_id: aasimar
+  quests: [quest_astral_spire_welcome]
+  schedule:
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+- id: npc_astral_spire_merchant
+  name: "Торговец · Шпиль Звёздного Света"
+  zone_id: start_astral_spire
+  faction_id: faction_veylmark
+  role: Vendor
+  race_id: aasimar
+  sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
+  schedule:
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+- id: npc_astral_spire_guard
+  name: "Стражник · Шпиль Звёздного Света"
+  zone_id: start_astral_spire
+  faction_id: faction_veylmark
+  role: Guard
+  race_id: aasimar
+  schedule:
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }

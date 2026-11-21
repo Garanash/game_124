@@ -1,0 +1,100 @@
+- id: leonin
+  name: Леонин
+  ip_status: NonSrd
+  continent_id: sarrat
+  start_zone_id: start_sunmane_savanna
+  size: Medium
+  speed_cells: 7
+  ability_bonuses: { Constitution: 2, Strength: 1 }
+  traits: [darkvision, claws, daunting_roar]
+  portrait: portraits/leonin
+- id: tabaxi
+  name: Табакси
+  ip_status: NonSrd
+  continent_id: sarrat
+  start_zone_id: start_sunmane_savanna
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Dexterity: 2, Charisma: 1 }
+  traits: [darkvision, feline_agility, cats_claws]
+  portrait: portraits/tabaxi
+- id: loxodon
+  name: Локсодон
+  ip_status: NonSrd
+  continent_id: sarrat
+  start_zone_id: start_sunmane_savanna
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Constitution: 2, Wisdom: 1 }
+  traits: [loxodon_serenity, natural_armor, trunk]
+  portrait: portraits/loxodon
+- id: minotaur
+  name: Минотавр
+  ip_status: NonSrd
+  continent_id: sarrat
+  start_zone_id: start_sunmane_savanna
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Strength: 2, Constitution: 1 }
+  traits: [horns, goring_rush, labyrinthine_recall]
+  portrait: portraits/minotaur
+- id: pandaren
+  name: Пандарен
+  ip_status: ThirdParty
+  continent_id: sarrat
+  start_zone_id: start_sunmane_savanna
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Constitution: 2, Wisdom: 1 }
+  traits: [inner_peace, bouncy, epicurean]
+  portrait: portraits/pandaren
+- id: yuan_ti
+  name: Юань-ти
+  ip_status: NonSrd
+  continent_id: sarrat
+  start_zone_id: start_serpent_jungle
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Charisma: 2, Intelligence: 1 }
+  traits: [darkvision, magic_resistance, poison_resilience]
+  portrait: portraits/yuan_ti
+- id: lizardfolk
+  name: Людоящер
+  ip_status: NonSrd
+  continent_id: sarrat
+  start_zone_id: start_serpent_jungle
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Constitution: 2, Wisdom: 1 }
+  traits: [bite, hold_breath, natural_armor]
+  portrait: portraits/lizardfolk
+- id: grung
+  name: Грунг
+  ip_status: NonSrd
+  continent_id: sarrat
+  start_zone_id: start_serpent_jungle
+  size: Small
+  speed_cells: 5
+  ability_bonuses: { Dexterity: 2, Constitution: 1 }
+  traits: [poisonous_skin, standing_leap, amphibious]
+  portrait: portraits/grung
+- id: thri_kreen
+  name: Три-крин
+  ip_status: NonSrd
+  continent_id: sarrat
+  start_zone_id: start_serpent_jungle
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Dexterity: 2, Wisdom: 1 }
+  traits: [chameleon_carapace, secondary_arms, sleepless]
+  portrait: portraits/thri_kreen
+- id: dragonborn
+  name: Драконорождённый
+  ip_status: Srd
+  continent_id: sarrat
+  start_zone_id: start_serpent_jungle
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Strength: 2, Charisma: 1 }
+  traits: [draconic_ancestry, breath_weapon, damage_resistance]
+  portrait: portraits/dragonborn

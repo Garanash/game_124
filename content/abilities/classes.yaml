@@ -1,0 +1,248 @@
+# Fighter
+- id: second_wind
+  name: Второе дыхание
+  kind: Skill
+  cost: BonusAction
+  target: Self
+  cooldown_rounds: 5
+  effects:
+    - { type: Heal, dice: 1d10+2 }
+- id: power_strike
+  name: Мощный удар
+  kind: Skill
+  cost: Action
+  target: Enemy
+  range_cells: 1
+  attack_roll: true
+  cooldown_rounds: 2
+  effects:
+    - { type: Damage, dice: 2d8+2, damage_type: Slashing }
+- id: shield_bash
+  name: Удар щитом
+  kind: Skill
+  cost: BonusAction
+  target: Enemy
+  range_cells: 1
+  save_ability: Strength
+  cooldown_rounds: 3
+  effects:
+    - { type: Condition, condition: Prone, duration_rounds: 1 }
+    - { type: Move, distance_cells: 1 }
+- id: whirlwind
+  name: Вихрь клинков
+  kind: Skill
+  cost: Action
+  target: Area
+  range_cells: 0
+  area_radius_cells: 1
+  save_ability: Dexterity
+  cooldown_rounds: 4
+  effects:
+    - { type: Damage, dice: 2d10, damage_type: Slashing, half_on_save: true }
+
+# Wizard
+- id: fire_bolt
+  name: Огненный снаряд
+  kind: Spell
+  target: Enemy
+  range_cells: 24
+  attack_roll: true
+  effects:
+    - { type: Damage, dice: 1d10, damage_type: Fire }
+- id: magic_missile
+  name: Волшебная стрела
+  kind: Spell
+  target: Enemy
+  range_cells: 24
+  spell_level: 1
+  effects:
+    - { type: Damage, dice: 3d4+3, damage_type: Force }
+- id: mage_shield
+  name: Щит мага
+  kind: Spell
+  cost: BonusAction
+  target: Self
+  spell_level: 1
+  effects:
+    - { type: Condition, condition: Shielded, duration_rounds: 1 }
+- id: thunderwave
+  name: Громовая волна
+  kind: Spell
+  target: Area
+  range_cells: 0
+  area_radius_cells: 1
+  spell_level: 1
+  save_ability: Constitution
+  effects:
+    - { type: Damage, dice: 2d8, damage_type: Force, half_on_save: true }
+    - { type: Move, distance_cells: 2 }
+- id: fireball
+  name: Огненный шар
+  kind: Spell
+  target: Area
+  range_cells: 30
+  area_radius_cells: 2
+  spell_level: 3
+  save_ability: Dexterity
+  effects:
+    - { type: Damage, dice: 8d6, damage_type: Fire, half_on_save: true }
+    - { type: Condition, condition: Burning, duration_rounds: 2 }
+
+# Cleric
+- id: sacred_flame
+  name: Священное пламя
+  kind: Spell
+  target: Enemy
+  range_cells: 12
+  save_ability: Dexterity
+  effects:
+    - { type: Damage, dice: 1d8, damage_type: Radiant }
+- id: cure_wounds
+  name: Лечение ран
+  kind: Spell
+  target: Ally
+  range_cells: 1
+  spell_level: 1
+  effects:
+    - { type: Heal, dice: 1d8+3 }
+- id: bless
+  name: Благословение
+  kind: Spell
+  target: Self
+  area_radius_cells: 3
+  spell_level: 1
+  effects:
+    - { type: Aura, condition: Blessed, duration_rounds: 3 }
+- id: spiritual_weapon
+  name: Духовное оружие
+  kind: Spell
+  cost: BonusAction
+  target: Self
+  spell_level: 2
+  cooldown_rounds: 5
+  effects:
+    - { type: Summon, summon_name: Духовный молот, summon_hp: 10, summon_armor_class: 13, summon_damage: 1d8+2, damage_type: Force }
+- id: guiding_bolt
+  name: Направленный снаряд
+  kind: Spell
+  target: Enemy
+  range_cells: 24
+  spell_level: 1
+  attack_roll: true
+  effects:
+    - { type: Damage, dice: 4d6, damage_type: Radiant }
+
+# Rogue
+- id: backstab
+  name: Удар в спину
+  kind: Skill
+  target: Enemy
+  range_cells: 1
+  attack_roll: true
+  cooldown_rounds: 1
+  effects:
+    - { type: Damage, dice: 3d6+2, damage_type: Piercing }
+- id: smoke_bomb
+  name: Дымовая бомба
+  kind: Skill
+  cost: BonusAction
+  target: Self
+  cooldown_rounds: 4
+  effects:
+    - { type: Condition, condition: Invisible, duration_rounds: 1 }
+- id: poison_blade
+  name: Отравленный клинок
+  kind: Skill
+  cost: BonusAction
+  target: Enemy
+  range_cells: 1
+  save_ability: Constitution
+  cooldown_rounds: 3
+  effects:
+    - { type: Damage, dice: 2d4, damage_type: Poison }
+    - { type: Condition, condition: Poisoned, duration_rounds: 2 }
+- id: fan_of_knives
+  name: Веер ножей
+  kind: Skill
+  target: Area
+  range_cells: 0
+  area_radius_cells: 2
+  save_ability: Dexterity
+  cooldown_rounds: 4
+  effects:
+    - { type: Damage, dice: 3d6, damage_type: Piercing, half_on_save: true }
+
+# Ranger
+- id: hunters_mark
+  name: Метка охотника
+  kind: Spell
+  cost: BonusAction
+  target: Enemy
+  range_cells: 18
+  effects:
+    - { type: Damage, dice: 1d6, damage_type: Force }
+- id: ensnaring_strike
+  name: Опутывающий удар
+  kind: Spell
+  target: Enemy
+  range_cells: 18
+  spell_level: 1
+  save_ability: Strength
+  effects:
+    - { type: Condition, condition: Restrained, duration_rounds: 2 }
+    - { type: Damage, dice: 1d6, damage_type: Piercing }
+- id: animal_companion
+  name: Зверь-спутник
+  kind: Skill
+  cost: Action
+  target: Self
+  cooldown_rounds: 10
+  effects:
+    - { type: Summon, summon_name: Волк-спутник, summon_hp: 16, summon_armor_class: 13, summon_damage: 2d4+2, damage_type: Piercing }
+- id: volley
+  name: Залп
+  kind: Spell
+  target: Area
+  range_cells: 30
+  area_radius_cells: 2
+  spell_level: 2
+  save_ability: Dexterity
+  effects:
+    - { type: Damage, dice: 3d8, damage_type: Piercing, half_on_save: true }
+
+# Paladin
+- id: lay_on_hands
+  name: Возложение рук
+  kind: Skill
+  target: Ally
+  range_cells: 1
+  cooldown_rounds: 4
+  effects:
+    - { type: Heal, dice: 2d10 }
+- id: divine_smite
+  name: Божественная кара
+  kind: Spell
+  target: Enemy
+  range_cells: 1
+  spell_level: 1
+  attack_roll: true
+  effects:
+    - { type: Damage, dice: 3d8, damage_type: Radiant }
+- id: shield_of_faith
+  name: Щит веры
+  kind: Spell
+  cost: BonusAction
+  target: Ally
+  range_cells: 12
+  spell_level: 1
+  effects:
+    - { type: Condition, condition: Shielded, duration_rounds: 3 }
+- id: aura_of_protection
+  name: Аура защиты
+  kind: Skill
+  cost: BonusAction
+  target: Self
+  area_radius_cells: 2
+  cooldown_rounds: 6
+  effects:
+    - { type: Aura, condition: Shielded, duration_rounds: 2 }

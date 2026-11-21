@@ -1,0 +1,101 @@
+# ip_status: srd - safe as-is (SRD 5.1, CC-BY-4.0); non_srd / third_party - rename before commercial release.
+- id: elf
+  name: Эльф
+  ip_status: Srd
+  continent_id: eldarwen
+  start_zone_id: start_silverleaf
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Dexterity: 2, Wisdom: 1 }
+  traits: [darkvision, fey_ancestry, trance]
+  portrait: portraits/elf
+- id: high_elf
+  name: Высший эльф
+  ip_status: Srd
+  continent_id: eldarwen
+  start_zone_id: start_silverleaf
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Dexterity: 2, Intelligence: 1 }
+  traits: [darkvision, fey_ancestry, trance, bonus_cantrip]
+  portrait: portraits/high_elf
+- id: half_elf
+  name: Полуэльф
+  ip_status: Srd
+  continent_id: eldarwen
+  start_zone_id: start_silverleaf
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Charisma: 2, Dexterity: 1 }
+  traits: [darkvision, fey_ancestry, skill_versatility]
+  portrait: portraits/half_elf
+- id: astral_elf
+  name: Астральный эльф
+  ip_status: NonSrd
+  continent_id: eldarwen
+  start_zone_id: start_silverleaf
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Intelligence: 2, Wisdom: 1 }
+  traits: [darkvision, astral_fire, starlight_step]
+  portrait: portraits/astral_elf
+- id: fairy
+  name: Фейри
+  ip_status: NonSrd
+  continent_id: eldarwen
+  start_zone_id: start_feywild_glade
+  size: Small
+  speed_cells: 6
+  ability_bonuses: { Charisma: 2, Dexterity: 1 }
+  traits: [flight, fairy_magic]
+  portrait: portraits/fairy
+- id: firbolg
+  name: Фирболг
+  ip_status: NonSrd
+  continent_id: eldarwen
+  start_zone_id: start_feywild_glade
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Wisdom: 2, Strength: 1 }
+  traits: [hidden_step, powerful_build, speech_of_beast_and_leaf]
+  portrait: portraits/firbolg
+- id: satyr
+  name: Сатир
+  ip_status: NonSrd
+  continent_id: eldarwen
+  start_zone_id: start_feywild_glade
+  size: Medium
+  speed_cells: 7
+  ability_bonuses: { Charisma: 2, Dexterity: 1 }
+  traits: [ram, magic_resistance, mirthful_leaps]
+  portrait: portraits/satyr
+- id: owlin
+  name: Совлин
+  ip_status: NonSrd
+  continent_id: eldarwen
+  start_zone_id: start_feywild_glade
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Wisdom: 2, Dexterity: 1 }
+  traits: [darkvision, flight, silent_feathers]
+  portrait: portraits/owlin
+- id: harengon
+  name: Зайцегон
+  ip_status: NonSrd
+  continent_id: eldarwen
+  start_zone_id: start_feywild_glade
+  size: Small
+  speed_cells: 6
+  ability_bonuses: { Dexterity: 2, Wisdom: 1 }
+  traits: [hare_trigger, leporine_senses, rabbit_hop]
+  portrait: portraits/harengon
+- id: centaur
+  name: Кентавр
+  ip_status: NonSrd
+  continent_id: eldarwen
+  start_zone_id: start_feywild_glade
+  size: Medium
+  speed_cells: 8
+  ability_bonuses: { Strength: 2, Wisdom: 1 }
+  traits: [charge, equine_build, hooves]
+  portrait: portraits/centaur

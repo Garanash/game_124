@@ -1,0 +1,128 @@
+# Mob drops
+- id: loot_beast
+  rolls: 2
+  entries:
+    - { item_id: hide, weight: 5, min: 1, max: 2 }
+    - { item_id: raw_meat, weight: 5, min: 1, max: 3 }
+    - { item_id: bone, weight: 2 }
+- id: loot_game
+  rolls: 2
+  entries:
+    - { item_id: hide, weight: 4, min: 1, max: 2 }
+    - { item_id: raw_meat, weight: 6, min: 2, max: 4 }
+- id: loot_humanoid
+  rolls: 2
+  gold_min: 2
+  gold_max: 12
+  entries:
+    - { item_id: dagger, weight: 3 }
+    - { item_id: short_sword, weight: 2 }
+    - { item_id: whetstone, weight: 3 }
+    - { item_id: lucky_coin, weight: 2 }
+    - { item_id: healing_potion, weight: 3 }
+    - { item_id: leather_vest, weight: 1 }
+- id: loot_goblin
+  rolls: 2
+  gold_min: 1
+  gold_max: 6
+  entries:
+    - { item_id: goblin_ear, weight: 6 }
+    - { item_id: dagger, weight: 3 }
+    - { item_id: short_bow, weight: 1 }
+    - { item_id: quiver, weight: 1 }
+- id: loot_undead
+  rolls: 2
+  gold_min: 3
+  gold_max: 15
+  entries:
+    - { item_id: bone, weight: 6, min: 1, max: 3 }
+    - { item_id: mace, weight: 2 }
+    - { item_id: holy_symbol, weight: 1 }
+    - { item_id: wooden_shield, weight: 2 }
+- id: loot_caster
+  rolls: 2
+  gold_min: 5
+  gold_max: 25
+  entries:
+    - { item_id: oak_staff, weight: 3 }
+    - { item_id: spellbook, weight: 1 }
+    - { item_id: sapphire, weight: 1 }
+    - { item_id: crystal_shard, weight: 4, min: 1, max: 2 }
+- id: loot_elemental
+  rolls: 2
+  gold_min: 10
+  gold_max: 40
+  entries:
+    - { item_id: ash_essence, weight: 3 }
+    - { item_id: ruby, weight: 2 }
+    - { item_id: crystal_shard, weight: 4, min: 1, max: 3 }
+
+# Gathering nodes
+- id: loot_herb_patch
+  entries:
+    - { item_id: herb, weight: 9, min: 1, max: 3 }
+    - { item_id: four_leaf_clover, weight: 1 }
+- id: loot_moonpetal
+  entries:
+    - { item_id: moonpetal, weight: 1, min: 1, max: 2 }
+- id: loot_copper_vein
+  entries:
+    - { item_id: copper_ore, weight: 8, min: 1, max: 3 }
+    - { item_id: stone, weight: 4, min: 1, max: 2 }
+- id: loot_iron_vein
+  entries:
+    - { item_id: iron_ore, weight: 8, min: 1, max: 3 }
+    - { item_id: stone, weight: 3, min: 1, max: 2 }
+    - { item_id: ruby, weight: 1 }
+- id: loot_stone_quarry
+  entries:
+    - { item_id: stone, weight: 1, min: 2, max: 4 }
+- id: loot_crystal_cluster
+  entries:
+    - { item_id: crystal_shard, weight: 6, min: 1, max: 2 }
+    - { item_id: sapphire, weight: 1 }
+- id: loot_oak_tree
+  entries:
+    - { item_id: wood_log, weight: 1, min: 2, max: 4 }
+- id: loot_fishing_spot
+  entries:
+    - { item_id: fish, weight: 1, min: 1, max: 2 }
+- id: loot_cotton_field
+  entries:
+    - { item_id: cotton, weight: 1, min: 2, max: 4 }
+
+# Instance bosses
+- id: loot_trial_crypt
+  rolls: 2
+  gold_min: 20
+  gold_max: 40
+  entries:
+    - { item_id: holy_symbol, weight: 2 }
+    - { item_id: iron_shield, weight: 2 }
+    - { item_id: healing_potion, weight: 3, min: 1, max: 2 }
+- id: loot_goblin_tunnels
+  rolls: 3
+  gold_min: 40
+  gold_max: 80
+  entries:
+    - { item_id: long_sword, weight: 2 }
+    - { item_id: short_bow, weight: 2 }
+    - { item_id: chain_shirt, weight: 1 }
+    - { item_id: ruby, weight: 1 }
+- id: loot_sunken_temple
+  rolls: 3
+  gold_min: 80
+  gold_max: 160
+  entries:
+    - { item_id: arcane_staff, weight: 1 }
+    - { item_id: long_bow, weight: 1 }
+    - { item_id: sapphire, weight: 2 }
+    - { item_id: mana_crystal, weight: 3 }
+- id: loot_ashen_dragon
+  rolls: 4
+  gold_min: 400
+  gold_max: 800
+  entries:
+    - { item_id: dragon_scale, weight: 2 }
+    - { item_id: flame_blade, weight: 1 }
+    - { item_id: ash_essence, weight: 4, min: 1, max: 3 }

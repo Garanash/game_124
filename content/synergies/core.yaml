@@ -1,0 +1,33 @@
+# For each orthogonally touching pair, items tagged source_tag gain the bonus once per neighbour tagged neighbor_tag.
+- id: sharpened_edge
+  source_tag: blade
+  neighbor_tag: stone
+  bonus: [{ stat: DamageBonus, value: 1 }]
+- id: stocked_quiver
+  source_tag: bow
+  neighbor_tag: ammo
+  bonus: [{ stat: AttackBonus, value: 1 }, { stat: DamageBonus, value: 1 }]
+- id: arcane_resonance
+  source_tag: focus
+  neighbor_tag: arcane
+  bonus: [{ stat: SpellSaveDc, value: 1 }]
+- id: blessed_steel
+  source_tag: weapon
+  neighbor_tag: holy
+  bonus: [{ stat: AttackBonus, value: 1 }]
+- id: shield_wall
+  source_tag: shield
+  neighbor_tag: armor
+  bonus: [{ stat: ArmorClass, value: 1 }]
+- id: gem_socket
+  source_tag: weapon
+  neighbor_tag: gem
+  bonus: [{ stat: DamageBonus, value: 1 }]
+- id: lucky_streak
+  source_tag: trinket
+  neighbor_tag: trinket
+  bonus: [{ stat: GoldFindPercent, value: 5 }]
+- id: alchemists_belt
+  source_tag: potion
+  neighbor_tag: potion
+  bonus: [{ stat: MaxHp, value: 2 }]

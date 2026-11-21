@@ -1,0 +1,486 @@
+# Generated once by the world scaffold, then edited by hand. Positions are meters inside the zone square.
+- id: start_silverleaf
+  name: "Сильверлиф"
+  continent_id: eldarwen
+  kind: StartZone
+  min_level: 1
+  max_level: 6
+  scene_address: scenes/eldarwen/start_silverleaf
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: wilds_eldarwen, position: { x: 256.0, z: 480.0 }, arrival: { x: 256.0, z: 40.0 } }
+    - { to_zone_id: housing_eldarwen, position: { x: 40.0, z: 256.0 }, arrival: { x: 256.0, z: 256.0 } }
+  mobs:
+    - { mob_id: training_dummy, position: { x: 268.0, z: 264.0 }, count: 3, respawn_seconds: 10 }
+    - { mob_id: wolf, position: { x: 376.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: pixie_trickster, position: { x: 136.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: deer, position: { x: 256.0, z: 136.0 }, count: 4, respawn_seconds: 60 }
+  nodes:
+    - { node_id: herb_patch, position: { x: 166.0, z: 116.0 } }
+    - { node_id: herb_patch, position: { x: 196.0, z: 406.0 } }
+    - { node_id: oak_tree, position: { x: 256.0, z: 116.0 } }
+    - { node_id: oak_tree, position: { x: 286.0, z: 406.0 } }
+    - { node_id: moonpetal_bloom, position: { x: 346.0, z: 116.0 } }
+    - { node_id: moonpetal_bloom, position: { x: 376.0, z: 406.0 } }
+- id: start_feywild_glade
+  name: "Фейская поляна"
+  continent_id: eldarwen
+  kind: StartZone
+  min_level: 1
+  max_level: 6
+  scene_address: scenes/eldarwen/start_feywild_glade
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: wilds_eldarwen, position: { x: 256.0, z: 480.0 }, arrival: { x: 256.0, z: 40.0 } }
+    - { to_zone_id: housing_eldarwen, position: { x: 40.0, z: 256.0 }, arrival: { x: 256.0, z: 256.0 } }
+  mobs:
+    - { mob_id: training_dummy, position: { x: 268.0, z: 264.0 }, count: 3, respawn_seconds: 10 }
+    - { mob_id: pixie_trickster, position: { x: 376.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: wolf, position: { x: 136.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: deer, position: { x: 256.0, z: 136.0 }, count: 4, respawn_seconds: 60 }
+  nodes:
+    - { node_id: herb_patch, position: { x: 166.0, z: 116.0 } }
+    - { node_id: herb_patch, position: { x: 196.0, z: 406.0 } }
+    - { node_id: moonpetal_bloom, position: { x: 256.0, z: 116.0 } }
+    - { node_id: moonpetal_bloom, position: { x: 286.0, z: 406.0 } }
+    - { node_id: oak_tree, position: { x: 346.0, z: 116.0 } }
+    - { node_id: oak_tree, position: { x: 376.0, z: 406.0 } }
+- id: start_ironhold
+  name: "Айронхолд"
+  continent_id: kargath
+  kind: StartZone
+  min_level: 1
+  max_level: 6
+  scene_address: scenes/kargath/start_ironhold
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: wilds_kargath, position: { x: 256.0, z: 480.0 }, arrival: { x: 256.0, z: 40.0 } }
+    - { to_zone_id: housing_kargath, position: { x: 40.0, z: 256.0 }, arrival: { x: 256.0, z: 256.0 } }
+  mobs:
+    - { mob_id: training_dummy, position: { x: 268.0, z: 264.0 }, count: 3, respawn_seconds: 10 }
+    - { mob_id: goblin_scout, position: { x: 376.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: skeleton, position: { x: 136.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: boar, position: { x: 256.0, z: 136.0 }, count: 4, respawn_seconds: 60 }
+  nodes:
+    - { node_id: copper_vein, position: { x: 166.0, z: 116.0 } }
+    - { node_id: copper_vein, position: { x: 196.0, z: 406.0 } }
+    - { node_id: iron_vein, position: { x: 256.0, z: 116.0 } }
+    - { node_id: iron_vein, position: { x: 286.0, z: 406.0 } }
+    - { node_id: stone_quarry, position: { x: 346.0, z: 116.0 } }
+    - { node_id: stone_quarry, position: { x: 376.0, z: 406.0 } }
+- id: start_goblin_warrens
+  name: "Гоблинские норы"
+  continent_id: kargath
+  kind: StartZone
+  min_level: 1
+  max_level: 6
+  scene_address: scenes/kargath/start_goblin_warrens
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: wilds_kargath, position: { x: 256.0, z: 480.0 }, arrival: { x: 256.0, z: 40.0 } }
+    - { to_zone_id: housing_kargath, position: { x: 40.0, z: 256.0 }, arrival: { x: 256.0, z: 256.0 } }
+  mobs:
+    - { mob_id: training_dummy, position: { x: 268.0, z: 264.0 }, count: 3, respawn_seconds: 10 }
+    - { mob_id: bandit, position: { x: 376.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: giant_crab, position: { x: 136.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: boar, position: { x: 256.0, z: 136.0 }, count: 4, respawn_seconds: 60 }
+  nodes:
+    - { node_id: copper_vein, position: { x: 166.0, z: 116.0 } }
+    - { node_id: copper_vein, position: { x: 196.0, z: 406.0 } }
+    - { node_id: herb_patch, position: { x: 256.0, z: 116.0 } }
+    - { node_id: herb_patch, position: { x: 286.0, z: 406.0 } }
+    - { node_id: oak_tree, position: { x: 346.0, z: 116.0 } }
+    - { node_id: oak_tree, position: { x: 376.0, z: 406.0 } }
+- id: start_hearthmeadow
+  name: "Очажный Луг"
+  continent_id: kargath
+  kind: StartZone
+  min_level: 1
+  max_level: 6
+  scene_address: scenes/kargath/start_hearthmeadow
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: wilds_kargath, position: { x: 256.0, z: 480.0 }, arrival: { x: 256.0, z: 40.0 } }
+    - { to_zone_id: housing_kargath, position: { x: 40.0, z: 256.0 }, arrival: { x: 256.0, z: 256.0 } }
+  mobs:
+    - { mob_id: training_dummy, position: { x: 268.0, z: 264.0 }, count: 3, respawn_seconds: 10 }
+    - { mob_id: bandit, position: { x: 376.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: wolf, position: { x: 136.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: deer, position: { x: 256.0, z: 136.0 }, count: 4, respawn_seconds: 60 }
+  nodes:
+    - { node_id: cotton_field, position: { x: 166.0, z: 116.0 } }
+    - { node_id: cotton_field, position: { x: 196.0, z: 406.0 } }
+    - { node_id: herb_patch, position: { x: 256.0, z: 116.0 } }
+    - { node_id: herb_patch, position: { x: 286.0, z: 406.0 } }
+    - { node_id: fishing_spot, position: { x: 346.0, z: 116.0 } }
+    - { node_id: fishing_spot, position: { x: 376.0, z: 406.0 } }
+- id: start_sunmane_savanna
+  name: "Саванна Солнечной Гривы"
+  continent_id: sarrat
+  kind: StartZone
+  min_level: 1
+  max_level: 6
+  scene_address: scenes/sarrat/start_sunmane_savanna
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: wilds_sarrat, position: { x: 256.0, z: 480.0 }, arrival: { x: 256.0, z: 40.0 } }
+    - { to_zone_id: housing_sarrat, position: { x: 40.0, z: 256.0 }, arrival: { x: 256.0, z: 256.0 } }
+  mobs:
+    - { mob_id: training_dummy, position: { x: 268.0, z: 264.0 }, count: 3, respawn_seconds: 10 }
+    - { mob_id: sand_jackal, position: { x: 376.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: bandit, position: { x: 136.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: boar, position: { x: 256.0, z: 136.0 }, count: 4, respawn_seconds: 60 }
+  nodes:
+    - { node_id: cotton_field, position: { x: 166.0, z: 116.0 } }
+    - { node_id: cotton_field, position: { x: 196.0, z: 406.0 } }
+    - { node_id: copper_vein, position: { x: 256.0, z: 116.0 } }
+    - { node_id: copper_vein, position: { x: 286.0, z: 406.0 } }
+    - { node_id: herb_patch, position: { x: 346.0, z: 116.0 } }
+    - { node_id: herb_patch, position: { x: 376.0, z: 406.0 } }
+- id: start_serpent_jungle
+  name: "Змеиные джунгли"
+  continent_id: sarrat
+  kind: StartZone
+  min_level: 1
+  max_level: 6
+  scene_address: scenes/sarrat/start_serpent_jungle
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: wilds_sarrat, position: { x: 256.0, z: 480.0 }, arrival: { x: 256.0, z: 40.0 } }
+    - { to_zone_id: housing_sarrat, position: { x: 40.0, z: 256.0 }, arrival: { x: 256.0, z: 256.0 } }
+  mobs:
+    - { mob_id: training_dummy, position: { x: 268.0, z: 264.0 }, count: 3, respawn_seconds: 10 }
+    - { mob_id: jungle_spider, position: { x: 376.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: cultist, position: { x: 136.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: boar, position: { x: 256.0, z: 136.0 }, count: 4, respawn_seconds: 60 }
+  nodes:
+    - { node_id: herb_patch, position: { x: 166.0, z: 116.0 } }
+    - { node_id: herb_patch, position: { x: 196.0, z: 406.0 } }
+    - { node_id: moonpetal_bloom, position: { x: 256.0, z: 116.0 } }
+    - { node_id: moonpetal_bloom, position: { x: 286.0, z: 406.0 } }
+    - { node_id: oak_tree, position: { x: 346.0, z: 116.0 } }
+    - { node_id: oak_tree, position: { x: 376.0, z: 406.0 } }
+- id: start_coral_reach
+  name: "Коралловый Предел"
+  continent_id: talmarin
+  kind: StartZone
+  min_level: 1
+  max_level: 6
+  scene_address: scenes/talmarin/start_coral_reach
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: wilds_talmarin, position: { x: 256.0, z: 480.0 }, arrival: { x: 256.0, z: 40.0 } }
+    - { to_zone_id: housing_talmarin, position: { x: 40.0, z: 256.0 }, arrival: { x: 256.0, z: 256.0 } }
+  mobs:
+    - { mob_id: training_dummy, position: { x: 268.0, z: 264.0 }, count: 3, respawn_seconds: 10 }
+    - { mob_id: giant_crab, position: { x: 376.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: cultist, position: { x: 136.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: deer, position: { x: 256.0, z: 136.0 }, count: 4, respawn_seconds: 60 }
+  nodes:
+    - { node_id: fishing_spot, position: { x: 166.0, z: 116.0 } }
+    - { node_id: fishing_spot, position: { x: 196.0, z: 406.0 } }
+    - { node_id: crystal_cluster, position: { x: 256.0, z: 116.0 } }
+    - { node_id: crystal_cluster, position: { x: 286.0, z: 406.0 } }
+    - { node_id: herb_patch, position: { x: 346.0, z: 116.0 } }
+    - { node_id: herb_patch, position: { x: 376.0, z: 406.0 } }
+- id: start_windspire_isles
+  name: "Острова Ветряного Шпиля"
+  continent_id: talmarin
+  kind: StartZone
+  min_level: 1
+  max_level: 6
+  scene_address: scenes/talmarin/start_windspire_isles
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: wilds_talmarin, position: { x: 256.0, z: 480.0 }, arrival: { x: 256.0, z: 40.0 } }
+    - { to_zone_id: housing_talmarin, position: { x: 40.0, z: 256.0 }, arrival: { x: 256.0, z: 256.0 } }
+  mobs:
+    - { mob_id: training_dummy, position: { x: 268.0, z: 264.0 }, count: 3, respawn_seconds: 10 }
+    - { mob_id: storm_harpy, position: { x: 376.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: giant_crab, position: { x: 136.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: deer, position: { x: 256.0, z: 136.0 }, count: 4, respawn_seconds: 60 }
+  nodes:
+    - { node_id: fishing_spot, position: { x: 166.0, z: 116.0 } }
+    - { node_id: fishing_spot, position: { x: 196.0, z: 406.0 } }
+    - { node_id: oak_tree, position: { x: 256.0, z: 116.0 } }
+    - { node_id: oak_tree, position: { x: 286.0, z: 406.0 } }
+    - { node_id: copper_vein, position: { x: 346.0, z: 116.0 } }
+    - { node_id: copper_vein, position: { x: 376.0, z: 406.0 } }
+- id: start_ashen_frontier
+  name: "Пепельное Пограничье"
+  continent_id: veylmark
+  kind: StartZone
+  min_level: 1
+  max_level: 6
+  scene_address: scenes/veylmark/start_ashen_frontier
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: wilds_veylmark, position: { x: 256.0, z: 480.0 }, arrival: { x: 256.0, z: 40.0 } }
+    - { to_zone_id: housing_veylmark, position: { x: 40.0, z: 256.0 }, arrival: { x: 256.0, z: 256.0 } }
+  mobs:
+    - { mob_id: training_dummy, position: { x: 268.0, z: 264.0 }, count: 3, respawn_seconds: 10 }
+    - { mob_id: ash_ghoul, position: { x: 376.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: bandit, position: { x: 136.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: boar, position: { x: 256.0, z: 136.0 }, count: 4, respawn_seconds: 60 }
+  nodes:
+    - { node_id: iron_vein, position: { x: 166.0, z: 116.0 } }
+    - { node_id: iron_vein, position: { x: 196.0, z: 406.0 } }
+    - { node_id: oak_tree, position: { x: 256.0, z: 116.0 } }
+    - { node_id: oak_tree, position: { x: 286.0, z: 406.0 } }
+    - { node_id: herb_patch, position: { x: 346.0, z: 116.0 } }
+    - { node_id: herb_patch, position: { x: 376.0, z: 406.0 } }
+- id: start_astral_spire
+  name: "Астральный Шпиль"
+  continent_id: veylmark
+  kind: StartZone
+  min_level: 1
+  max_level: 6
+  scene_address: scenes/veylmark/start_astral_spire
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: wilds_veylmark, position: { x: 256.0, z: 480.0 }, arrival: { x: 256.0, z: 40.0 } }
+    - { to_zone_id: housing_veylmark, position: { x: 40.0, z: 256.0 }, arrival: { x: 256.0, z: 256.0 } }
+  mobs:
+    - { mob_id: training_dummy, position: { x: 268.0, z: 264.0 }, count: 3, respawn_seconds: 10 }
+    - { mob_id: astral_stalker, position: { x: 376.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: cultist, position: { x: 136.0, z: 328.0 }, count: 4, respawn_seconds: 60 }
+    - { mob_id: deer, position: { x: 256.0, z: 136.0 }, count: 4, respawn_seconds: 60 }
+  nodes:
+    - { node_id: crystal_cluster, position: { x: 166.0, z: 116.0 } }
+    - { node_id: crystal_cluster, position: { x: 196.0, z: 406.0 } }
+    - { node_id: herb_patch, position: { x: 256.0, z: 116.0 } }
+    - { node_id: herb_patch, position: { x: 286.0, z: 406.0 } }
+    - { node_id: copper_vein, position: { x: 346.0, z: 116.0 } }
+    - { node_id: copper_vein, position: { x: 376.0, z: 406.0 } }
+- id: wilds_eldarwen
+  name: "Сумрачная чаща"
+  continent_id: eldarwen
+  kind: Wilderness
+  min_level: 5
+  max_level: 15
+  scene_address: scenes/eldarwen/wilds_eldarwen
+  size_meters: 1024
+  spawn: { x: 512.0, z: 40.0 }
+  portals:
+    - { to_zone_id: start_silverleaf, position: { x: 200.0, z: 20.0 }, arrival: { x: 256.0, z: 470.0 } }
+    - { to_zone_id: start_feywild_glade, position: { x: 500.0, z: 20.0 }, arrival: { x: 256.0, z: 470.0 } }
+  mobs:
+    - { mob_id: wolf, position: { x: 250.0, z: 520.0 }, count: 6, respawn_seconds: 90 }
+    - { mob_id: pixie_trickster, position: { x: 510.0, z: 520.0 }, count: 6, respawn_seconds: 90 }
+    - { mob_id: bandit_captain, position: { x: 770.0, z: 520.0 }, count: 1, respawn_seconds: 600 }
+  nodes:
+    - { node_id: iron_vein, position: { x: 300.0, z: 300.0 } }
+    - { node_id: crystal_cluster, position: { x: 700.0, z: 700.0 } }
+    - { node_id: moonpetal_bloom, position: { x: 500.0, z: 800.0 } }
+- id: wilds_kargath
+  name: "Глубинные штольни"
+  continent_id: kargath
+  kind: Wilderness
+  min_level: 5
+  max_level: 15
+  scene_address: scenes/kargath/wilds_kargath
+  size_meters: 1024
+  spawn: { x: 512.0, z: 40.0 }
+  portals:
+    - { to_zone_id: start_ironhold, position: { x: 200.0, z: 20.0 }, arrival: { x: 256.0, z: 470.0 } }
+    - { to_zone_id: start_goblin_warrens, position: { x: 500.0, z: 20.0 }, arrival: { x: 256.0, z: 470.0 } }
+    - { to_zone_id: start_hearthmeadow, position: { x: 800.0, z: 20.0 }, arrival: { x: 256.0, z: 470.0 } }
+  mobs:
+    - { mob_id: goblin_scout, position: { x: 250.0, z: 520.0 }, count: 6, respawn_seconds: 90 }
+    - { mob_id: skeleton, position: { x: 510.0, z: 520.0 }, count: 6, respawn_seconds: 90 }
+    - { mob_id: bandit_captain, position: { x: 770.0, z: 520.0 }, count: 1, respawn_seconds: 600 }
+  nodes:
+    - { node_id: iron_vein, position: { x: 300.0, z: 300.0 } }
+    - { node_id: crystal_cluster, position: { x: 700.0, z: 700.0 } }
+    - { node_id: moonpetal_bloom, position: { x: 500.0, z: 800.0 } }
+- id: wilds_sarrat
+  name: "Стеклянные дюны"
+  continent_id: sarrat
+  kind: Wilderness
+  min_level: 5
+  max_level: 15
+  scene_address: scenes/sarrat/wilds_sarrat
+  size_meters: 1024
+  spawn: { x: 512.0, z: 40.0 }
+  portals:
+    - { to_zone_id: start_sunmane_savanna, position: { x: 200.0, z: 20.0 }, arrival: { x: 256.0, z: 470.0 } }
+    - { to_zone_id: start_serpent_jungle, position: { x: 500.0, z: 20.0 }, arrival: { x: 256.0, z: 470.0 } }
+    - { to_zone_id: pvp_dune_arena, position: { x: 512.0, z: 1000.0 }, arrival: { x: 256.0, z: 20.0 } }
+  mobs:
+    - { mob_id: sand_jackal, position: { x: 250.0, z: 520.0 }, count: 6, respawn_seconds: 90 }
+    - { mob_id: jungle_spider, position: { x: 510.0, z: 520.0 }, count: 6, respawn_seconds: 90 }
+    - { mob_id: fire_elemental, position: { x: 770.0, z: 520.0 }, count: 1, respawn_seconds: 600 }
+  nodes:
+    - { node_id: iron_vein, position: { x: 300.0, z: 300.0 } }
+    - { node_id: crystal_cluster, position: { x: 700.0, z: 700.0 } }
+    - { node_id: moonpetal_bloom, position: { x: 500.0, z: 800.0 } }
+- id: wilds_talmarin
+  name: "Штормовые отмели"
+  continent_id: talmarin
+  kind: Wilderness
+  min_level: 5
+  max_level: 15
+  scene_address: scenes/talmarin/wilds_talmarin
+  size_meters: 1024
+  spawn: { x: 512.0, z: 40.0 }
+  portals:
+    - { to_zone_id: start_coral_reach, position: { x: 200.0, z: 20.0 }, arrival: { x: 256.0, z: 470.0 } }
+    - { to_zone_id: start_windspire_isles, position: { x: 500.0, z: 20.0 }, arrival: { x: 256.0, z: 470.0 } }
+    - { to_zone_id: pvp_contested_straits, position: { x: 512.0, z: 1000.0 }, arrival: { x: 256.0, z: 20.0 } }
+  mobs:
+    - { mob_id: storm_harpy, position: { x: 250.0, z: 520.0 }, count: 6, respawn_seconds: 90 }
+    - { mob_id: giant_crab, position: { x: 510.0, z: 520.0 }, count: 6, respawn_seconds: 90 }
+    - { mob_id: sahuagin_priestess, position: { x: 770.0, z: 520.0 }, count: 1, respawn_seconds: 600 }
+  nodes:
+    - { node_id: iron_vein, position: { x: 300.0, z: 300.0 } }
+    - { node_id: crystal_cluster, position: { x: 700.0, z: 700.0 } }
+    - { node_id: moonpetal_bloom, position: { x: 500.0, z: 800.0 } }
+- id: wilds_veylmark
+  name: "Разломы Вейла"
+  continent_id: veylmark
+  kind: Wilderness
+  min_level: 5
+  max_level: 15
+  scene_address: scenes/veylmark/wilds_veylmark
+  size_meters: 1024
+  spawn: { x: 512.0, z: 40.0 }
+  portals:
+    - { to_zone_id: start_ashen_frontier, position: { x: 200.0, z: 20.0 }, arrival: { x: 256.0, z: 470.0 } }
+    - { to_zone_id: start_astral_spire, position: { x: 500.0, z: 20.0 }, arrival: { x: 256.0, z: 470.0 } }
+    - { to_zone_id: pvp_bloodfields, position: { x: 512.0, z: 1000.0 }, arrival: { x: 256.0, z: 20.0 } }
+  mobs:
+    - { mob_id: ash_ghoul, position: { x: 250.0, z: 520.0 }, count: 6, respawn_seconds: 90 }
+    - { mob_id: astral_stalker, position: { x: 510.0, z: 520.0 }, count: 6, respawn_seconds: 90 }
+    - { mob_id: fire_elemental, position: { x: 770.0, z: 520.0 }, count: 1, respawn_seconds: 600 }
+  nodes:
+    - { node_id: iron_vein, position: { x: 300.0, z: 300.0 } }
+    - { node_id: crystal_cluster, position: { x: 700.0, z: 700.0 } }
+    - { node_id: moonpetal_bloom, position: { x: 500.0, z: 800.0 } }
+- id: pvp_bloodfields
+  name: "Кровавые поля"
+  continent_id: veylmark
+  kind: PvpZone
+  min_level: 10
+  max_level: 20
+  pvp: FreeForAll
+  scene_address: scenes/veylmark/pvp_bloodfields
+  spawn: { x: 256.0, z: 20.0 }
+  portals:
+    - { to_zone_id: wilds_veylmark, position: { x: 256.0, z: 5.0 }, arrival: { x: 512.0, z: 990.0 } }
+  nodes:
+    - { node_id: crystal_cluster, position: { x: 256.0, z: 256.0 } }
+- id: pvp_contested_straits
+  name: "Спорные проливы"
+  continent_id: talmarin
+  kind: PvpZone
+  min_level: 10
+  max_level: 20
+  pvp: FactionOnly
+  scene_address: scenes/talmarin/pvp_contested_straits
+  spawn: { x: 256.0, z: 20.0 }
+  portals:
+    - { to_zone_id: wilds_talmarin, position: { x: 256.0, z: 5.0 }, arrival: { x: 512.0, z: 990.0 } }
+  nodes:
+    - { node_id: crystal_cluster, position: { x: 256.0, z: 256.0 } }
+- id: pvp_dune_arena
+  name: "Арена Дюн"
+  continent_id: sarrat
+  kind: PvpZone
+  min_level: 10
+  max_level: 20
+  pvp: Arena
+  scene_address: scenes/sarrat/pvp_dune_arena
+  spawn: { x: 256.0, z: 20.0 }
+  portals:
+    - { to_zone_id: wilds_sarrat, position: { x: 256.0, z: 5.0 }, arrival: { x: 512.0, z: 990.0 } }
+  nodes:
+    - { node_id: crystal_cluster, position: { x: 256.0, z: 256.0 } }
+- id: inst_trial_crypt
+  name: "Склеп испытаний"
+  continent_id: kargath
+  kind: Instance
+  min_level: 1
+  max_level: 10
+  scene_address: scenes/instances/inst_trial_crypt
+  size_meters: 256
+  spawn: { x: 128.0, z: 10.0 }
+  mobs:
+    - { mob_id: skeleton, position: { x: 128.0, z: 60.0 }, count: 4, respawn_seconds: 0 }
+    - { mob_id: crypt_lord, position: { x: 128.0, z: 120.0 }, count: 1, respawn_seconds: 0 }
+- id: inst_goblin_tunnels
+  name: "Гоблинские тоннели"
+  continent_id: kargath
+  kind: Instance
+  min_level: 3
+  max_level: 10
+  scene_address: scenes/instances/inst_goblin_tunnels
+  size_meters: 256
+  spawn: { x: 128.0, z: 10.0 }
+  mobs:
+    - { mob_id: goblin_scout, position: { x: 128.0, z: 60.0 }, count: 4, respawn_seconds: 0 }
+    - { mob_id: goblin_boss, position: { x: 128.0, z: 120.0 }, count: 1, respawn_seconds: 0 }
+- id: inst_sunken_temple
+  name: "Затонувший храм"
+  continent_id: talmarin
+  kind: Instance
+  min_level: 6
+  max_level: 14
+  scene_address: scenes/instances/inst_sunken_temple
+  size_meters: 256
+  spawn: { x: 128.0, z: 10.0 }
+  mobs:
+    - { mob_id: giant_crab, position: { x: 128.0, z: 60.0 }, count: 4, respawn_seconds: 0 }
+    - { mob_id: cultist, position: { x: 128.0, z: 120.0 }, count: 4, respawn_seconds: 0 }
+    - { mob_id: sahuagin_priestess, position: { x: 128.0, z: 180.0 }, count: 1, respawn_seconds: 0 }
+- id: inst_ashen_maw
+  name: "Пасть Пепельного дракона"
+  continent_id: veylmark
+  kind: Instance
+  min_level: 15
+  max_level: 20
+  scene_address: scenes/instances/inst_ashen_maw
+  size_meters: 256
+  spawn: { x: 128.0, z: 10.0 }
+  mobs:
+    - { mob_id: fire_elemental, position: { x: 128.0, z: 60.0 }, count: 4, respawn_seconds: 0 }
+    - { mob_id: ashen_dragon, position: { x: 128.0, z: 120.0 }, count: 1, respawn_seconds: 0 }
+- id: housing_eldarwen
+  name: "Жилой квартал (eldarwen)"
+  continent_id: eldarwen
+  kind: Housing
+  scene_address: scenes/eldarwen/housing_eldarwen
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: start_silverleaf, position: { x: 256.0, z: 10.0 }, arrival: { x: 50.0, z: 256.0 } }
+- id: housing_kargath
+  name: "Жилой квартал (kargath)"
+  continent_id: kargath
+  kind: Housing
+  scene_address: scenes/kargath/housing_kargath
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: start_ironhold, position: { x: 256.0, z: 10.0 }, arrival: { x: 50.0, z: 256.0 } }
+- id: housing_sarrat
+  name: "Жилой квартал (sarrat)"
+  continent_id: sarrat
+  kind: Housing
+  scene_address: scenes/sarrat/housing_sarrat
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: start_sunmane_savanna, position: { x: 256.0, z: 10.0 }, arrival: { x: 50.0, z: 256.0 } }
+- id: housing_talmarin
+  name: "Жилой квартал (talmarin)"
+  continent_id: talmarin
+  kind: Housing
+  scene_address: scenes/talmarin/housing_talmarin
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: start_coral_reach, position: { x: 256.0, z: 10.0 }, arrival: { x: 50.0, z: 256.0 } }
+- id: housing_veylmark
+  name: "Жилой квартал (veylmark)"
+  continent_id: veylmark
+  kind: Housing
+  scene_address: scenes/veylmark/housing_veylmark
+  spawn: { x: 256.0, z: 256.0 }
+  portals:
+    - { to_zone_id: start_ashen_frontier, position: { x: 256.0, z: 10.0 }, arrival: { x: 50.0, z: 256.0 } }

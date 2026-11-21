@@ -53,7 +53,7 @@ namespace Realmforge.Rules.Definitions
         public CasterProgression Caster { get; set; } = CasterProgression.None;
         public List<Ability> SavingThrows { get; set; } = new List<Ability>();
         public int BaseArmorClass { get; set; } = 10;
-        public string MentorNpcId { get; set; } = string.Empty;
+        /// <summary>Offered by every start-zone mentor; completing it unlocks the class.</summary>
         public string TrialQuestId { get; set; } = string.Empty;
         public AlignmentRequirement Alignment { get; set; } = new AlignmentRequirement();
         public List<ClassAbilityUnlock> Abilities { get; set; } = new List<ClassAbilityUnlock>();

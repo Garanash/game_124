@@ -1,0 +1,85 @@
+- id: fighter
+  name: Воин
+  hit_die: 10
+  primary_ability: Strength
+  saving_throws: [Strength, Constitution]
+  base_armor_class: 14
+  trial_quest_id: trial_fighter
+  abilities:
+    - { level: 1, ability_id: second_wind }
+    - { level: 1, ability_id: power_strike }
+    - { level: 3, ability_id: shield_bash }
+    - { level: 5, ability_id: whirlwind }
+- id: wizard
+  name: Волшебник
+  hit_die: 6
+  primary_ability: Intelligence
+  spellcasting_ability: Intelligence
+  caster: Full
+  saving_throws: [Intelligence, Wisdom]
+  base_armor_class: 10
+  trial_quest_id: trial_wizard
+  abilities:
+    - { level: 1, ability_id: fire_bolt }
+    - { level: 1, ability_id: magic_missile }
+    - { level: 1, ability_id: mage_shield }
+    - { level: 3, ability_id: thunderwave }
+    - { level: 5, ability_id: fireball }
+- id: cleric
+  name: Жрец
+  hit_die: 8
+  primary_ability: Wisdom
+  spellcasting_ability: Wisdom
+  caster: Full
+  saving_throws: [Wisdom, Charisma]
+  base_armor_class: 13
+  trial_quest_id: trial_cleric
+  abilities:
+    - { level: 1, ability_id: sacred_flame }
+    - { level: 1, ability_id: cure_wounds }
+    - { level: 1, ability_id: bless }
+    - { level: 3, ability_id: spiritual_weapon }
+    - { level: 5, ability_id: guiding_bolt }
+- id: rogue
+  name: Плут
+  hit_die: 8
+  primary_ability: Dexterity
+  saving_throws: [Dexterity, Intelligence]
+  base_armor_class: 11
+  trial_quest_id: trial_rogue
+  abilities:
+    - { level: 1, ability_id: backstab }
+    - { level: 1, ability_id: smoke_bomb }
+    - { level: 3, ability_id: poison_blade }
+    - { level: 5, ability_id: fan_of_knives }
+- id: ranger
+  name: Следопыт
+  hit_die: 10
+  primary_ability: Dexterity
+  spellcasting_ability: Wisdom
+  caster: Half
+  saving_throws: [Strength, Dexterity]
+  base_armor_class: 12
+  trial_quest_id: trial_ranger
+  abilities:
+    - { level: 1, ability_id: hunters_mark }
+    - { level: 2, ability_id: ensnaring_strike }
+    - { level: 3, ability_id: animal_companion }
+    - { level: 5, ability_id: volley }
+- id: paladin
+  name: Паладин
+  hit_die: 10
+  primary_ability: Charisma
+  spellcasting_ability: Charisma
+  caster: Half
+  saving_throws: [Wisdom, Charisma]
+  base_armor_class: 15
+  trial_quest_id: trial_paladin
+  alignment:
+    moral: [Good]
+    law: [Lawful, Neutral]
+  abilities:
+    - { level: 1, ability_id: lay_on_hands }
+    - { level: 2, ability_id: divine_smite }
+    - { level: 3, ability_id: shield_of_faith }
+    - { level: 5, ability_id: aura_of_protection }

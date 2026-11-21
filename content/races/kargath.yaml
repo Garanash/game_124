@@ -1,0 +1,110 @@
+- id: dwarf
+  name: Дварф
+  ip_status: Srd
+  continent_id: kargath
+  start_zone_id: start_ironhold
+  size: Medium
+  speed_cells: 5
+  ability_bonuses: { Constitution: 2, Strength: 1 }
+  traits: [darkvision, dwarven_resilience, stonecunning]
+  portrait: portraits/dwarf
+- id: goliath
+  name: Голиаф
+  ip_status: NonSrd
+  continent_id: kargath
+  start_zone_id: start_ironhold
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Strength: 2, Constitution: 1 }
+  traits: [stones_endurance, powerful_build, mountain_born]
+  portrait: portraits/goliath
+- id: warforged
+  name: Кованый
+  ip_status: NonSrd
+  continent_id: kargath
+  start_zone_id: start_ironhold
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Constitution: 2, Strength: 1 }
+  traits: [constructed_resilience, sentrys_rest, integrated_protection]
+  portrait: portraits/warforged
+- id: autognome
+  name: Автогном
+  ip_status: NonSrd
+  continent_id: kargath
+  start_zone_id: start_ironhold
+  size: Small
+  speed_cells: 6
+  ability_bonuses: { Constitution: 2, Intelligence: 1 }
+  traits: [armored_casing, built_for_success, mechanical_nature]
+  portrait: portraits/autognome
+- id: goblin
+  name: Гоблин
+  ip_status: NonSrd
+  continent_id: kargath
+  start_zone_id: start_goblin_warrens
+  size: Small
+  speed_cells: 6
+  ability_bonuses: { Dexterity: 2, Constitution: 1 }
+  traits: [darkvision, fury_of_the_small, nimble_escape]
+  portrait: portraits/goblin
+- id: hobgoblin
+  name: Хобгоблин
+  ip_status: NonSrd
+  continent_id: kargath
+  start_zone_id: start_goblin_warrens
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Constitution: 2, Intelligence: 1 }
+  traits: [darkvision, fortune_from_the_many, martial_training]
+  portrait: portraits/hobgoblin
+- id: bugbear
+  name: Багбир
+  ip_status: NonSrd
+  continent_id: kargath
+  start_zone_id: start_goblin_warrens
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Strength: 2, Dexterity: 1 }
+  traits: [darkvision, long_limbed, surprise_attack]
+  portrait: portraits/bugbear
+- id: kobold
+  name: Кобольд
+  ip_status: NonSrd
+  continent_id: kargath
+  start_zone_id: start_goblin_warrens
+  size: Small
+  speed_cells: 6
+  ability_bonuses: { Dexterity: 2, Intelligence: 1 }
+  traits: [darkvision, draconic_cry, pack_tactics]
+  portrait: portraits/kobold
+- id: halfling
+  name: Полурослик
+  ip_status: Srd
+  continent_id: kargath
+  start_zone_id: start_hearthmeadow
+  size: Small
+  speed_cells: 5
+  ability_bonuses: { Dexterity: 2, Charisma: 1 }
+  traits: [lucky, brave, halfling_nimbleness]
+  portrait: portraits/halfling
+- id: kender
+  name: Кендер
+  ip_status: NonSrd
+  continent_id: kargath
+  start_zone_id: start_hearthmeadow
+  size: Small
+  speed_cells: 6
+  ability_bonuses: { Dexterity: 2, Charisma: 1 }
+  traits: [fearless, kender_aptitude, taunt]
+  portrait: portraits/kender
+- id: gnome
+  name: Гном
+  ip_status: Srd
+  continent_id: kargath
+  start_zone_id: start_hearthmeadow
+  size: Small
+  speed_cells: 5
+  ability_bonuses: { Intelligence: 2, Constitution: 1 }
+  traits: [darkvision, gnome_cunning, tinker]
+  portrait: portraits/gnome

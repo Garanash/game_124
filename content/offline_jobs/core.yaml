@@ -1,0 +1,12 @@
+# Assigned before logging out; the server settles results on the next login (max 12 hours).
+- { id: job_gather_herbs, name: Собирать травы, kind: Gather, profession_id: herbalism, target_id: herb_patch, cycle_minutes: 10, xp_per_cycle: 4 }
+- { id: job_mine_copper, name: Добывать медь, kind: Gather, profession_id: mining, target_id: copper_vein, cycle_minutes: 12, xp_per_cycle: 4 }
+- { id: job_mine_iron, name: Добывать железо, kind: Gather, profession_id: mining, target_id: iron_vein, cycle_minutes: 15, xp_per_cycle: 6 }
+- { id: job_chop_wood, name: Рубить лес, kind: Gather, profession_id: logging, target_id: oak_tree, cycle_minutes: 12, xp_per_cycle: 4 }
+- { id: job_fish, name: Рыбачить, kind: Gather, profession_id: fishing, target_id: fishing_spot, cycle_minutes: 10, xp_per_cycle: 4 }
+- { id: job_hunt_deer, name: Охотиться на оленей, kind: Hunt, profession_id: hunting, target_id: deer, cycle_minutes: 20, xp_per_cycle: 8 }
+- { id: job_hunt_boar, name: Охотиться на кабанов, kind: Hunt, profession_id: hunting, target_id: boar, cycle_minutes: 25, xp_per_cycle: 10 }
+- { id: job_smelt_iron, name: Плавить железо, kind: Craft, profession_id: blacksmithing, target_id: smelt_iron, cycle_minutes: 6, xp_per_cycle: 3 }
+- { id: job_brew_potions, name: Варить зелья, kind: Craft, profession_id: alchemy, target_id: brew_healing_potion, cycle_minutes: 8, xp_per_cycle: 3 }
+- { id: job_city_guard, name: Нести стражу в городе, kind: CityWork, cycle_minutes: 30, gold_per_cycle: 3, xp_per_cycle: 0 }
+- { id: job_trade_caravan, name: Сопровождать караван, kind: Trade, cycle_minutes: 60, gold_per_cycle: 9, xp_per_cycle: 0 }

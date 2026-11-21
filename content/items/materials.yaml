@@ -1,0 +1,23 @@
+# Stackable profession materials, stored in bags/bank rather than the backpack grid.
+- { id: herb, name: Лечебная трава, tags: [material, herb], max_stack: 99, value: 1 }
+- { id: moonpetal, name: Лунный лепесток, rarity: Uncommon, tags: [material, herb], max_stack: 99, value: 4 }
+- { id: copper_ore, name: Медная руда, tags: [material, ore], max_stack: 99, value: 1 }
+- { id: iron_ore, name: Железная руда, tags: [material, ore], max_stack: 99, value: 2 }
+- { id: crystal_shard, name: Осколок кристалла, rarity: Uncommon, tags: [material, crystal], max_stack: 99, value: 5 }
+- { id: wood_log, name: Бревно, tags: [material, wood], max_stack: 99, value: 1 }
+- { id: hide, name: Шкура, tags: [material, leather], max_stack: 99, value: 2 }
+- { id: raw_meat, name: Сырое мясо, tags: [material, food], max_stack: 99, value: 1 }
+- { id: fish, name: Рыба, tags: [material, food], max_stack: 99, value: 1 }
+- { id: cotton, name: Хлопок, tags: [material, cloth], max_stack: 99, value: 1 }
+- { id: stone, name: Камень, tags: [material, stone], max_stack: 99, value: 1 }
+- { id: iron_ingot, name: Железный слиток, tags: [material, metal], max_stack: 99, value: 6 }
+- { id: plank, name: Доска, tags: [material, wood], max_stack: 99, value: 3 }
+- { id: leather, name: Выделанная кожа, tags: [material, leather], max_stack: 99, value: 5 }
+- { id: linen, name: Льняная ткань, tags: [material, cloth], max_stack: 99, value: 3 }
+- { id: stone_block, name: Каменный блок, tags: [material, stone], max_stack: 99, value: 4 }
+- { id: cooked_meat, name: Жареное мясо, tags: [food], max_stack: 20, value: 4 }
+- { id: grilled_fish, name: Рыба на углях, tags: [food], max_stack: 20, value: 4 }
+- { id: mana_crystal, name: Кристалл маны, rarity: Uncommon, tags: [material, arcane, crystal], max_stack: 20, value: 20 }
+- { id: bone, name: Кость, tags: [material], max_stack: 99, value: 1 }
+- { id: goblin_ear, name: Ухо гоблина, tags: [trophy], max_stack: 99, value: 1 }
+- { id: ash_essence, name: Пепельная эссенция, rarity: Rare, tags: [material, fire], max_stack: 20, value: 30 }

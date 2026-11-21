@@ -1,0 +1,80 @@
+- id: triton
+  name: Тритон
+  ip_status: NonSrd
+  continent_id: talmarin
+  start_zone_id: start_coral_reach
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Strength: 1, Constitution: 1, Charisma: 1 }
+  traits: [amphibious, control_air_and_water, guardian_of_the_depths]
+  portrait: portraits/triton
+- id: locathah
+  name: Локата
+  ip_status: NonSrd
+  continent_id: talmarin
+  start_zone_id: start_coral_reach
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Strength: 2, Dexterity: 1 }
+  traits: [natural_armor, leviathan_will, limited_amphibiousness]
+  portrait: portraits/locathah
+- id: simic_hybrid
+  name: Гибрид Симиков
+  ip_status: NonSrd
+  continent_id: talmarin
+  start_zone_id: start_coral_reach
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Constitution: 2, Intelligence: 1 }
+  traits: [darkvision, animal_enhancement, carapace]
+  portrait: portraits/simic_hybrid
+- id: vedalken
+  name: Ведалкен
+  ip_status: NonSrd
+  continent_id: talmarin
+  start_zone_id: start_coral_reach
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Intelligence: 2, Wisdom: 1 }
+  traits: [vedalken_dispassion, tireless_precision, partially_amphibious]
+  portrait: portraits/vedalken
+- id: giff
+  name: Гифф
+  ip_status: NonSrd
+  continent_id: talmarin
+  start_zone_id: start_coral_reach
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Strength: 2, Constitution: 1 }
+  traits: [astral_spark, firearms_mastery, hippo_build]
+  portrait: portraits/giff
+- id: aarakocra
+  name: Ааракокра
+  ip_status: NonSrd
+  continent_id: talmarin
+  start_zone_id: start_windspire_isles
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Dexterity: 2, Wisdom: 1 }
+  traits: [flight, talons, wind_caller]
+  portrait: portraits/aarakocra
+- id: kenku
+  name: Кенку
+  ip_status: NonSrd
+  continent_id: talmarin
+  start_zone_id: start_windspire_isles
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Dexterity: 2, Wisdom: 1 }
+  traits: [expert_duplication, kenku_recall, mimicry]
+  portrait: portraits/kenku
+- id: hadozee
+  name: Хадози
+  ip_status: NonSrd
+  continent_id: talmarin
+  start_zone_id: start_windspire_isles
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Dexterity: 2, Constitution: 1 }
+  traits: [dexterous_feet, glide, hadozee_dodge]
+  portrait: portraits/hadozee

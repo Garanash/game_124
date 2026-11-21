@@ -1,0 +1,59 @@
+- id: venom_bite
+  name: Ядовитый укус
+  kind: Skill
+  target: Enemy
+  range_cells: 1
+  save_ability: Constitution
+  cooldown_rounds: 3
+  effects:
+    - { type: Damage, dice: 1d6, damage_type: Poison }
+    - { type: Condition, condition: Poisoned, duration_rounds: 2 }
+- id: terrifying_howl
+  name: Жуткий вой
+  kind: Skill
+  cost: BonusAction
+  target: Area
+  range_cells: 0
+  area_radius_cells: 3
+  save_ability: Wisdom
+  cooldown_rounds: 5
+  effects:
+    - { type: Condition, condition: Frightened, duration_rounds: 1 }
+- id: bone_shield
+  name: Костяной щит
+  kind: Skill
+  cost: BonusAction
+  target: Self
+  cooldown_rounds: 4
+  effects:
+    - { type: Condition, condition: Shielded, duration_rounds: 2 }
+- id: fire_breath
+  name: Огненное дыхание
+  kind: Skill
+  target: Area
+  range_cells: 6
+  area_radius_cells: 2
+  save_ability: Dexterity
+  cooldown_rounds: 3
+  effects:
+    - { type: Damage, dice: 6d6, damage_type: Fire, half_on_save: true }
+    - { type: Condition, condition: Burning, duration_rounds: 2 }
+- id: tail_sweep
+  name: Удар хвостом
+  kind: Skill
+  target: Area
+  range_cells: 0
+  area_radius_cells: 2
+  save_ability: Strength
+  cooldown_rounds: 2
+  effects:
+    - { type: Damage, dice: 2d8, damage_type: Bludgeoning, half_on_save: true }
+    - { type: Condition, condition: Prone, duration_rounds: 1 }
+- id: dark_bolt
+  name: Тёмный снаряд
+  kind: Spell
+  target: Enemy
+  range_cells: 18
+  attack_roll: true
+  effects:
+    - { type: Damage, dice: 2d8, damage_type: Necrotic }

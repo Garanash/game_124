@@ -1,0 +1,196 @@
+# Backpack gear: shape offsets are backpack cells relative to the item origin.
+- id: dagger
+  name: Кинжал
+  tags: [weapon, blade, finesse]
+  weapon_damage: 1d4
+  weapon_damage_type: Piercing
+  value: 2
+- id: twin_daggers
+  name: Парные кинжалы
+  rarity: Uncommon
+  tags: [weapon, blade, finesse]
+  shape: [{ x: 0, y: 0 }, { x: 1, y: 0 }]
+  weapon_damage: 2d4
+  weapon_damage_type: Piercing
+  modifiers: [{ stat: Initiative, value: 2 }]
+  value: 20
+- id: short_sword
+  name: Короткий меч
+  tags: [weapon, blade, finesse]
+  shape: [{ x: 0, y: 0 }, { x: 0, y: 1 }]
+  weapon_damage: 1d6
+  weapon_damage_type: Slashing
+  value: 10
+- id: long_sword
+  name: Длинный меч
+  rarity: Uncommon
+  tags: [weapon, blade]
+  shape: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }]
+  weapon_damage: 1d8
+  weapon_damage_type: Slashing
+  value: 25
+- id: great_sword
+  name: Двуручный меч
+  rarity: Rare
+  tags: [weapon, blade, heavy]
+  shape: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }, { x: 1, y: 1 }]
+  weapon_damage: 2d6
+  weapon_damage_type: Slashing
+  value: 80
+- id: flame_blade
+  name: Пламенный клинок
+  rarity: Epic
+  tags: [weapon, blade, fire]
+  shape: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }]
+  weapon_damage: 2d8
+  weapon_damage_type: Fire
+  modifiers: [{ stat: AttackBonus, value: 1 }]
+  value: 300
+- id: mace
+  name: Булава
+  tags: [weapon, blunt]
+  shape: [{ x: 0, y: 0 }, { x: 0, y: 1 }]
+  weapon_damage: 1d6
+  weapon_damage_type: Bludgeoning
+  value: 5
+- id: holy_mace
+  name: Священная булава
+  rarity: Rare
+  tags: [weapon, blunt, holy]
+  shape: [{ x: 0, y: 0 }, { x: 0, y: 1 }]
+  weapon_damage: 2d6
+  weapon_damage_type: Radiant
+  modifiers: [{ stat: SpellSaveDc, value: 1 }]
+  value: 120
+- id: short_bow
+  name: Короткий лук
+  tags: [weapon, ranged, bow]
+  shape: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }]
+  weapon_damage: 1d6
+  weapon_damage_type: Piercing
+  value: 25
+- id: long_bow
+  name: Длинный лук
+  rarity: Rare
+  tags: [weapon, ranged, bow]
+  shape: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }, { x: 0, y: 3 }]
+  weapon_damage: 1d8+1
+  weapon_damage_type: Piercing
+  value: 90
+- id: quiver
+  name: Колчан
+  tags: [ammo]
+  shape: [{ x: 0, y: 0 }, { x: 0, y: 1 }]
+  value: 5
+- id: oak_staff
+  name: Дубовый посох
+  tags: [focus, wood]
+  shape: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }]
+  weapon_damage: 1d6
+  value: 5
+- id: arcane_staff
+  name: Тайный посох
+  rarity: Rare
+  tags: [focus, arcane]
+  shape: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }]
+  weapon_damage: 1d8
+  weapon_damage_type: Force
+  modifiers: [{ stat: SpellSaveDc, value: 1 }, { stat: AttackBonus, value: 1 }]
+  value: 150
+- id: spellbook
+  name: Книга заклинаний
+  tags: [arcane, book]
+  shape: [{ x: 0, y: 0 }, { x: 1, y: 0 }]
+  modifiers: [{ stat: SpellSaveDc, value: 1 }]
+  value: 50
+- id: holy_symbol
+  name: Священный символ
+  tags: [holy]
+  modifiers: [{ stat: SpellSaveDc, value: 1 }]
+  value: 25
+- id: wooden_shield
+  name: Деревянный щит
+  tags: [shield, wood]
+  shape: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }]
+  modifiers: [{ stat: ArmorClass, value: 1 }]
+  value: 8
+- id: iron_shield
+  name: Железный щит
+  rarity: Uncommon
+  tags: [shield, metal]
+  shape: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }]
+  modifiers: [{ stat: ArmorClass, value: 2 }]
+  value: 30
+- id: tower_shield
+  name: Башенный щит
+  rarity: Rare
+  tags: [shield, metal, heavy]
+  shape: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 2 }, { x: 1, y: 2 }]
+  modifiers: [{ stat: ArmorClass, value: 3 }, { stat: SpeedCells, value: -1 }]
+  value: 110
+- id: leather_vest
+  name: Кожаный жилет
+  tags: [armor, leather]
+  shape: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }]
+  modifiers: [{ stat: ArmorClass, value: 1 }]
+  value: 10
+- id: chain_shirt
+  name: Кольчужная рубаха
+  rarity: Uncommon
+  tags: [armor, metal]
+  shape: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }]
+  modifiers: [{ stat: ArmorClass, value: 3 }]
+  value: 50
+- id: whetstone
+  name: Точильный камень
+  tags: [stone, tool]
+  value: 1
+- id: ruby
+  name: Рубин
+  rarity: Uncommon
+  tags: [gem, fire]
+  modifiers: [{ stat: DamageBonus, value: 1 }]
+  value: 40
+- id: sapphire
+  name: Сапфир
+  rarity: Uncommon
+  tags: [gem, cold]
+  modifiers: [{ stat: SpellSaveDc, value: 1 }]
+  value: 40
+- id: lucky_coin
+  name: Счастливая монета
+  tags: [trinket]
+  modifiers: [{ stat: GoldFindPercent, value: 5 }]
+  value: 5
+- id: four_leaf_clover
+  name: Четырёхлистный клевер
+  rarity: Uncommon
+  tags: [trinket, herb]
+  modifiers: [{ stat: Initiative, value: 1 }]
+  value: 15
+- id: fortune_charm
+  name: Амулет фортуны
+  rarity: Rare
+  tags: [trinket]
+  modifiers: [{ stat: GoldFindPercent, value: 15 }, { stat: Initiative, value: 2 }]
+  value: 140
+- id: healing_potion
+  name: Зелье лечения
+  tags: [potion]
+  modifiers: [{ stat: MaxHp, value: 3 }]
+  max_stack: 10
+  value: 25
+- id: greater_healing_potion
+  name: Большое зелье лечения
+  rarity: Uncommon
+  tags: [potion]
+  modifiers: [{ stat: MaxHp, value: 8 }]
+  max_stack: 10
+  value: 75
+- id: dragon_scale
+  name: Чешуя дракона
+  rarity: Epic
+  tags: [trophy, fire]
+  shape: [{ x: 0, y: 0 }, { x: 1, y: 0 }]
+  modifiers: [{ stat: ArmorClass, value: 2 }, { stat: MaxHp, value: 10 }]
+  value: 500

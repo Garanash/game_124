@@ -1,0 +1,52 @@
+- id: foundation_small
+  name: Малый фундамент
+  width: 4
+  depth: 4
+  is_foundation: true
+  cost: [{ item_id: stone_block, quantity: 8 }]
+- id: foundation_large
+  name: Большой фундамент
+  width: 8
+  depth: 8
+  is_foundation: true
+  cost: [{ item_id: stone_block, quantity: 24 }, { item_id: plank, quantity: 8 }]
+- id: timber_walls
+  name: Бревенчатые стены
+  width: 4
+  depth: 4
+  cost: [{ item_id: plank, quantity: 16 }]
+- id: stone_walls
+  name: Каменные стены
+  width: 4
+  depth: 4
+  cost: [{ item_id: stone_block, quantity: 16 }]
+- id: bed
+  name: Кровать
+  width: 1
+  depth: 2
+  cost: [{ item_id: plank, quantity: 4 }, { item_id: linen, quantity: 3 }]
+  bonuses: [{ stat: RestXpPercent, value: 10 }]
+- id: forge
+  name: Домашняя кузня
+  width: 2
+  depth: 2
+  cost: [{ item_id: stone_block, quantity: 6 }, { item_id: iron_ingot, quantity: 4 }]
+  bonuses: [{ stat: CraftingSpeedPercent, value: 10 }]
+- id: alchemy_table
+  name: Алхимический стол
+  width: 2
+  depth: 1
+  cost: [{ item_id: plank, quantity: 4 }, { item_id: crystal_shard, quantity: 2 }]
+  bonuses: [{ stat: CraftingSpeedPercent, value: 5 }]
+- id: herb_garden
+  name: Грядка с травами
+  width: 2
+  depth: 2
+  cost: [{ item_id: plank, quantity: 2 }, { item_id: herb, quantity: 10 }]
+  bonuses: [{ stat: GatheringYieldPercent, value: 5 }]
+- id: trophy_rack
+  name: Стойка трофеев
+  width: 1
+  depth: 1
+  cost: [{ item_id: plank, quantity: 2 }, { item_id: bone, quantity: 5 }]
+  bonuses: [{ stat: GoldFindPercent, value: 3 }]

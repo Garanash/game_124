@@ -1,0 +1,28 @@
+# Training
+- { id: training_dummy, name: Тренировочный манекен, level: 1, hp: 6, armor_class: 8, attack_bonus: 0, damage: "1", damage_type: Bludgeoning, speed_cells: 0, dexterity: 1, aggro_radius: 0, xp: 10 }
+
+# Wild beasts and hunting game
+- { id: wolf, name: Серый волк, level: 1, hp: 11, armor_class: 13, attack_bonus: 4, damage: 2d4+2, damage_type: Piercing, speed_cells: 8, dexterity: 15, aggro_radius: 10, xp: 50, faction_id: faction_wild, loot_table_id: loot_beast, abilities: [terrifying_howl] }
+- { id: boar, name: Кабан, level: 1, hp: 11, armor_class: 11, attack_bonus: 3, damage: 1d6+1, damage_type: Slashing, speed_cells: 8, dexterity: 11, aggro_radius: 6, xp: 50, faction_id: faction_wild, loot_table_id: loot_game, is_game: true }
+- { id: deer, name: Олень, level: 1, hp: 6, armor_class: 12, attack_bonus: 2, damage: 1d4, damage_type: Piercing, speed_cells: 10, dexterity: 16, aggro_radius: 0, xp: 25, faction_id: faction_wild, loot_table_id: loot_game, is_game: true }
+- { id: giant_crab, name: Гигантский краб, level: 1, hp: 13, armor_class: 15, attack_bonus: 3, damage: 1d6+1, damage_type: Bludgeoning, speed_cells: 6, dexterity: 15, aggro_radius: 6, xp: 50, faction_id: faction_wild, loot_table_id: loot_beast }
+- { id: jungle_spider, name: Джунглевый паук, level: 2, hp: 18, armor_class: 13, attack_bonus: 5, damage: 1d8+3, damage_type: Piercing, speed_cells: 6, dexterity: 16, aggro_radius: 8, xp: 100, faction_id: faction_wild, loot_table_id: loot_beast, abilities: [venom_bite] }
+- { id: sand_jackal, name: Песчаный шакал, level: 1, hp: 9, armor_class: 12, attack_bonus: 3, damage: 1d6+1, damage_type: Piercing, speed_cells: 8, dexterity: 15, aggro_radius: 9, xp: 40, faction_id: faction_wild, loot_table_id: loot_beast }
+- { id: storm_harpy, name: Штормовая гарпия, level: 2, hp: 19, armor_class: 12, attack_bonus: 3, damage: 2d4+1, damage_type: Slashing, speed_cells: 8, dexterity: 13, aggro_radius: 10, xp: 100, faction_id: faction_wild, loot_table_id: loot_beast, abilities: [terrifying_howl] }
+- { id: pixie_trickster, name: Пикси-проказница, level: 1, hp: 8, armor_class: 15, attack_bonus: 4, damage: 1d4+2, damage_type: Force, speed_cells: 8, dexterity: 18, aggro_radius: 7, xp: 50, faction_id: faction_wild, loot_table_id: loot_caster, abilities: [dark_bolt] }
+
+# Humanoids
+- { id: bandit, name: Разбойник, level: 1, hp: 11, armor_class: 12, attack_bonus: 3, damage: 1d6+1, damage_type: Slashing, speed_cells: 6, dexterity: 12, aggro_radius: 9, xp: 50, faction_id: faction_wild, loot_table_id: loot_humanoid }
+- { id: bandit_captain, name: Атаман разбойников, level: 4, hp: 45, armor_class: 15, attack_bonus: 5, damage: 1d8+3, damage_type: Slashing, speed_cells: 6, dexterity: 16, aggro_radius: 10, xp: 450, faction_id: faction_wild, loot_table_id: loot_humanoid, abilities: [terrifying_howl] }
+- { id: goblin_scout, name: Гоблин-разведчик, level: 1, hp: 7, armor_class: 13, attack_bonus: 4, damage: 1d6+2, damage_type: Piercing, speed_cells: 6, dexterity: 14, aggro_radius: 10, xp: 50, faction_id: faction_wild, loot_table_id: loot_goblin }
+- { id: goblin_boss, name: Гоблинский вождь, level: 3, hp: 32, armor_class: 15, attack_bonus: 5, damage: 1d8+3, damage_type: Slashing, speed_cells: 6, dexterity: 14, aggro_radius: 10, xp: 300, faction_id: faction_wild, loot_table_id: loot_goblin_tunnels, abilities: [terrifying_howl] }
+- { id: cultist, name: Культист, level: 2, hp: 14, armor_class: 12, attack_bonus: 4, damage: 1d6+1, damage_type: Necrotic, speed_cells: 6, dexterity: 12, aggro_radius: 9, xp: 100, faction_id: faction_wild, loot_table_id: loot_caster, abilities: [dark_bolt] }
+
+# Undead and planar
+- { id: skeleton, name: Скелет, level: 1, hp: 13, armor_class: 13, attack_bonus: 4, damage: 1d6+2, damage_type: Piercing, speed_cells: 6, dexterity: 14, aggro_radius: 8, xp: 50, faction_id: faction_wild, loot_table_id: loot_undead, abilities: [bone_shield] }
+- { id: crypt_lord, name: Владыка склепа, level: 3, hp: 40, armor_class: 15, attack_bonus: 5, damage: 1d10+3, damage_type: Necrotic, speed_cells: 6, dexterity: 12, aggro_radius: 10, xp: 350, faction_id: faction_wild, loot_table_id: loot_trial_crypt, abilities: [bone_shield, dark_bolt] }
+- { id: ash_ghoul, name: Пепельный упырь, level: 2, hp: 22, armor_class: 12, attack_bonus: 4, damage: 2d6+2, damage_type: Slashing, speed_cells: 6, dexterity: 15, aggro_radius: 9, xp: 120, faction_id: faction_wild, loot_table_id: loot_undead }
+- { id: astral_stalker, name: Астральный ловчий, level: 3, hp: 27, armor_class: 14, attack_bonus: 5, damage: 1d10+3, damage_type: Psychic, speed_cells: 7, dexterity: 17, aggro_radius: 10, xp: 200, faction_id: faction_wild, loot_table_id: loot_caster, abilities: [dark_bolt] }
+- { id: fire_elemental, name: Огненный элементаль, level: 6, hp: 102, armor_class: 13, attack_bonus: 6, damage: 2d6+3, damage_type: Fire, speed_cells: 10, dexterity: 17, aggro_radius: 10, xp: 1800, faction_id: faction_wild, loot_table_id: loot_elemental, abilities: [fire_breath] }
+- { id: sahuagin_priestess, name: Жрица сахуагинов, level: 5, hp: 60, armor_class: 13, attack_bonus: 5, damage: 1d10+3, damage_type: Piercing, speed_cells: 6, dexterity: 12, aggro_radius: 10, xp: 700, faction_id: faction_wild, loot_table_id: loot_sunken_temple, abilities: [dark_bolt, venom_bite] }
+- { id: ashen_dragon, name: Пепельный дракон, level: 17, hp: 900, armor_class: 19, attack_bonus: 12, damage: 2d10+8, damage_type: Fire, speed_cells: 8, dexterity: 10, aggro_radius: 16, xp: 18000, faction_id: faction_wild, loot_table_id: loot_ashen_dragon, abilities: [fire_breath, tail_sweep, terrifying_howl] }

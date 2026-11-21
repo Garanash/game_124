@@ -1,0 +1,24 @@
+- id: inst_trial_crypt
+  name: "Склеп испытаний"
+  zone_id: inst_trial_crypt
+  party_sizes: [1]
+  min_level: 1
+  final_loot_table_id: loot_trial_crypt
+- id: inst_goblin_tunnels
+  name: "Гоблинские тоннели"
+  zone_id: inst_goblin_tunnels
+  party_sizes: [3]
+  min_level: 3
+  final_loot_table_id: loot_goblin_tunnels
+- id: inst_sunken_temple
+  name: "Затонувший храм"
+  zone_id: inst_sunken_temple
+  party_sizes: [5]
+  min_level: 6
+  final_loot_table_id: loot_sunken_temple
+- id: inst_ashen_maw
+  name: "Пасть Пепельного дракона"
+  zone_id: inst_ashen_maw
+  party_sizes: [25]
+  min_level: 15
+  final_loot_table_id: loot_ashen_dragon

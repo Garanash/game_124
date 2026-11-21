@@ -1,0 +1,28 @@
+- id: faction_eldarwen
+  name: Серебряный Совет
+  affinity:
+    moral: [Good]
+  enemies: [faction_veylmark]
+- id: faction_kargath
+  name: Наковальня Каргата
+  affinity:
+    law: [Lawful]
+  enemies: [faction_sarrat]
+- id: faction_sarrat
+  name: Солнечный Прайд
+  affinity:
+    law: [Chaotic, Neutral]
+  enemies: [faction_kargath]
+- id: faction_talmarin
+  name: Приливная Лига
+  affinity: {}
+  enemies: []
+- id: faction_veylmark
+  name: Пепельный Союз
+  affinity:
+    moral: [Neutral, Evil]
+  enemies: [faction_eldarwen]
+- id: faction_wild
+  name: Дикие твари
+  affinity: {}
+  enemies: [faction_eldarwen, faction_kargath, faction_sarrat, faction_talmarin, faction_veylmark]

@@ -1,0 +1,14 @@
+- { id: herbalism, name: Травничество, kind: Gathering, key_ability: Wisdom }
+- { id: mining, name: Горное дело, kind: Gathering, key_ability: Strength }
+- { id: logging, name: Лесозаготовка, kind: Gathering, key_ability: Strength }
+- { id: hunting, name: Охота, kind: Gathering, key_ability: Dexterity }
+- { id: fishing, name: Рыбалка, kind: Gathering, key_ability: Wisdom }
+- { id: farming, name: Земледелие, kind: Gathering, key_ability: Constitution }
+- { id: blacksmithing, name: Кузнечное дело, kind: Crafting, key_ability: Strength }
+- { id: alchemy, name: Алхимия, kind: Crafting, key_ability: Intelligence }
+- { id: cooking, name: Кулинария, kind: Crafting, key_ability: Wisdom }
+- { id: tailoring, name: Портняжное дело, kind: Crafting, key_ability: Dexterity }
+- { id: leatherworking, name: Кожевничество, kind: Crafting, key_ability: Dexterity }
+- { id: enchanting, name: Зачарование, kind: Crafting, key_ability: Intelligence }
+- { id: carpentry, name: Плотничество, kind: Crafting, key_ability: Strength }
+- { id: masonry, name: Каменщик, kind: Crafting, key_ability: Constitution }

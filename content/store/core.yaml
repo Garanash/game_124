@@ -1,0 +1,30 @@
+# Real money buys crystals; crystals buy cosmetics and conveniences only (no stat items).
+- id: crystals_small
+  name: 500 кристаллов
+  kind: PremiumCurrency
+  price_cents: 499
+  crystal_amount: 500
+  platform_products: { apple: com.realmforge.crystals500, google: crystals_500, steam: "1001", xsolla: crystals_500 }
+- id: crystals_large
+  name: 1200 кристаллов
+  kind: PremiumCurrency
+  price_cents: 999
+  crystal_amount: 1200
+  platform_products: { apple: com.realmforge.crystals1200, google: crystals_1200, steam: "1002", xsolla: crystals_1200 }
+- { id: sku_shadow_cloak, name: Плащ теней, kind: Cosmetic, price_crystals: 400, grants: [skin_shadow_cloak] }
+- { id: sku_starlight_robe, name: Звёздная мантия, kind: Cosmetic, price_crystals: 600, grants: [skin_starlight_robe] }
+- { id: sku_crown_of_embers, name: Корона углей, kind: Cosmetic, price_crystals: 350, grants: [skin_crown_of_embers] }
+- { id: sku_frost_weapon, name: Ледяной облик оружия, kind: Cosmetic, price_crystals: 300, grants: [skin_frost_weapon] }
+- { id: sku_dwarven_runeplate, name: Рунические латы, kind: Cosmetic, price_crystals: 500, grants: [skin_dwarven_runeplate] }
+- { id: sku_fey_wings, name: Крылья фей, kind: Cosmetic, price_crystals: 700, grants: [skin_fey_wings] }
+- { id: sku_spectral_wolf, name: Призрачный волк, kind: Cosmetic, price_crystals: 900, grants: [mount_spectral_wolf] }
+- { id: sku_baby_dragon, name: Дракончик, kind: Cosmetic, price_crystals: 650, grants: [pet_baby_dragon] }
+- id: bundle_adventurer
+  name: Набор искателя приключений
+  kind: Bundle
+  price_crystals: 1500
+  grants: [skin_shadow_cloak, mount_sand_strider, pet_owl, emote_bow]
+- { id: sku_emote_dance, name: Танец таверны, kind: Cosmetic, price_crystals: 150, grants: [emote_dance] }
+- { id: sku_guild_banner, name: Гильдейский стяг, kind: Cosmetic, price_crystals: 250, grants: [decor_guild_banner] }
+- { id: sku_character_slot, name: Дополнительный слот персонажа, kind: Convenience, price_crystals: 800 }
+- { id: sku_bank_tab, name: Вкладка банка, kind: Convenience, price_crystals: 400 }

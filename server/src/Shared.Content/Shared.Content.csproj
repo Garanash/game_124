@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>$(SharedTargetFramework)</TargetFramework>
+    <LangVersion>$(SharedLangVersion)</LangVersion>
+    <AssemblyName>Realmforge.Content</AssemblyName>
+    <RootNamespace>Realmforge.Content</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="YamlDotNet" Version="16.2.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared.Rules\Shared.Rules.csproj" />
+  </ItemGroup>
+</Project>
