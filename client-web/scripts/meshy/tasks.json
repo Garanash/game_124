@@ -101,5 +101,17 @@
   "kit:elf:hair:7": {
     "preview": "01a204ea-75ba-7057-952b-c0aa7584fb5b",
     "refine": "01a204ea-df86-72e7-9c27-2af9c761405d"
+  },
+  "kit:elf:hair:6": {
+    "preview": "01a204f5-ce24-75ec-b339-64cc9e1411d7",
+    "refine": "01a204f6-18bf-72ac-84a6-2f0570f1e18f"
+  },
+  "kit:elf:hair:4": {
+    "preview": "01a204f5-ce23-7602-b4a1-d2553931173d",
+    "refine": "01a204f6-18c1-71b4-8109-a4ad5d487ca1"
+  },
+  "kit:elf:hair:5": {
+    "preview": "01a204f5-ce30-753a-ae1d-df22c65c1f74",
+    "refine": "01a204f6-197a-75ad-863a-75dd33bc9763"
   }
 }
