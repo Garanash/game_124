@@ -277,10 +277,6 @@
   "kit:human:outfit:artisan:male": {
     "retexture": "01a2050a-1cba-75df-8a9b-22039b09a5ca"
   },
-  "kit:human:hair:0": {
-    "preview": "01a2050a-8087-74b5-b0ed-ee588952bb31",
-    "refine": "01a2050b-2e9a-7160-a415-34963eb2c0ca"
-  },
   "kit:dwarf:hair:1": {
     "preview": "01a2050a-8a6d-77f4-8031-92f8ab32d58c",
     "refine": "01a2050b-17c6-76ef-a2f9-55743c13df31"
@@ -296,10 +292,6 @@
   "kit:dwarf:hair:2": {
     "preview": "01a2050a-9ba4-7512-be41-f80f79607290",
     "refine": "01a2050b-4694-7551-886f-7b38561530d9"
-  },
-  "kit:dwarf:hair:3": {
-    "preview": "01a2050a-9e9a-77c7-aa90-88ddc45511b2",
-    "refine": "01a2050b-2e78-76b6-a6d0-127d52a99bca"
   },
   "kit:human:hair:3": {
     "preview": "01a2050a-ac1b-728f-b334-6ab7a010efff",
@@ -325,15 +317,15 @@
     "refine": "01a2050b-8ca0-742f-b322-ee304ceeb9c0"
   },
   "kit:dwarf:hair:6": {
-    "preview": "01a2050b-337b-7371-9fff-d5e7cf1ee07a"
+    "preview": "01a2050b-337b-7371-9fff-d5e7cf1ee07a",
+    "refine": "01a2050b-dd92-7364-9fa3-0a8b45c8aa92"
   },
   "kit:human:hair:6": {
-    "preview": "01a2050b-8b7b-77eb-9959-001c6242afb7"
-  },
-  "kit:dwarf:hair:7": {
-    "preview": "01a2050b-b717-76bf-85de-c9ba8e3e8a1c"
+    "preview": "01a2050b-8b7b-77eb-9959-001c6242afb7",
+    "refine": "01a2050c-3625-7470-8935-c95da063e912"
   },
   "kit:human:hair:7": {
-    "preview": "01a2050b-bedf-75cc-91f0-8aace3f3395a"
+    "preview": "01a2050b-bedf-75cc-91f0-8aace3f3395a",
+    "refine": "01a2050c-4a61-735e-972a-7d5cb9e16081"
   }
 }
