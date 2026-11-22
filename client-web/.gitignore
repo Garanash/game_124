@@ -1,3 +1,6 @@
 node_modules/
 dist/
 public/portraits/
+# Meshy output is large and regenerated from scripts/meshy/tasks.json; the key never leaves the machine.
+public/models/
+.env.local

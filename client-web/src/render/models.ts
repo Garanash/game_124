@@ -10,6 +10,7 @@ const LABEL_CLEARANCE = 0.55;
 const NODE_LABEL_HEIGHT = 2.6;
 const PORTAL_LABEL_HEIGHT = 3.2;
 const SELF_RING_COLOR = 0xffe27a;
+const MARKER_CLEARANCE = 0.45;
 
 export interface NpcLook {
   raceId: string;
@@ -38,11 +39,11 @@ export function hashHue(text: string): number {
 export function createModel(request: ModelRequest): EntityModel {
   switch (request.kind) {
     case EntityKind.Player:
-      return characterModel(playerRig(request), request.isSelf);
+      return characterModel(playerRig(request));
     case EntityKind.Npc:
-      return characterModel(npcRig(request), false);
+      return characterModel(npcRig(request));
     case EntityKind.Mob:
-      return characterModel(buildCreature(request.definitionId), false);
+      return characterModel(buildCreature(request.definitionId));
     case EntityKind.GatheringNode:
       return { root: nodeModel(request.definitionId), rig: null, labelHeight: NODE_LABEL_HEIGHT };
     case EntityKind.Portal:
@@ -57,28 +58,40 @@ function playerRig(request: ModelRequest): Rig {
 function npcRig(request: ModelRequest): Rig {
   const look = raceLook(request.npc?.raceId ?? "half_elf");
   const outfit = ROLE_OUTFITS[request.npc?.role ?? "Citizen"] ?? ROLE_OUTFITS.Citizen;
-  const rig = buildHumanoid(look, outfit);
+  return buildHumanoid(look, outfit);
+}
+
+function characterModel(rig: Rig): EntityModel {
+  return { root: rig.root, rig, labelHeight: labelHeightFor(rig.height) };
+}
+
+export function labelHeightFor(modelHeight: number): number {
+  return modelHeight + LABEL_CLEARANCE;
+}
+
+/** Floating gem over quest givers and merchants; the renderer bobs anything named "marker". */
+export function npcMarker(modelHeight: number): THREE.Mesh {
   const marker = new THREE.Mesh(
     new THREE.OctahedronGeometry(0.16, 0),
     new THREE.MeshStandardMaterial({ color: 0xffd23a, emissive: 0xb08a00, flatShading: true }));
   marker.name = "marker";
-  marker.position.y = rig.height + 0.45;
-  marker.userData.baseHeight = marker.position.y;
-  rig.root.add(marker);
-  return rig;
+  placeMarker(marker, modelHeight);
+  return marker;
 }
 
-function characterModel(rig: Rig, isSelf: boolean): EntityModel {
-  if (isSelf) {
-    const ring = new THREE.Mesh(
-      new THREE.RingGeometry(0.55, 0.68, 32),
-      new THREE.MeshBasicMaterial({ color: SELF_RING_COLOR, transparent: true, opacity: 0.85, side: THREE.DoubleSide, depthWrite: false }));
-    ring.rotation.x = -Math.PI / 2;
-    ring.position.y = 0.04;
-    ring.name = "self-ring";
-    rig.root.add(ring);
-  }
-  return { root: rig.root, rig, labelHeight: rig.height + LABEL_CLEARANCE };
+export function placeMarker(marker: THREE.Object3D, modelHeight: number): void {
+  marker.position.y = modelHeight + MARKER_CLEARANCE;
+  marker.userData.baseHeight = marker.position.y;
+}
+
+export function selfRing(): THREE.Mesh {
+  const ring = new THREE.Mesh(
+    new THREE.RingGeometry(0.55, 0.68, 32),
+    new THREE.MeshBasicMaterial({ color: SELF_RING_COLOR, transparent: true, opacity: 0.85, side: THREE.DoubleSide, depthWrite: false }));
+  ring.rotation.x = -Math.PI / 2;
+  ring.position.y = 0.04;
+  ring.name = "self-ring";
+  return ring;
 }
 
 function nodeModel(nodeId: string): THREE.Group {

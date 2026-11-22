@@ -10,9 +10,10 @@ import { Settlement, settlementObstacles } from "../world/settlement";
 import { citizenOutfit, raceLook } from "./characters/appearance";
 import { buildCritter } from "./characters/creatures";
 import { buildHumanoid } from "./characters/humanoid";
-import { ActionKind, Activity, CharacterAnimator } from "./characters/rig";
+import { ActionKind, Activity, Animator, CharacterAnimator } from "./characters/rig";
 import { CombatEffects } from "./combatEffects";
-import { createModel, hashHue, NpcLook } from "./models";
+import { GeneratedModels, mobModelKey, raceModelKey } from "./generated/generatedModels";
+import { createModel, hashHue, labelHeightFor, npcMarker, NpcLook, placeMarker, selfRing } from "./models";
 import { TownRenderer } from "./townRenderer";
 import { styleFor, TownStyle } from "./townStyles";
 
@@ -43,9 +44,17 @@ const SPECIAL_ZONE_LOOKS: Record<string, Partial<TownStyle>> = {
   Instance: { ground: 0x3c3a44, sky: 0x1f1d26, foliage: 0x55515f, tree: "dead" },
 };
 
-interface EntityView {
+/** A body that can be swapped for a generated model once it loads; root keeps position, label and decorations. */
+interface Embodied {
   root: THREE.Group;
-  animator: CharacterAnimator | null;
+  body: THREE.Object3D;
+  modelKey: string | null;
+  generated: boolean;
+}
+
+interface EntityView extends Embodied {
+  animator: Animator | null;
+  labelObject: CSS2DObject;
   label: HTMLDivElement;
   hpFill: HTMLDivElement;
   activityLine: HTMLSpanElement;
@@ -56,9 +65,8 @@ interface EntityView {
   initialized: boolean;
 }
 
-interface AmbientView {
-  root: THREE.Group;
-  animator: CharacterAnimator;
+interface AmbientView extends Embodied {
+  animator: Animator;
   source: Villager | Critter;
 }
 
@@ -89,6 +97,7 @@ export class WorldRenderer {
   private readonly raycaster = new THREE.Raycaster();
   private readonly views = new Map<number, EntityView>();
   private readonly ambient: AmbientView[] = [];
+  private readonly generatedModels = new GeneratedModels();
   private readonly sun: THREE.DirectionalLight;
   private readonly sky: THREE.HemisphereLight;
   private readonly ground: THREE.Mesh;
@@ -135,6 +144,7 @@ export class WorldRenderer {
     this.clickMarker.visible = false;
     this.scene.add(this.clickMarker);
 
+    this.generatedModels.onReady((key) => this.upgradeToGenerated(key));
     window.addEventListener("resize", () => this.resize());
     this.resize();
   }
@@ -164,6 +174,7 @@ export class WorldRenderer {
     this.scene.add(this.town.group);
     this.buildDecor(zone, settlement, style);
     this.clearEntities();
+    zone.mobs.forEach((spawn) => this.generatedModels.request(mobModelKey(spawn.mobId)));
     this.buildAmbient(population);
     this.effects.clear();
   }
@@ -362,14 +373,21 @@ export class WorldRenderer {
 
   private createView(entity: WorldEntity, isSelf: boolean): EntityView {
     const npc = entity.kind === EntityKind.Npc ? this.npcLook(entity.definitionId) : undefined;
-    const model = createModel({ kind: entity.kind, definitionId: entity.definitionId, name: entity.name, isSelf, npc });
-    const root = model.root;
+    const modelKey = generatedModelKey(entity, npc?.raceId);
+    const generated = this.requestGenerated(modelKey);
+    const procedural = generated ? null : createModel({ kind: entity.kind, definitionId: entity.definitionId, name: entity.name, isSelf, npc });
+    const body = generated?.body ?? procedural!.root;
+    const labelHeight = generated ? labelHeightFor(generated.height) : procedural!.labelHeight;
+    const root = new THREE.Group();
     root.userData.entityId = entity.id;
-    root.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        child.castShadow = true;
-      }
-    });
+    root.add(body);
+    castShadows(body);
+    if (isSelf) {
+      root.add(selfRing());
+    }
+    if (entity.kind === EntityKind.Npc) {
+      root.add(npcMarker(generated?.height ?? procedural!.rig?.height ?? labelHeight));
+    }
     const label = document.createElement("div");
     label.className = `entity-label kind-${EntityKind[entity.kind].toLowerCase()}${isSelf ? " self" : ""}`;
     const name = document.createElement("span");
@@ -383,14 +401,14 @@ export class WorldRenderer {
     hpBar.appendChild(hpFill);
     label.append(name, activityLine, hpBar);
     const labelObject = new CSS2DObject(label);
-    labelObject.position.y = model.labelHeight;
+    labelObject.position.y = labelHeight;
     root.add(labelObject);
     this.scene.add(root);
     const latest = entity.latest;
     const view: EntityView = {
-      root, label, hpFill, activityLine,
-      animator: model.rig ? new CharacterAnimator(model.rig) : null,
-      labelHeight: model.labelHeight,
+      root, body, modelKey, generated: generated !== null, labelObject, label, hpFill, activityLine,
+      animator: generated?.animator ?? (procedural!.rig ? new CharacterAnimator(procedural!.rig) : null),
+      labelHeight,
       heading: latest.heading,
       speed: 0,
       facingTargetId: null,
@@ -415,23 +433,75 @@ export class WorldRenderer {
 
   private buildAmbient(population: AmbientPopulation): void {
     for (const villager of population.villagers) {
-      const rig = buildHumanoid(raceLook(villager.raceId), citizenOutfit(villager.seed));
-      this.addAmbient(rig.root, new CharacterAnimator(rig), villager);
+      const modelKey = raceModelKey(villager.raceId);
+      const generated = this.requestGenerated(modelKey);
+      if (generated) {
+        this.addAmbient(generated.body, generated.animator, villager, modelKey, true);
+      } else {
+        const rig = buildHumanoid(raceLook(villager.raceId), citizenOutfit(villager.seed));
+        this.addAmbient(rig.root, new CharacterAnimator(rig), villager, modelKey, false);
+      }
     }
     for (const critter of population.critters) {
       const rig = buildCritter(critter.kind, critter.seed);
-      this.addAmbient(rig.root, new CharacterAnimator(rig), critter);
+      this.addAmbient(rig.root, new CharacterAnimator(rig), critter, null, false);
     }
   }
 
-  private addAmbient(root: THREE.Group, animator: CharacterAnimator, source: Villager | Critter): void {
-    root.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        child.castShadow = true;
-      }
-    });
+  private addAmbient(body: THREE.Object3D, animator: Animator, source: Villager | Critter, modelKey: string | null, generated: boolean): void {
+    castShadows(body);
+    const root = new THREE.Group();
+    root.add(body);
     this.scene.add(root);
-    this.ambient.push({ root, animator, source });
+    this.ambient.push({ root, body, modelKey, generated, animator, source });
+  }
+
+  private requestGenerated(modelKey: string | null): ReturnType<GeneratedModels["instantiate"]> {
+    if (!modelKey) {
+      return null;
+    }
+    this.generatedModels.request(modelKey);
+    return this.generatedModels.instantiate(modelKey);
+  }
+
+  /** Swaps procedural bodies for a model that just finished downloading, keeping position, label and death pose. */
+  private upgradeToGenerated(modelKey: string): void {
+    for (const view of this.views.values()) {
+      const model = this.swapBody(view, modelKey);
+      if (!model) {
+        continue;
+      }
+      model.animator.setDead(view.animator?.isDead ?? false);
+      view.animator = model.animator;
+      view.labelHeight = labelHeightFor(model.height);
+      view.labelObject.position.y = view.labelHeight;
+      const marker = view.root.getObjectByName("marker");
+      if (marker) {
+        placeMarker(marker, model.height);
+      }
+    }
+    for (const view of this.ambient) {
+      const model = this.swapBody(view, modelKey);
+      if (model) {
+        view.animator = model.animator;
+      }
+    }
+  }
+
+  private swapBody(view: Embodied, modelKey: string): ReturnType<GeneratedModels["instantiate"]> {
+    if (view.generated || view.modelKey !== modelKey) {
+      return null;
+    }
+    const model = this.generatedModels.instantiate(modelKey);
+    if (!model) {
+      return null;
+    }
+    castShadows(model.body);
+    view.root.remove(view.body);
+    view.root.add(model.body);
+    view.body = model.body;
+    view.generated = true;
+    return model;
   }
 
   private updateAmbient(serverTime: number, deltaSeconds: number): void {
@@ -528,6 +598,27 @@ function treeMeshes(style: TownStyle, trunk: THREE.Material, leaves: THREE.Mater
         place(new THREE.Mesh(new THREE.ConeGeometry(1.3, 2.6, 6), leaves), 2.4),
       ];
   }
+}
+
+function generatedModelKey(entity: WorldEntity, npcRaceId: string | undefined): string | null {
+  switch (entity.kind) {
+    case EntityKind.Player:
+      return raceModelKey(entity.definitionId);
+    case EntityKind.Npc:
+      return npcRaceId ? raceModelKey(npcRaceId) : null;
+    case EntityKind.Mob:
+      return mobModelKey(entity.definitionId);
+    default:
+      return null;
+  }
+}
+
+function castShadows(object: THREE.Object3D): void {
+  object.traverse((child) => {
+    if (child instanceof THREE.Mesh) {
+      child.castShadow = true;
+    }
+  });
 }
 
 function findEntityId(object: THREE.Object3D | null): number | null {

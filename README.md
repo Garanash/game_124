@@ -39,6 +39,25 @@ npm test                             # юнит-тесты клиента
 node scripts/combat-bot.mjs elf      # смоук-тест: бой с манекеном по JSON-протоколу и проверка опыта
 ```
 
+В игре: `I` открывает инвентарь (рюкзак-сетка, предметы перетаскиваются, `R` поворачивает, соседние предметы
+дают синергии и слияния), `C` открывает лист персонажа, `Esc` закрывает окна.
+
+### 3D-модели через Meshy AI
+
+Модели рас и мобов генерирует [Meshy](https://www.meshy.ai): text-to-3D, риггинг, анимации из библиотеки.
+Нужен API-ключ платного тарифа. Ключ не коммитится: задайте `export MESHY_API_KEY=msy_…` в `~/.zshrc`
+(его же использует MCP-сервер `meshy` в `~/.cursor/mcp.json`) или положите `MESHY_API_KEY=…` в `client-web/.env.local`.
+
+```bash
+cd client-web
+node scripts/meshy-generate.mjs --dry-run          # список ассетов и промптов, кредиты не тратит
+node scripts/meshy-generate.mjs --only race:elf    # одна модель для проверки
+node scripts/meshy-generate.mjs --group mob        # все мобы; без флагов — всё (68 ассетов)
+```
+
+Генерация возобновляемая (`scripts/meshy/tasks.json`), результат лежит в `public/models/` вместе с `manifest.json`.
+Клиент подхватывает модели на лету; пока модели нет, используется процедурная.
+
 ## Контент и новые локации
 
 ```bash

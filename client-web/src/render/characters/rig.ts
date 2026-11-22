@@ -48,8 +48,16 @@ const DEATH_SECONDS = 0.7;
 const HIT_FLASH_COLOR = new THREE.Color(0xff3a2a);
 const TAU = Math.PI * 2;
 
+/** Drives one character model; procedural rigs and generated GLB models both implement it. */
+export interface Animator {
+  play(kind: ActionKind): void;
+  setDead(dead: boolean): void;
+  readonly isDead: boolean;
+  update(deltaSeconds: number, speed: number, activity: Activity): void;
+}
+
 /** Procedural animation layered as locomotion, then the idle activity, then one-shot combat actions. */
-export class CharacterAnimator {
+export class CharacterAnimator implements Animator {
   private phase = Math.random() * TAU;
   private clock = Math.random() * 10;
   private walkWeight = 0;
