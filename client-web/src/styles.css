@@ -77,6 +77,9 @@ input { width: 100%; }
 .race-card { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; font-size: 12px; }
 .race-card .portrait { width: 64px; height: 64px; }
 .race-card.selected { outline: 2px solid var(--gold); background: #3a2f22; }
+.race-card.locked { position: relative; cursor: not-allowed; opacity: 0.45; filter: grayscale(1); }
+.race-card.locked:hover { background: inherit; }
+.race-lock { position: absolute; top: 4px; right: 4px; padding: 0 4px; border-radius: 4px; background: #000a; color: var(--muted, #aaa); font-size: 10px; }
 .create-side { display: flex; flex-direction: column; gap: 6px; }
 .alignment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
 .alignment-cell { font-size: 12px; padding: 8px 4px; }
@@ -119,10 +122,12 @@ input { width: 100%; }
 .backpack-cell.drop-ok { background: rgba(110, 220, 120, 0.35); }
 .backpack-cell.drop-bad { background: rgba(240, 90, 80, 0.4); }
 .backpack-item { position: absolute; cursor: grab; user-select: none; --rarity: #9a9a9a; }
-.backpack-item .item-cell { position: absolute; width: 56px; height: 56px; background: linear-gradient(145deg, color-mix(in srgb, var(--rarity) 45%, #2a2434), #1c1824); border: 2px solid var(--rarity); border-radius: 6px; }
+.backpack-item .item-cell { position: absolute; width: 56px; height: 56px; background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--rarity) 22%, #241e2c), #0e0b12 75%); border: 2px solid color-mix(in srgb, var(--rarity) 70%, #000); border-radius: 5px; box-shadow: inset 0 0 0 1px #000, inset 0 0 10px #000, 0 0 6px -1px color-mix(in srgb, var(--rarity) 60%, transparent); }
+.backpack-item .item-icon { position: absolute; border-radius: 4px; pointer-events: none; object-fit: cover; border: 1px solid #000; box-shadow: 0 0 0 1px color-mix(in srgb, var(--rarity) 85%, #fff2), 0 0 8px -2px var(--rarity), inset 0 0 0 1px #0008; }
+.backpack-item.rarity-common .item-icon { box-shadow: 0 0 0 1px #6a6a6a, inset 0 0 0 1px #0008; }
 .backpack-item .item-name { position: absolute; left: 4px; top: 4px; width: 48px; font-size: 10px; line-height: 1.15; text-shadow: 0 1px 2px #000; pointer-events: none; word-break: break-word; }
-.backpack-item:hover .item-cell { filter: brightness(1.25); }
-.backpack-item.synergy .item-cell { box-shadow: 0 0 10px 2px rgba(255, 215, 90, 0.75); }
+.backpack-item:hover .item-cell, .backpack-item:hover .item-icon { filter: brightness(1.22) saturate(1.1); }
+.backpack-item.synergy .item-cell { box-shadow: inset 0 0 10px #000, 0 0 12px 3px rgba(255, 215, 90, 0.8); }
 .drag-ghost { position: fixed; z-index: 1000; pointer-events: none; opacity: 0.85; }
 .rarity-common { --rarity: #9a9a9a; }
 .rarity-uncommon { --rarity: #4fbf5a; }
@@ -135,13 +140,22 @@ input { width: 100%; }
 .bag-list { display: flex; flex-direction: column; gap: 4px; min-height: 120px; padding: 6px; background: #120f18; border: 1px dashed var(--panel-border); border-radius: 6px; max-height: 320px; overflow-y: auto; }
 .bag-item { display: flex; justify-content: space-between; gap: 8px; padding: 6px 8px; border-left: 3px solid var(--rarity); background: #221d2b; border-radius: 4px; cursor: grab; user-select: none; font-size: 13px; }
 .bag-item:hover { background: #2d2638; }
+.bag-item-title { display: flex; align-items: center; gap: 8px; }
+.bag-icon { width: 28px; height: 28px; border-radius: 3px; border: 1px solid #000; box-shadow: 0 0 0 1px var(--rarity); }
 .bonus-list { margin: 4px 0 10px; padding-left: 18px; font-size: 13px; }
 .fusion-list { display: flex; flex-direction: column; gap: 6px; }
 .item-tooltip { position: fixed; z-index: 1001; pointer-events: none; max-width: 260px; padding: 8px 10px; background: rgba(14, 12, 20, 0.95); border: 1px solid var(--panel-border); border-radius: 6px; font-size: 12px; display: flex; flex-direction: column; gap: 2px; }
 .item-tooltip strong { font-size: 14px; }
 .synergy-hint { color: var(--gold); }
 
-.character-window { width: min(760px, 96vw); }
+.character-window { width: min(1040px, 98vw); }
+.character-layout { display: grid; grid-template-columns: 300px 1fr; gap: 16px; align-items: start; }
+.hero-stage { position: sticky; top: 0; display: flex; flex-direction: column; gap: 4px; }
+.hero-viewer { height: 430px; border-radius: 10px; border: 1px solid var(--panel-border); overflow: hidden; cursor: grab;
+  background: radial-gradient(ellipse at 50% 85%, #4a3a2244, transparent 55%), radial-gradient(ellipse at 50% 30%, #2c2440, #0c0a12 75%); box-shadow: inset 0 0 40px #000c; }
+.hero-viewer:active { cursor: grabbing; }
+.hero-viewer canvas { display: block; width: 100%; height: 100%; }
+@media (max-width: 760px) { .character-layout { grid-template-columns: 1fr; } .hero-viewer { height: 300px; } }
 .character-identity { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
 .character-identity > div { display: flex; flex-direction: column; gap: 2px; }
 .character-name { font-size: 20px; color: var(--gold); }
@@ -207,9 +221,14 @@ input { width: 100%; }
 .hud .dice-roller { position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; pointer-events: none; z-index: 20; transition: opacity 0.2s, transform 0.2s; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.7)); }
 .dice-roller.hidden { display: none; }
 .dice-roller.fade { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
-.dice-roller.crit canvas { filter: drop-shadow(0 0 22px #ffd34a); }
-.dice-roller.fumble canvas { filter: drop-shadow(0 0 22px #ff3a2a); }
-.dice-caption { display: flex; flex-direction: column; align-items: center; margin-top: -18px; text-shadow: 0 2px 6px #000, 0 0 3px #000; min-height: 64px; }
+.dice-medallion { width: 300px; height: 300px; border-radius: 50%; overflow: hidden; position: relative;
+  border: 3px solid #b08a4a; box-shadow: 0 0 0 2px #2a1c10, 0 0 0 7px #6a4f2a, 0 0 0 9px #1a1008, 0 0 30px 6px rgba(0, 0, 0, 0.8), inset 0 0 40px #000; transition: box-shadow 0.25s; }
+.dice-medallion::after { content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, transparent 55%, rgba(0, 0, 0, 0.65)); }
+.dice-medallion canvas { display: block; }
+.dice-roller.crit .dice-medallion { box-shadow: 0 0 0 2px #2a1c10, 0 0 0 7px #d8a840, 0 0 0 9px #1a1008, 0 0 46px 14px rgba(255, 211, 74, 0.7), inset 0 0 40px #000; }
+.dice-roller.fumble .dice-medallion { box-shadow: 0 0 0 2px #2a1c10, 0 0 0 7px #8a2a1a, 0 0 0 9px #1a1008, 0 0 46px 14px rgba(255, 58, 42, 0.7), inset 0 0 40px #000; }
+.dice-caption { display: flex; flex-direction: column; align-items: center; margin-top: 10px; padding: 6px 22px; border-radius: 8px; background: linear-gradient(180deg, rgba(20, 14, 10, 0.85), rgba(20, 14, 10, 0.6)); border: 1px solid #6a4f2a; text-shadow: 0 2px 6px #000, 0 0 3px #000; min-height: 64px; }
+.dice-caption:empty { background: none; border-color: transparent; }
 .dice-caption small { font-size: 13px; color: #e8dcc0; }
 .dice-caption strong { font-size: 30px; color: #fff; letter-spacing: 1px; }
 .dice-caption em { font-size: 18px; font-style: normal; font-weight: bold; text-transform: uppercase; animation: verdict-pop 0.3s ease-out; }

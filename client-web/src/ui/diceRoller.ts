@@ -1,8 +1,9 @@
 import * as THREE from "three";
 import { createD20, D20, DieStyle } from "../render/d20";
+import { DiceStage, FRIENDLY_THEME, HOSTILE_THEME } from "../render/diceStage";
 import { h } from "./dom";
 
-const VIEW_PIXELS = 240;
+const VIEW_PIXELS = 300;
 const TUMBLE_SECONDS = 0.75;
 const SETTLE_SECONDS = 0.25;
 const HOLD_SECONDS = 0.75;
@@ -11,6 +12,8 @@ const DROP_HEIGHT = 2.6;
 const PRESENTATION_TILT = -0.32;
 const NATURAL_CRIT = 20;
 const NATURAL_FUMBLE = 1;
+const CRIT_BURST_COLOR = 0xffe070;
+const FUMBLE_BURST_COLOR = 0xff2a1a;
 
 export type RollOutcome = "hit" | "miss" | "success" | "fail";
 
@@ -47,6 +50,7 @@ export class DiceRoller {
   private readonly scene = new THREE.Scene();
   private readonly camera = new THREE.PerspectiveCamera(35, 1, 0.1, 50);
   private readonly dice = { friendly: createD20(FRIENDLY_STYLE), hostile: createD20(HOSTILE_STYLE) };
+  private readonly stage = new DiceStage();
   private active: ActiveRoll | null = null;
 
   constructor() {
@@ -56,8 +60,8 @@ export class DiceRoller {
     this.scene.add(new THREE.AmbientLight(0xffffff, 1.2));
     const key = new THREE.DirectionalLight(0xfff0d8, 2.4);
     key.position.set(2, 3, 5);
-    this.scene.add(key);
-    this.root.append(this.renderer.domElement, this.caption);
+    this.scene.add(key, this.stage.group);
+    this.root.append(h("div", { class: "dice-medallion" }, this.renderer.domElement), this.caption);
   }
 
   get busy(): boolean {
@@ -70,6 +74,7 @@ export class DiceRoller {
     const die = roll.friendly ? this.dice.friendly : this.dice.hostile;
     this.scene.remove(this.dice.friendly.mesh, this.dice.hostile.mesh);
     this.scene.add(die.mesh);
+    this.stage.setTheme(roll.friendly ? FRIENDLY_THEME : HOSTILE_THEME);
     const tilt = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), PRESENTATION_TILT);
     return new Promise((resolve) => {
       this.active = {
@@ -92,6 +97,7 @@ export class DiceRoller {
       return;
     }
     active.elapsed += deltaSeconds * active.speed;
+    this.stage.update(deltaSeconds * active.speed);
     const { mesh } = active.die;
     const t = active.elapsed;
     if (t < TUMBLE_SECONDS) {
@@ -130,6 +136,11 @@ export class DiceRoller {
     this.caption.replaceChildren(h("small", {}, roll.title), h("strong", {}, math), h("em", {}, verdict.text));
     this.root.classList.toggle("crit", roll.natural === NATURAL_CRIT);
     this.root.classList.toggle("fumble", roll.natural === NATURAL_FUMBLE);
+    if (roll.natural === NATURAL_CRIT) {
+      this.stage.burst(CRIT_BURST_COLOR);
+    } else if (roll.natural === NATURAL_FUMBLE) {
+      this.stage.burst(FUMBLE_BURST_COLOR);
+    }
   }
 
   private finish(): void {
