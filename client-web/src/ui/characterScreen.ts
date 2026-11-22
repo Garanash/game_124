@@ -32,7 +32,7 @@ export async function showCharacterList(root: HTMLElement, gateway: GatewayClien
 }
 
 function showCreateCharacter(root: HTMLElement, gateway: GatewayClient, catalog: ContentCatalog, handlers: CharacterScreenHandlers): void {
-  const races = Object.values(catalog.races).sort((left, right) => left.name.localeCompare(right.name, "ru"));
+  const races = Object.values(catalog.races).sort(byPlayableThenName);
   let selectedRace: RaceDefinition = races[0];
   let alignment = DEFAULT_ALIGNMENT;
   let scores = [...STARTING_SCORES];
@@ -45,18 +45,25 @@ function showCreateCharacter(root: HTMLElement, gateway: GatewayClient, catalog:
   const status = h("p", { class: "form-error" });
   const raceGrid = h("div", { class: "race-grid" });
 
-  const renderRaces = () => replaceChildren(raceGrid, ...races.map((race) =>
-    h("button", { class: `race-card${race.id === selectedRace.id ? " selected" : ""}`, title: race.name, onclick: () => { selectedRace = race; renderAll(); } },
-      portrait(race.id), h("span", {}, race.name))));
+  const renderRaces = () => replaceChildren(raceGrid, ...races.map((race) => {
+    const selected = race.id === selectedRace.id ? " selected" : "";
+    return race.playable
+      ? h("button", { class: `race-card${selected}`, title: race.name, onclick: () => { selectedRace = race; renderAll(); } },
+        portrait(race.id), h("span", {}, race.name))
+      : h("button", { class: "race-card locked", title: `${race.name} — скоро`, disabled: true },
+        portrait(race.id), h("span", {}, race.name), h("small", { class: "race-lock" }, "скоро"));
+  }));
 
   const renderRaceInfo = () => {
     const bonuses = Object.entries(selectedRace.abilityBonuses)
       .map(([ability, bonus]) => `${ABILITY_LABELS[ability as keyof typeof ABILITY_LABELS] ?? ability} +${bonus}`).join(", ");
     const zone = catalog.zones[selectedRace.startZoneId];
+    const town = zone?.settlements.find((settlement) => settlement.id === selectedRace.startSettlementId);
     const continent = catalog.continents[selectedRace.continentId];
+    const start = [town?.name, zone?.name ?? selectedRace.startZoneId].filter(Boolean).join(", ");
     replaceChildren(raceInfo,
       h("h3", {}, selectedRace.name),
-      h("p", {}, `Старт: ${zone?.name ?? selectedRace.startZoneId}${continent ? `, ${continent.name}` : ""}`),
+      h("p", {}, `Старт: ${start}${continent ? ` · ${continent.name}` : ""}`),
       h("p", { class: "muted" }, `Бонусы: ${bonuses || "нет"} · Скорость ${selectedRace.speedCells} клеток`),
       selectedRace.traits.length ? h("p", { class: "muted" }, `Черты: ${selectedRace.traits.join(", ")}`) : null);
   };
@@ -122,6 +129,10 @@ function showCreateCharacter(root: HTMLElement, gateway: GatewayClient, catalog:
           h("div", { class: "row" },
             h("button", { class: "primary", onclick: () => void create() }, "Начать путь"),
             h("button", { onclick: () => void showCharacterList(root, gateway, catalog, handlers) }, "Назад")))))));
+}
+
+function byPlayableThenName(left: RaceDefinition, right: RaceDefinition): number {
+  return Number(right.playable) - Number(left.playable) || left.name.localeCompare(right.name, "ru");
 }
 
 function portrait(raceId: string): HTMLElement {
