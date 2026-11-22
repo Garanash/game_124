@@ -1,5 +1,7 @@
 using System.Security.Claims;
 using Realmforge.Rules.Characters;
+using Realmforge.Rules.Combat;
+using Realmforge.Rules.Definitions;
 using Realmforge.Server.Core.Auth;
 using Realmforge.Server.Core.Characters;
 using Realmforge.Server.Gateway.Http;
@@ -34,6 +36,11 @@ public static class CharacterEndpoints
         character.MapDelete("/", async (Guid characterId, ClaimsPrincipal user, IGrainFactory grains) =>
             ApiResults.From(await grains.GetGrain<IAccountGrain>(user.AccountId()).DeleteCharacter(characterId)));
         character.MapGet("/", (Guid characterId, IGrainFactory grains) => Character(grains, characterId).GetState());
+        character.MapGet("/stats", async (Guid characterId, IGrainFactory grains, ContentCatalog catalog) =>
+        {
+            CharacterState state = await Character(grains, characterId).GetState();
+            return CharacterStats.Build(state.Sheet, state.Backpack, catalog);
+        });
         character.MapPost("/enter", EnterWorld);
 
         character.MapPost("/perks/{perkId}", async (Guid characterId, string perkId, IGrainFactory grains) =>
