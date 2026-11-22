@@ -2,7 +2,9 @@
   name: Дварф
   ip_status: Srd
   continent_id: kargath
-  start_zone_id: start_ironhold
+  start_zone_id: heartlands
+  start_settlement_id: ironhold
+  playable: true
   size: Medium
   speed_cells: 5
   ability_bonuses: { Constitution: 2, Strength: 1 }
@@ -12,7 +14,8 @@
   name: Голиаф
   ip_status: NonSrd
   continent_id: kargath
-  start_zone_id: start_ironhold
+  start_zone_id: heartlands
+  start_settlement_id: ironhold
   size: Medium
   speed_cells: 6
   ability_bonuses: { Strength: 2, Constitution: 1 }
@@ -22,7 +25,8 @@
   name: Кованый
   ip_status: NonSrd
   continent_id: kargath
-  start_zone_id: start_ironhold
+  start_zone_id: heartlands
+  start_settlement_id: ironhold
   size: Medium
   speed_cells: 6
   ability_bonuses: { Constitution: 2, Strength: 1 }
@@ -32,7 +36,8 @@
   name: Автогном
   ip_status: NonSrd
   continent_id: kargath
-  start_zone_id: start_ironhold
+  start_zone_id: heartlands
+  start_settlement_id: ironhold
   size: Small
   speed_cells: 6
   ability_bonuses: { Constitution: 2, Intelligence: 1 }

@@ -3,7 +3,9 @@
   name: Эльф
   ip_status: Srd
   continent_id: eldarwen
-  start_zone_id: start_silverleaf
+  start_zone_id: heartlands
+  start_settlement_id: silverleaf
+  playable: true
   size: Medium
   speed_cells: 6
   ability_bonuses: { Dexterity: 2, Wisdom: 1 }
@@ -13,7 +15,8 @@
   name: Высший эльф
   ip_status: Srd
   continent_id: eldarwen
-  start_zone_id: start_silverleaf
+  start_zone_id: heartlands
+  start_settlement_id: silverleaf
   size: Medium
   speed_cells: 6
   ability_bonuses: { Dexterity: 2, Intelligence: 1 }
@@ -23,7 +26,8 @@
   name: Полуэльф
   ip_status: Srd
   continent_id: eldarwen
-  start_zone_id: start_silverleaf
+  start_zone_id: heartlands
+  start_settlement_id: silverleaf
   size: Medium
   speed_cells: 6
   ability_bonuses: { Charisma: 2, Dexterity: 1 }
@@ -33,7 +37,8 @@
   name: Астральный эльф
   ip_status: NonSrd
   continent_id: eldarwen
-  start_zone_id: start_silverleaf
+  start_zone_id: heartlands
+  start_settlement_id: silverleaf
   size: Medium
   speed_cells: 6
   ability_bonuses: { Intelligence: 2, Wisdom: 1 }

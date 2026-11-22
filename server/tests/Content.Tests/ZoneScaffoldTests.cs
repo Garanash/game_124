@@ -7,7 +7,7 @@ public class ZoneScaffoldTests
 {
     private const string NewZoneId = "wilds_frost_test";
     private const string ContinentId = "eldarwen";
-    private const string LinkedZoneId = "wilds_eldarwen";
+    private const string LinkedZoneId = "heartlands";
 
     [Fact]
     public void Scaffolded_zone_loads_with_shipped_content_and_validates()

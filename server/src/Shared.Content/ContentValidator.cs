@@ -82,6 +82,10 @@ namespace Realmforge.Content
                 {
                     Error(where, "start zone " + zone.Id + " is not of kind StartZone");
                 }
+                else if (race.StartSettlementId.Length > 0 && zone.FindSettlement(race.StartSettlementId) == null)
+                {
+                    Error(where, "unknown start settlement " + race.StartSettlementId + " in " + zone.Id);
+                }
                 if (race.IpStatus == IpStatus.NonSrd || race.IpStatus == IpStatus.ThirdParty)
                 {
                     Warn(where, "name/concept is " + race.IpStatus + " IP: rename and redesign before commercial release");
@@ -189,6 +193,11 @@ namespace Realmforge.Content
                 Require(zone.MinLevel <= zone.MaxLevel, where, "min_level exceeds max_level");
                 Require(zone.Kind != ZoneKind.PvpZone || zone.Pvp != PvpRule.None, where, "PvP zone needs a pvp rule");
                 Require(InsideZone(zone, zone.Spawn), where, "spawn is outside the zone");
+                foreach (SettlementDefinition settlement in zone.Settlements)
+                {
+                    Require(_catalog.Continents.ContainsKey(settlement.ContinentId), where, "settlement " + settlement.Id + " has unknown continent " + settlement.ContinentId);
+                    Require(InsideZone(zone, settlement.Center), where, "settlement outside zone: " + settlement.Id);
+                }
                 foreach (PortalDefinition portal in zone.Portals)
                 {
                     Require(_catalog.Zones.ContainsKey(portal.ToZoneId), where, "portal to unknown zone " + portal.ToZoneId);

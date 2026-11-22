@@ -30,6 +30,10 @@ namespace Realmforge.Rules.Definitions
         public IpStatus IpStatus { get; set; } = IpStatus.Original;
         public string ContinentId { get; set; } = string.Empty;
         public string StartZoneId { get; set; } = string.Empty;
+        /// <summary>Town of the start zone new heroes appear in; empty means the zone spawn.</summary>
+        public string StartSettlementId { get; set; } = string.Empty;
+        /// <summary>Only races with finished art can be picked at character creation.</summary>
+        public bool Playable { get; set; }
         public CreatureSize Size { get; set; } = CreatureSize.Medium;
         public int SpeedCells { get; set; } = 6;
         public Dictionary<Ability, int> AbilityBonuses { get; set; } = new Dictionary<Ability, int>();

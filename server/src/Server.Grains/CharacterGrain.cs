@@ -34,6 +34,15 @@ public sealed class CharacterGrain : Grain, ICharacterGrain, IRemindable
     private CharacterState Character => _state.State;
     private DateTime UtcNow => _time.GetUtcNow().UtcDateTime;
 
+    public override async Task OnActivateAsync(CancellationToken cancellationToken)
+    {
+        if (_state.RecordExists && _operations.RelocateIfZoneRemoved(Character))
+        {
+            await _state.WriteStateAsync();
+        }
+        await base.OnActivateAsync(cancellationToken);
+    }
+
     public async Task Initialize(CharacterState state)
     {
         _state.State = state;

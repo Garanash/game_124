@@ -55,6 +55,8 @@ public sealed class CharacterOperations
         return DomainResult<CharacterState>.Ok(state);
     }
 
+    public bool RelocateIfZoneRemoved(CharacterState state) => CharacterRules.RelocateIfZoneRemoved(state.Sheet, _catalog);
+
     /// <summary>
     /// Every hero leaves home armed. The kit also teaches the backpack: the whetstone sharpens the sword
     /// when placed beside it, and the two daggers in the bag fuse into twin daggers once they touch.

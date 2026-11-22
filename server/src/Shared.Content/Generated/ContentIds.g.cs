@@ -32,6 +32,7 @@ namespace Realmforge.Content.Generated
             public const string Harengon = "harengon";
             public const string HighElf = "high_elf";
             public const string Hobgoblin = "hobgoblin";
+            public const string Human = "human";
             public const string Kalashtar = "kalashtar";
             public const string Kender = "kender";
             public const string Kenku = "kenku";
@@ -175,6 +176,7 @@ namespace Realmforge.Content.Generated
 
         public static class Continents
         {
+            public const string Aldmark = "aldmark";
             public const string Eldarwen = "eldarwen";
             public const string Kargath = "kargath";
             public const string Sarrat = "sarrat";
@@ -184,6 +186,7 @@ namespace Realmforge.Content.Generated
 
         public static class Zones
         {
+            public const string Heartlands = "heartlands";
             public const string HousingEldarwen = "housing_eldarwen";
             public const string HousingKargath = "housing_kargath";
             public const string HousingSarrat = "housing_sarrat";
@@ -202,13 +205,9 @@ namespace Realmforge.Content.Generated
             public const string StartFeywildGlade = "start_feywild_glade";
             public const string StartGoblinWarrens = "start_goblin_warrens";
             public const string StartHearthmeadow = "start_hearthmeadow";
-            public const string StartIronhold = "start_ironhold";
             public const string StartSerpentJungle = "start_serpent_jungle";
-            public const string StartSilverleaf = "start_silverleaf";
             public const string StartSunmaneSavanna = "start_sunmane_savanna";
             public const string StartWindspireIsles = "start_windspire_isles";
-            public const string WildsEldarwen = "wilds_eldarwen";
-            public const string WildsKargath = "wilds_kargath";
             public const string WildsSarrat = "wilds_sarrat";
             public const string WildsTalmarin = "wilds_talmarin";
             public const string WildsVeylmark = "wilds_veylmark";
@@ -255,6 +254,12 @@ namespace Realmforge.Content.Generated
             public const string NpcAshenFrontierMentor = "npc_ashen_frontier_mentor";
             public const string NpcAshenFrontierMerchant = "npc_ashen_frontier_merchant";
             public const string NpcAshenFrontierTrainer = "npc_ashen_frontier_trainer";
+            public const string NpcAshfordAuctioneer = "npc_ashford_auctioneer";
+            public const string NpcAshfordElder = "npc_ashford_elder";
+            public const string NpcAshfordGuard = "npc_ashford_guard";
+            public const string NpcAshfordMentor = "npc_ashford_mentor";
+            public const string NpcAshfordMerchant = "npc_ashford_merchant";
+            public const string NpcAshfordTrainer = "npc_ashford_trainer";
             public const string NpcAstralSpireElder = "npc_astral_spire_elder";
             public const string NpcAstralSpireGuard = "npc_astral_spire_guard";
             public const string NpcAstralSpireMentor = "npc_astral_spire_mentor";
@@ -307,6 +312,7 @@ namespace Realmforge.Content.Generated
 
         public static class Factions
         {
+            public const string FactionAldmark = "faction_aldmark";
             public const string FactionEldarwen = "faction_eldarwen";
             public const string FactionKargath = "faction_kargath";
             public const string FactionSarrat = "faction_sarrat";
@@ -319,6 +325,7 @@ namespace Realmforge.Content.Generated
         {
             public const string QuestAshenFrontierWelcome = "quest_ashen_frontier_welcome";
             public const string QuestAshenMaw = "quest_ashen_maw";
+            public const string QuestAshfordWelcome = "quest_ashford_welcome";
             public const string QuestAstralSpireWelcome = "quest_astral_spire_welcome";
             public const string QuestCoralReachWelcome = "quest_coral_reach_welcome";
             public const string QuestFeywildGladeWelcome = "quest_feywild_glade_welcome";

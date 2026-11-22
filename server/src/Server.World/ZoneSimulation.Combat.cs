@@ -438,8 +438,9 @@ public sealed partial class ZoneSimulation
     private void Respawn(PlayerEntity player)
     {
         Emit(new CharacterDied(player.CharacterId));
-        player.X = Zone.Spawn.X;
-        player.Z = Zone.Spawn.Z;
+        WorldPoint respawn = Zone.RespawnPointNear(player.X, player.Z);
+        player.X = respawn.X;
+        player.Z = respawn.Z;
         player.TargetX = player.X;
         player.TargetZ = player.Z;
         player.Sheet.CurrentHp = Math.Max(1, player.MaxHp / 2);

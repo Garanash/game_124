@@ -31,9 +31,13 @@ namespace Realmforge.Rules.Characters
             {
                 return RuleResult.Fail("character.name_symbols", "Name may contain letters, '-' and apostrophes only.");
             }
-            if (!catalog.Races.ContainsKey(request.RaceId))
+            if (!catalog.Races.TryGetValue(request.RaceId, out RaceDefinition? race))
             {
                 return RuleResult.Fail("character.unknown_race", "Unknown race " + request.RaceId);
+            }
+            if (!race.Playable)
+            {
+                return RuleResult.Fail("character.race_closed", "Race " + request.RaceId + " is not open for new heroes yet.");
             }
             if (request.Abilities == null || request.Abilities.Length != AbilityScores.AbilityCount)
             {
@@ -51,7 +55,6 @@ namespace Realmforge.Rules.Characters
                 throw new InvalidOperationException(validation.ToString());
             }
             RaceDefinition race = catalog.Races[request.RaceId];
-            ZoneDefinition? startZone = catalog.Zones.TryGetValue(race.StartZoneId, out ZoneDefinition? zone) ? zone : null;
             var sheet = new CharacterSheet
             {
                 Id = characterId,
@@ -60,14 +63,43 @@ namespace Realmforge.Rules.Characters
                 RaceId = race.Id,
                 BaseAbilities = (int[])request.Abilities.Clone(),
                 Gold = StartingGold,
-                ZoneId = race.StartZoneId,
-                PositionX = startZone?.Spawn.X ?? 0,
-                PositionZ = startZone?.Spawn.Z ?? 0,
                 CreatedAtUtc = nowUtc,
             };
+            PlaceAtRaceStart(sheet, race, catalog);
             sheet.SetAlignment(Alignment.FromCell(request.Alignment));
             sheet.CurrentHp = MaxHp(sheet, catalog, new StatBlock());
             return sheet;
+        }
+
+        /// <summary>
+        /// Heroes saved in a zone that no longer exists (merged into the open world) go back to their race's home town.
+        /// Returns true when the sheet was moved and has to be saved.
+        /// </summary>
+        public static bool RelocateIfZoneRemoved(CharacterSheet sheet, ContentCatalog catalog)
+        {
+            if (catalog.Zones.ContainsKey(sheet.ZoneId) || !catalog.Races.TryGetValue(sheet.RaceId, out RaceDefinition? race))
+            {
+                return false;
+            }
+            PlaceAtRaceStart(sheet, race, catalog);
+            return true;
+        }
+
+        public static WorldPoint StartPoint(RaceDefinition race, ContentCatalog catalog)
+        {
+            if (!catalog.Zones.TryGetValue(race.StartZoneId, out ZoneDefinition? zone))
+            {
+                return new WorldPoint();
+            }
+            return zone.FindSettlement(race.StartSettlementId)?.Center ?? zone.Spawn;
+        }
+
+        private static void PlaceAtRaceStart(CharacterSheet sheet, RaceDefinition race, ContentCatalog catalog)
+        {
+            WorldPoint start = StartPoint(race, catalog);
+            sheet.ZoneId = race.StartZoneId;
+            sheet.PositionX = start.X;
+            sheet.PositionZ = start.Z;
         }
 
         /// <summary>Max HP: full hit die at level 1, average afterwards, plus CON per level (SRD 5.1).</summary>

@@ -50,7 +50,7 @@ public class CharacterCreationTests
         model.SelectAlignment(AlignmentCell.ChaoticGood);
 
         Assert.True(model.Validate().Success, model.Validate().Message);
-        Assert.Equal("start_silverleaf", model.StartZone?.Id);
+        Assert.Equal("heartlands", model.StartZone?.Id);
         Assert.Equal(AlignmentCell.ChaoticGood, model.ToRequest().Alignment);
     }
 }

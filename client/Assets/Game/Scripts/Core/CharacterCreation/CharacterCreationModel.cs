@@ -35,7 +35,7 @@ namespace Realmforge.Client.Core.CharacterCreation
             _catalog = catalog;
             _baseScores = Enumerable.Repeat(PointBuy.MinScore, Enum.GetValues(typeof(Ability)).Length).ToArray();
             RaceGroups = BuildGroups(catalog);
-            SelectedRaceId = RaceGroups.SelectMany(group => group.Races).Select(race => race.Id).FirstOrDefault() ?? string.Empty;
+            SelectedRaceId = RaceGroups.SelectMany(group => group.Races).Where(race => race.Playable).Select(race => race.Id).FirstOrDefault() ?? string.Empty;
         }
 
         public IReadOnlyList<RaceGroup> RaceGroups { get; }
@@ -55,7 +55,7 @@ namespace Realmforge.Client.Core.CharacterCreation
 
         public void SelectRace(string raceId)
         {
-            if (!_catalog.Races.ContainsKey(raceId))
+            if (!_catalog.Races.TryGetValue(raceId, out RaceDefinition? race) || !race.Playable)
             {
                 return;
             }

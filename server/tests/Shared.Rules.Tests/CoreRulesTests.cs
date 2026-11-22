@@ -1,4 +1,5 @@
 using Realmforge.Rules.Characters;
+using Realmforge.Rules.Definitions;
 using Realmforge.Rules.Dice;
 using Xunit;
 
@@ -89,6 +90,54 @@ public class CoreRulesTests
         Assert.Equal(10, sheet.PositionX);
         Assert.Equal(15, sheet.Abilities(catalog)[Ability.Constitution]);
         Assert.Equal(CharacterSheet.WandererHitDie + 2, sheet.CurrentHp);
+    }
+
+    [Fact]
+    public void Character_starts_in_the_race_home_town_of_an_open_world_zone()
+    {
+        var catalog = TestCatalog.Create();
+        ZoneDefinition zone = catalog.Zones["start_dwarf"];
+        zone.Settlements.Add(new SettlementDefinition { Id = "forge", Center = new WorldPoint(300, 400) });
+        catalog.Races["dwarf"].StartSettlementId = "forge";
+
+        CharacterSheet sheet = CharacterRules.Create(Guid.NewGuid(), Guid.NewGuid(), TestCatalog.DwarfRequest(), catalog, DateTime.UtcNow);
+
+        Assert.Equal(300, sheet.PositionX);
+        Assert.Equal(400, sheet.PositionZ);
+    }
+
+    [Fact]
+    public void Races_without_art_are_closed_for_new_heroes()
+    {
+        var catalog = TestCatalog.Create();
+        catalog.Races["dwarf"].Playable = false;
+
+        Assert.Equal("character.race_closed", CharacterRules.ValidateCreation(TestCatalog.DwarfRequest(), catalog).Code);
+    }
+
+    [Fact]
+    public void Hero_in_a_removed_zone_returns_to_the_race_start()
+    {
+        var catalog = TestCatalog.Create();
+        CharacterSheet sheet = CharacterRules.Create(Guid.NewGuid(), Guid.NewGuid(), TestCatalog.DwarfRequest(), catalog, DateTime.UtcNow);
+        sheet.ZoneId = "merged_away";
+        sheet.PositionX = 999;
+
+        Assert.True(CharacterRules.RelocateIfZoneRemoved(sheet, catalog));
+        Assert.Equal("start_dwarf", sheet.ZoneId);
+        Assert.Equal(10, sheet.PositionX);
+        Assert.False(CharacterRules.RelocateIfZoneRemoved(sheet, catalog));
+    }
+
+    [Fact]
+    public void Respawn_point_is_the_closest_town()
+    {
+        var zone = new ZoneDefinition { Spawn = new WorldPoint(50, 50) };
+        Assert.Equal(50, zone.RespawnPointNear(900, 900).X);
+
+        zone.Settlements.Add(new SettlementDefinition { Id = "west", Center = new WorldPoint(100, 500) });
+        zone.Settlements.Add(new SettlementDefinition { Id = "east", Center = new WorldPoint(900, 500) });
+        Assert.Equal(900, zone.RespawnPointNear(800, 300).X);
     }
 
     [Fact]

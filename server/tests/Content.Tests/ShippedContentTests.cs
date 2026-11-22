@@ -6,7 +6,7 @@ namespace Realmforge.Content.Tests;
 
 public class ShippedContentTests
 {
-    private const int ConceptRaceCount = 47;
+    private const int ConceptRaceCount = 48;
 
     [Fact]
     public void Shipped_content_has_no_validation_errors()

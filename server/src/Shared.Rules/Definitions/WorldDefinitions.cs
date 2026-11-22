@@ -67,6 +67,15 @@ namespace Realmforge.Rules.Definitions
         public WorldPoint Position { get; set; } = new WorldPoint();
     }
 
+    /// <summary>A town inside a large zone; its continent decides the look of the land around it.</summary>
+    public sealed class SettlementDefinition
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string ContinentId { get; set; } = string.Empty;
+        public WorldPoint Center { get; set; } = new WorldPoint();
+    }
+
     public sealed class ZoneDefinition
     {
         public string Id { get; set; } = string.Empty;
@@ -80,10 +89,43 @@ namespace Realmforge.Rules.Definitions
         public string SceneAddress { get; set; } = string.Empty;
         public float SizeMeters { get; set; } = 512;
         public WorldPoint Spawn { get; set; } = new WorldPoint();
+        /// <summary>Towns of an open-world zone; empty for classic zones whose single town sits at the spawn.</summary>
+        public List<SettlementDefinition> Settlements { get; set; } = new List<SettlementDefinition>();
         public List<PortalDefinition> Portals { get; set; } = new List<PortalDefinition>();
         public List<MobSpawnDefinition> Mobs { get; set; } = new List<MobSpawnDefinition>();
         public List<NodeSpawnDefinition> Nodes { get; set; } = new List<NodeSpawnDefinition>();
         public string ContentVersion { get; set; } = "1.0.0";
+
+        public SettlementDefinition? FindSettlement(string settlementId)
+        {
+            foreach (SettlementDefinition settlement in Settlements)
+            {
+                if (settlement.Id == settlementId)
+                {
+                    return settlement;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>Fallen heroes return to the closest town, or to the spawn of a zone without towns.</summary>
+        public WorldPoint RespawnPointNear(float x, float z)
+        {
+            WorldPoint best = Spawn;
+            float bestDistance = float.MaxValue;
+            foreach (SettlementDefinition settlement in Settlements)
+            {
+                float dx = settlement.Center.X - x;
+                float dz = settlement.Center.Z - z;
+                float distance = dx * dx + dz * dz;
+                if (distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    best = settlement.Center;
+                }
+            }
+            return best;
+        }
     }
 
     public sealed class MobDefinition

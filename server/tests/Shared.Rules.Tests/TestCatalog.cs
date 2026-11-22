@@ -15,6 +15,7 @@ internal static class TestCatalog
         {
             Id = "dwarf",
             StartZoneId = "start_dwarf",
+            Playable = true,
             SpeedCells = 5,
             AbilityBonuses = new Dictionary<Ability, int> { { Ability.Constitution, 2 } },
         };

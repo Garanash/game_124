@@ -201,6 +201,32 @@
     gold: 20
     items: [{ item_id: healing_potion, quantity: 2 }, { item_id: whetstone, quantity: 1 }]
     reputation: [{ faction_id: faction_kargath, amount: 200 }]
+- id: quest_ashford_welcome
+  name: "Тревога над Эшфордом"
+  steps:
+    - id: hunt
+      type: Kill
+      text: "Окрестности Эшфорда кишат опасностью. Расправьтесь с угрозой."
+      target_id: bandit
+      count: 4
+      next: report
+    - id: report
+      type: Talk
+      text: Вернитесь к старосте.
+      target_id: npc_ashford_elder
+      next: verdict
+    - id: verdict
+      type: Choice
+      text: Среди нападавших был выживший. Что с ним делать?
+      choices:
+        - { id: spare, text: "Отпустить его", alignment: { law: -5, good: 10 }, reputation: [{ faction_id: faction_aldmark, amount: 50 }] }
+        - { id: jail, text: "Отдать под суд", alignment: { law: 10, good: 0 }, reputation: [{ faction_id: faction_aldmark, amount: 150 }] }
+        - { id: execute, text: "Казнить на месте", alignment: { law: 0, good: -15 }, reputation: [{ faction_id: faction_aldmark, amount: -50 }] }
+  rewards:
+    xp: 300
+    gold: 20
+    items: [{ item_id: healing_potion, quantity: 2 }, { item_id: whetstone, quantity: 1 }]
+    reputation: [{ faction_id: faction_aldmark, amount: 200 }]
 - id: quest_goblin_warrens_welcome
   name: "Тревога над Кривой Котёл"
   steps:

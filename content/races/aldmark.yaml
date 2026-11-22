@@ -1,0 +1,13 @@
+# ip_status: srd - safe as-is (SRD 5.1, CC-BY-4.0). Variant human keeps the total bonus within the +3 cap.
+- id: human
+  name: Человек
+  ip_status: Srd
+  continent_id: aldmark
+  start_zone_id: heartlands
+  start_settlement_id: ashford
+  playable: true
+  size: Medium
+  speed_cells: 6
+  ability_bonuses: { Strength: 1, Constitution: 1, Charisma: 1 }
+  traits: [versatile, extra_language, skilled]
+  portrait: portraits/human

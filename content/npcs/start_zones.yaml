@@ -1,62 +1,62 @@
 # Generated once by the world scaffold, then edited by hand.
 - id: npc_silverleaf_mentor
   name: "Наставник гильдии · Серебряный Лист"
-  zone_id: start_silverleaf
+  zone_id: heartlands
   faction_id: faction_eldarwen
   role: Mentor
   race_id: elf
   quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
   schedule:
-    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
-    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 410.0, z: 425.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 380.0, z: 450.0 } }
 - id: npc_silverleaf_elder
   name: "Староста · Серебряный Лист"
-  zone_id: start_silverleaf
+  zone_id: heartlands
   faction_id: faction_eldarwen
   role: QuestGiver
   race_id: elf
   quests: [quest_silverleaf_welcome]
   schedule:
-    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
-    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
-    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
-    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 400.0, z: 440.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 430.0, z: 410.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 400.0, z: 440.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 375.0, z: 455.0 } }
 - id: npc_silverleaf_merchant
   name: "Торговец · Серебряный Лист"
-  zone_id: start_silverleaf
+  zone_id: heartlands
   faction_id: faction_eldarwen
   role: Vendor
   race_id: elf
   sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
   schedule:
-    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
-    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 385.0, z: 415.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 360.0, z: 390.0 } }
 - id: npc_silverleaf_guard
   name: "Стражник · Серебряный Лист"
-  zone_id: start_silverleaf
+  zone_id: heartlands
   faction_id: faction_eldarwen
   role: Guard
   race_id: elf
   schedule:
-    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
-    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 400.0, z: 490.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 400.0, z: 420.0 } }
 - id: npc_silverleaf_auctioneer
   name: "Аукционист · Серебряный Лист"
-  zone_id: start_silverleaf
+  zone_id: heartlands
   faction_id: faction_eldarwen
   role: Auctioneer
   race_id: elf
   schedule:
-    - { from_hour: 0, to_hour: 24, activity: auction, position: { x: 276.0, z: 276.0 } }
+    - { from_hour: 0, to_hour: 24, activity: auction, position: { x: 420.0, z: 440.0 } }
 - id: npc_silverleaf_trainer
   name: "Мастер ремёсел · Серебряный Лист"
-  zone_id: start_silverleaf
+  zone_id: heartlands
   faction_id: faction_eldarwen
   role: Trainer
   race_id: elf
   schedule:
-    - { from_hour: 7, to_hour: 21, activity: workshop, position: { x: 226.0, z: 266.0 } }
-    - { from_hour: 21, to_hour: 7, activity: sleep, position: { x: 211.0, z: 281.0 } }
+    - { from_hour: 7, to_hour: 21, activity: workshop, position: { x: 370.0, z: 430.0 } }
+    - { from_hour: 21, to_hour: 7, activity: sleep, position: { x: 355.0, z: 445.0 } }
 - id: npc_feywild_glade_mentor
   name: "Наставник гильдии · Круг Грибов"
   zone_id: start_feywild_glade
@@ -100,62 +100,62 @@
     - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
 - id: npc_ironhold_mentor
   name: "Наставник гильдии · Железная Твердыня"
-  zone_id: start_ironhold
+  zone_id: heartlands
   faction_id: faction_kargath
   role: Mentor
   race_id: dwarf
   quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
   schedule:
-    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 266.0, z: 261.0 } }
-    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 236.0, z: 286.0 } }
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 1146.0, z: 425.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 1116.0, z: 450.0 } }
 - id: npc_ironhold_elder
   name: "Староста · Железная Твердыня"
-  zone_id: start_ironhold
+  zone_id: heartlands
   faction_id: faction_kargath
   role: QuestGiver
   race_id: dwarf
   quests: [quest_ironhold_welcome, quest_trial_crypt, quest_goblin_tunnels]
   schedule:
-    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 256.0, z: 276.0 } }
-    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 286.0, z: 246.0 } }
-    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 256.0, z: 276.0 } }
-    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 231.0, z: 291.0 } }
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 1136.0, z: 440.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 1166.0, z: 410.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 1136.0, z: 440.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 1111.0, z: 455.0 } }
 - id: npc_ironhold_merchant
   name: "Торговец · Железная Твердыня"
-  zone_id: start_ironhold
+  zone_id: heartlands
   faction_id: faction_kargath
   role: Vendor
   race_id: dwarf
   sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
   schedule:
-    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 241.0, z: 251.0 } }
-    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 216.0, z: 226.0 } }
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 1121.0, z: 415.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 1096.0, z: 390.0 } }
 - id: npc_ironhold_guard
   name: "Стражник · Железная Твердыня"
-  zone_id: start_ironhold
+  zone_id: heartlands
   faction_id: faction_kargath
   role: Guard
   race_id: dwarf
   schedule:
-    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
-    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 1136.0, z: 490.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 1136.0, z: 420.0 } }
 - id: npc_ironhold_auctioneer
   name: "Аукционист · Железная Твердыня"
-  zone_id: start_ironhold
+  zone_id: heartlands
   faction_id: faction_kargath
   role: Auctioneer
   race_id: dwarf
   schedule:
-    - { from_hour: 0, to_hour: 24, activity: auction, position: { x: 276.0, z: 276.0 } }
+    - { from_hour: 0, to_hour: 24, activity: auction, position: { x: 1156.0, z: 440.0 } }
 - id: npc_ironhold_trainer
   name: "Мастер ремёсел · Железная Твердыня"
-  zone_id: start_ironhold
+  zone_id: heartlands
   faction_id: faction_kargath
   role: Trainer
   race_id: dwarf
   schedule:
-    - { from_hour: 7, to_hour: 21, activity: workshop, position: { x: 226.0, z: 266.0 } }
-    - { from_hour: 21, to_hour: 7, activity: sleep, position: { x: 211.0, z: 281.0 } }
+    - { from_hour: 7, to_hour: 21, activity: workshop, position: { x: 1106.0, z: 430.0 } }
+    - { from_hour: 21, to_hour: 7, activity: sleep, position: { x: 1091.0, z: 445.0 } }
 - id: npc_goblin_warrens_mentor
   name: "Наставник гильдии · Кривой Котёл"
   zone_id: start_goblin_warrens
@@ -535,3 +535,62 @@
   schedule:
     - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 256.0, z: 456.0 } }
     - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 256.0, z: 256.0 } }
+
+- id: npc_ashford_mentor
+  name: "Наставник гильдии · Эшфорд"
+  zone_id: heartlands
+  faction_id: faction_aldmark
+  role: Mentor
+  race_id: human
+  quests: [trial_fighter, trial_wizard, trial_cleric, trial_rogue, trial_ranger, trial_paladin]
+  schedule:
+    - { from_hour: 6, to_hour: 20, activity: teach, position: { x: 778.0, z: 1125.0 } }
+    - { from_hour: 20, to_hour: 6, activity: sleep, position: { x: 748.0, z: 1150.0 } }
+- id: npc_ashford_elder
+  name: "Староста · Эшфорд"
+  zone_id: heartlands
+  faction_id: faction_aldmark
+  role: QuestGiver
+  race_id: human
+  quests: [quest_ashford_welcome, quest_trial_crypt, quest_goblin_tunnels]
+  schedule:
+    - { from_hour: 7, to_hour: 12, activity: council, position: { x: 768.0, z: 1140.0 } }
+    - { from_hour: 12, to_hour: 14, activity: tavern, position: { x: 798.0, z: 1110.0 } }
+    - { from_hour: 14, to_hour: 22, activity: council, position: { x: 768.0, z: 1140.0 } }
+    - { from_hour: 22, to_hour: 7, activity: sleep, position: { x: 743.0, z: 1155.0 } }
+- id: npc_ashford_merchant
+  name: "Торговец · Эшфорд"
+  zone_id: heartlands
+  faction_id: faction_aldmark
+  role: Vendor
+  race_id: human
+  sells_items: [dagger, short_sword, mace, short_bow, quiver, oak_staff, wooden_shield, leather_vest, whetstone, healing_potion, holy_symbol]
+  schedule:
+    - { from_hour: 8, to_hour: 20, activity: trade, position: { x: 753.0, z: 1115.0 } }
+    - { from_hour: 20, to_hour: 8, activity: home, position: { x: 728.0, z: 1090.0 } }
+- id: npc_ashford_guard
+  name: "Стражник · Эшфорд"
+  zone_id: heartlands
+  faction_id: faction_aldmark
+  role: Guard
+  race_id: human
+  schedule:
+    - { from_hour: 6, to_hour: 18, activity: patrol_gate, position: { x: 768.0, z: 1190.0 } }
+    - { from_hour: 18, to_hour: 6, activity: patrol_square, position: { x: 768.0, z: 1120.0 } }
+- id: npc_ashford_auctioneer
+  name: "Аукционист · Эшфорд"
+  zone_id: heartlands
+  faction_id: faction_aldmark
+  role: Auctioneer
+  race_id: human
+  schedule:
+    - { from_hour: 0, to_hour: 24, activity: auction, position: { x: 788.0, z: 1140.0 } }
+- id: npc_ashford_trainer
+  name: "Мастер ремёсел · Эшфорд"
+  zone_id: heartlands
+  faction_id: faction_aldmark
+  role: Trainer
+  race_id: human
+  schedule:
+    - { from_hour: 7, to_hour: 21, activity: workshop, position: { x: 738.0, z: 1130.0 } }
+    - { from_hour: 21, to_hour: 7, activity: sleep, position: { x: 723.0, z: 1145.0 } }
