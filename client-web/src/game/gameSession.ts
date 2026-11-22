@@ -9,9 +9,9 @@ import { NpcLook } from "../render/models";
 import { EntityPresentation, WorldRenderer } from "../render/worldRenderer";
 import { DiceRoller } from "../ui/diceRoller";
 import { Hud } from "../ui/hud";
-import { populate } from "../world/ambientLife";
+import { mergePopulations, populate } from "../world/ambientLife";
 import { NavigationGrid } from "../world/navigation";
-import { generateSettlement, settlementObstacles } from "../world/settlement";
+import { generateWorldLayout } from "../world/worldLayout";
 import { CharacterPanels } from "./characterPanels";
 import { CombatPresenter } from "./combatPresenter";
 import { CombatState } from "./combatState";
@@ -81,7 +81,7 @@ export class GameSession {
       onInventory: () => this.panels.toggleInventory(),
     });
     container.appendChild(this.hud.root);
-    this.panels = new CharacterPanels(gateway, catalog, characterId, this.hud, () => this.refreshCharacter());
+    this.panels = new CharacterPanels(gateway, catalog, characterId, this.hud, () => this.refreshCharacter(), this.renderer.models);
     this.presenter = new CombatPresenter({
       world: this.world,
       renderer: this.renderer,
@@ -151,12 +151,18 @@ export class GameSession {
 
   private loadZone(zone: ZoneDefinition): void {
     const npcs = Object.values(this.catalog.npcs).filter((npc) => npc.zoneId === zone.id);
-    const settlement = generateSettlement({ zone, npcs, mobs: this.catalog.mobs });
-    const navigation = new NavigationGrid(zone.sizeMeters, settlementObstacles(settlement));
+    const layout = generateWorldLayout({ zone, npcs, mobs: this.catalog.mobs });
+    const navigation = new NavigationGrid(zone.sizeMeters, layout.obstacles);
     this.navigation = navigation;
-    const residentRaces = Object.values(this.catalog.races).filter((race) => race.startZoneId === zone.id).map((race) => race.id);
-    const raceIds = residentRaces.length > 0 ? residentRaces : [...new Set(npcs.map((npc) => npc.raceId))];
-    this.renderer.loadZone({ zone, settlement, population: populate(settlement, zone.id, raceIds, navigation) });
+    const populations = layout.towns.map((town, index) => {
+      const site = zone.settlements[index];
+      const residents = Object.values(this.catalog.races)
+        .filter((race) => race.startZoneId === zone.id && (!site || race.startSettlementId === site.id) && (race.playable || !site))
+        .map((race) => race.id);
+      const raceIds = residents.length > 0 ? residents : [...new Set(npcs.map((npc) => npc.raceId))];
+      return populate(town, site ? `${zone.id}:${site.id}` : zone.id, raceIds, navigation);
+    });
+    this.renderer.loadZone({ zone, layout, population: mergePopulations(populations) });
     const continent = this.catalog.continents[zone.continentId]?.name ?? "";
     const pvp = zone.pvp !== "None" ? " · PvP" : "";
     this.hud.setZone(zone.name, `${continent} · ур. ${zone.minLevel}–${zone.maxLevel}${pvp}`);
@@ -580,8 +586,12 @@ export class GameSession {
     if (!self) {
       return;
     }
-    const legs = this.navigation?.findPath(self.latest, goal) ?? [goal];
-    const first = this.route.start(legs.length > 0 ? legs : [goal]);
+    const legs = this.navigation ? this.navigation.findPath(self.latest, goal) : [goal];
+    if (legs.length === 0) {
+      this.hud.toast("Туда не пройти.", "info");
+      return;
+    }
+    const first = this.route.start(legs);
     if (first) {
       this.connection?.send("MoveToRequest", { x: first.x, z: first.z });
     }

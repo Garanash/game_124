@@ -43,7 +43,15 @@ export interface SettlementInput {
   zone: ZoneDefinition;
   npcs: NpcDefinition[];
   mobs: Record<string, MobDefinition>;
+  /** A town of an open-world zone; without it the zone kind decides the layout around the spawn. */
+  site?: SettlementSite;
+  /** Far points the main roads lead to besides the portals, e.g. the crossroads between towns. */
+  roadTargets?: Point[];
+  /** Forces the layout, e.g. "wilds" for the land between the towns of an open-world zone. */
+  kind?: SettlementKind;
 }
+
+export interface SettlementSite { id: string; continentId: string; center: Point }
 
 const BUILDING_SIZES: Record<BuildingKind, { width: number; depth: number }> = {
   house: { width: 7, depth: 6 },
@@ -93,11 +101,11 @@ const UNDEAD_PATTERN = /skeleton|crypt|ghoul/;
 
 /** Builds the same layout on every client from content alone, so towns need no extra server data. */
 export function generateSettlement(input: SettlementInput): Settlement {
-  const { zone } = input;
-  const random = seededRandom(hashText(zone.id));
-  const kind = settlementKind(zone.kind);
+  const { zone, site } = input;
+  const random = seededRandom(hashText(site ? `${zone.id}:${site.id}` : zone.id));
+  const kind = input.kind ?? (site ? "town" : settlementKind(zone.kind));
   const settlement: Settlement = {
-    kind, continentId: zone.continentId, center: zone.spawn, radius: 0, plazaRadius: PLAZA_RADIUS,
+    kind, continentId: site?.continentId ?? zone.continentId, center: site?.center ?? zone.spawn, radius: 0, plazaRadius: PLAZA_RADIUS,
     buildings: [], props: [], walls: [], gateTowers: [], roads: [], pointsOfInterest: [],
   };
   const planner = new Planner(settlement, input, random);
@@ -169,7 +177,7 @@ class Planner {
 
   constructor(private readonly settlement: Settlement, private readonly input: SettlementInput, private readonly random: () => number) {
     const zone = input.zone;
-    this.keepClear.push({ point: zone.spawn, radius: SPAWN_KEEP_CLEAR });
+    this.keepClear.push({ point: zone.spawn, radius: SPAWN_KEEP_CLEAR }, { point: settlement.center, radius: SPAWN_KEEP_CLEAR });
     zone.portals.forEach((portal) => this.keepClear.push({ point: portal.position, radius: PORTAL_KEEP_CLEAR }));
     (zone.nodes ?? []).forEach((node) => this.keepClear.push({ point: node.position, radius: NODE_KEEP_CLEAR }));
     (zone.mobs ?? []).forEach((mob) => this.keepClear.push({ point: mob.position, radius: MOB_KEEP_CLEAR }));
@@ -341,8 +349,9 @@ class Planner {
 
   private planRoadsToPortals(): void {
     const center = this.settlement.center;
-    for (const portal of this.input.zone.portals) {
-      this.settlement.roads.push({ from: center, to: portal.position, width: ROAD_WIDTH });
+    const targets = [...this.input.zone.portals.map((portal) => portal.position), ...(this.input.roadTargets ?? [])];
+    for (const target of targets) {
+      this.settlement.roads.push({ from: center, to: target, width: ROAD_WIDTH });
     }
   }
 
@@ -409,7 +418,7 @@ class Planner {
     for (let index = 0; index < WALL_SIDES; index++) {
       const from = vertices[index];
       const to = vertices[(index + 1) % WALL_SIDES];
-      const blocked = crossings.some(([a, b]) => segmentsIntersect(from, to, a, b))
+      const blocked = crossings.some(([a, b]) => crossesWallSide(from, to, a, b))
         || this.keepClear.some((spot) => segmentDistanceToPoint(from, to, spot.point) < spot.radius * 0.6);
       if (blocked) {
         this.settlement.gateTowers.push(from, to);
@@ -417,7 +426,8 @@ class Planner {
         this.settlement.walls.push({ from, to });
       }
     }
-    this.settlement.gateTowers = dedupe(this.settlement.gateTowers);
+    this.settlement.gateTowers = dedupe(this.settlement.gateTowers)
+      .filter((tower) => !crossings.some(([a, b]) => segmentDistanceToPoint(a, b, tower) < ROAD_WIDTH));
   }
 
   private placeStreetProps(): void {
@@ -492,6 +502,13 @@ class Planner {
 }
 
 /** Yaw that lays a footprint's local X axis along the wall. */
+/** A route that passes through a corner of the wall touches both sides without strictly crossing either, so corners count too. */
+function crossesWallSide(sideFrom: Point, sideTo: Point, routeFrom: Point, routeTo: Point): boolean {
+  return segmentsIntersect(sideFrom, sideTo, routeFrom, routeTo)
+    || segmentDistanceToPoint(routeFrom, routeTo, sideFrom) < ROAD_WIDTH
+    || segmentDistanceToPoint(routeFrom, routeTo, sideTo) < ROAD_WIDTH;
+}
+
 export function wallRotation(wall: WallSegment): number {
   return Math.atan2(-(wall.to.z - wall.from.z), wall.to.x - wall.from.x);
 }

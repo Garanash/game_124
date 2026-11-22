@@ -118,7 +118,7 @@ export function populate(settlement: Settlement, zoneId: string, raceIds: string
   for (let index = 0; index < villagerCount; index++) {
     const route = Array.from({ length: STOPS_PER_ROUTE }, () => places[Math.floor(random() * places.length)]);
     const seed = Math.floor(random() * 1e9);
-    villagers.push(new Villager(`villager-${index}`, seed, races[Math.floor(random() * races.length)], route, navigation));
+    villagers.push(new Villager(`${zoneId}:villager-${index}`, seed, races[Math.floor(random() * races.length)], route, navigation));
   }
   const homes = settlement.buildings.filter((building) => building.kind === "house" || building.kind === "barn");
   const critters: Critter[] = [];
@@ -126,7 +126,14 @@ export function populate(settlement: Settlement, zoneId: string, raceIds: string
   for (let index = 0; index < critterCount; index++) {
     const home = homes[Math.floor(random() * homes.length)].door;
     const kind: CritterKind = index % 4 === 3 ? (index % 8 === 3 ? "dog" : "cat") : "chicken";
-    critters.push(new Critter(`critter-${index}`, kind, home, Math.floor(random() * 1e9)));
+    critters.push(new Critter(`${zoneId}:critter-${index}`, kind, home, Math.floor(random() * 1e9)));
   }
   return { villagers, critters };
+}
+
+export function mergePopulations(populations: AmbientPopulation[]): AmbientPopulation {
+  return {
+    villagers: populations.flatMap((population) => population.villagers),
+    critters: populations.flatMap((population) => population.critters),
+  };
 }

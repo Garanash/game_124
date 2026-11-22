@@ -16,6 +16,10 @@ export interface Point { x: number; z: number }
 
 export interface RaceDefinition {
   id: string; name: string; ipStatus: string; continentId: string; startZoneId: string;
+  /** Town of an open-world start zone; empty when heroes appear at the zone spawn. */
+  startSettlementId: string;
+  /** Only races with finished art can be picked at character creation. */
+  playable: boolean;
   size: string; speedCells: number; abilityBonuses: Partial<Record<AbilityName, number>>; traits: string[];
 }
 
@@ -52,10 +56,14 @@ export interface NodeSpawnDefinition { nodeId: string; position: Point }
 export interface QuestStep { id: string; type: string; text: string; targetId: string; count: number }
 export interface QuestDefinition { id: string; name: string; steps: QuestStep[] }
 export interface PortalDefinition { toZoneId: string; position: Point; arrival: Point }
+export interface SettlementDefinition { id: string; name: string; continentId: string; center: Point }
 
 export interface ZoneDefinition {
   id: string; name: string; continentId: string; kind: string; minLevel: number; maxLevel: number;
-  pvp: string; sizeMeters: number; spawn: Point; portals: PortalDefinition[];
+  pvp: string; sizeMeters: number; spawn: Point;
+  /** Towns of an open-world zone; empty for classic zones whose single town sits at the spawn. */
+  settlements: SettlementDefinition[];
+  portals: PortalDefinition[];
   mobs: MobSpawnDefinition[]; nodes: NodeSpawnDefinition[];
 }
 

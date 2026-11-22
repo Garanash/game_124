@@ -5,8 +5,9 @@ import { EntityKind } from "../net/protocol";
 import { WorldEntity, WorldState } from "../game/worldState";
 import { daylight, hourOfDay } from "../game/npcLife";
 import { AmbientPopulation, Critter, Villager } from "../world/ambientLife";
-import { containsPoint, distance, seededRandom } from "../world/geometry";
-import { Settlement, settlementObstacles } from "../world/settlement";
+import { groundForContinent, GroundKind } from "../world/biomes";
+import { distance } from "../world/geometry";
+import { WorldLayout } from "../world/worldLayout";
 import { citizenOutfit, raceLook, stableHash } from "./characters/appearance";
 import { buildCritter } from "./characters/creatures";
 import { buildHumanoid } from "./characters/humanoid";
@@ -14,7 +15,9 @@ import { ActionKind, Activity, Animator, CharacterAnimator } from "./characters/
 import { CombatEffects } from "./combatEffects";
 import { AppearanceHints, GeneratedModel, GeneratedModels, mobModelKey, raceModelKey } from "./generated/generatedModels";
 import { castShadows } from "./generated/modelAssets";
-import { createModel, hashHue, labelHeightFor, npcMarker, NpcLook, placeMarker, selfRing } from "./models";
+import { DecorRenderer } from "./decorRenderer";
+import { GroundRenderer } from "./groundRenderer";
+import { createModel, labelHeightFor, npcMarker, NpcLook, placeMarker, selfRing } from "./models";
 import { TownRenderer } from "./townRenderer";
 import { styleFor, TownStyle } from "./townStyles";
 
@@ -25,9 +28,6 @@ const MIN_VIEW_HEIGHT_METERS = 12;
 const MAX_VIEW_HEIGHT_METERS = 60;
 const ZOOM_STEP = 1.1;
 const CAMERA_FOLLOW_RATE = 8;
-const DECOR_PER_HECTARE = 9;
-const DECOR_CLEAR_RADIUS_METERS = 14;
-const GROUND_TILE_METERS = 8;
 const MAX_PIXEL_RATIO = 2;
 /** Display positions chase the network position no faster than this, so small corrections glide. */
 const MAX_DISPLAY_SPEED = 9;
@@ -84,7 +84,7 @@ export interface PickResult {
 
 export interface ZoneScene {
   zone: ZoneDefinition;
-  settlement: Settlement;
+  layout: WorldLayout;
   population: AmbientPopulation;
 }
 
@@ -104,15 +104,16 @@ export class WorldRenderer {
   private readonly raycaster = new THREE.Raycaster();
   private readonly views = new Map<number, EntityView>();
   private readonly ambient: AmbientView[] = [];
-  private readonly generatedModels = new GeneratedModels();
+  /** Shared with the character window's viewer, so both reuse one download of each model. */
+  readonly models = new GeneratedModels();
   private readonly sun: THREE.DirectionalLight;
   private readonly sky: THREE.HemisphereLight;
-  private readonly ground: THREE.Mesh;
-  private readonly decor = new THREE.Group();
+  private readonly ground = new GroundRenderer();
+  private readonly decor = new DecorRenderer();
   private readonly clickMarker: THREE.Mesh;
   private readonly cameraTarget = new THREE.Vector3();
   private readonly daySky = new THREE.Color();
-  private town: TownRenderer | null = null;
+  private towns: TownRenderer[] = [];
   private viewHeight = DEFAULT_VIEW_HEIGHT_METERS;
   private clickMarkerAge = Number.POSITIVE_INFINITY;
   private shakeStrength = 0;
@@ -138,10 +139,7 @@ export class WorldRenderer {
     this.scene.add(sun, sun.target);
     this.sun = sun;
 
-    this.ground = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-    this.ground.rotation.x = -Math.PI / 2;
-    this.ground.receiveShadow = true;
-    this.scene.add(this.ground, this.decor);
+    this.scene.add(this.ground.mesh, this.decor.group);
     this.effects = new CombatEffects(this.scene);
 
     this.clickMarker = new THREE.Mesh(
@@ -151,7 +149,7 @@ export class WorldRenderer {
     this.clickMarker.visible = false;
     this.scene.add(this.clickMarker);
 
-    this.generatedModels.onReady((key) => this.upgradeToGenerated(key));
+    this.models.onReady((key) => this.upgradeToGenerated(key));
     window.addEventListener("resize", () => this.resize());
     this.resize();
   }
@@ -160,28 +158,22 @@ export class WorldRenderer {
     return this.renderer.domElement;
   }
 
-  loadZone({ zone, settlement, population }: ZoneScene): void {
-    const style = { ...styleFor(zone.continentId), ...SPECIAL_ZONE_LOOKS[zone.kind] };
+  loadZone({ zone, layout, population }: ZoneScene): void {
+    const special = SPECIAL_ZONE_LOOKS[zone.kind];
+    const style = { ...styleFor(zone.continentId), ...special };
     this.daySky.set(style.sky);
     this.scene.background = this.daySky.clone();
     this.scene.fog = new THREE.Fog(style.sky, 75, 150);
-    this.ground.geometry.dispose();
-    this.ground.geometry = new THREE.PlaneGeometry(zone.sizeMeters, zone.sizeMeters);
-    this.ground.position.set(zone.sizeMeters / 2, 0, zone.sizeMeters / 2);
-    const material = this.ground.material as THREE.MeshStandardMaterial;
-    material.map?.dispose();
-    material.map = groundTexture(style.ground, zone.sizeMeters);
-    material.needsUpdate = true;
-
-    if (this.town) {
-      this.scene.remove(this.town.group);
-      this.town.dispose();
-    }
-    this.town = new TownRenderer(settlement, style);
-    this.scene.add(this.town.group);
-    this.buildDecor(zone, settlement, style);
+    this.ground.load(zone.sizeMeters, layout.biomes, (kind) => groundTint(zone, kind, style));
+    this.towns.forEach((town) => {
+      this.scene.remove(town.group);
+      town.dispose();
+    });
+    this.towns = layout.settlements.map((settlement) => new TownRenderer(settlement, { ...styleFor(settlement.continentId), ...special }));
+    this.towns.forEach((town) => this.scene.add(town.group));
+    this.decor.load(layout.decor);
     this.clearEntities();
-    zone.mobs.forEach((spawn) => this.generatedModels.request(mobModelKey(spawn.mobId)));
+    zone.mobs.forEach((spawn) => this.models.request(mobModelKey(spawn.mobId)));
     this.buildAmbient(population);
     this.effects.clear();
   }
@@ -237,13 +229,13 @@ export class WorldRenderer {
         return { entityId, point: hit.point };
       }
     }
-    return { entityId: null, point: this.raycaster.intersectObject(this.ground)[0]?.point ?? null };
+    return { entityId: null, point: this.raycaster.intersectObject(this.ground.mesh)[0]?.point ?? null };
   }
 
   /** Ground point under the cursor, ignoring entities (used for combat cell targeting). */
   pickGround(clientX: number, clientY: number): THREE.Vector3 | null {
     this.aimRay(clientX, clientY);
-    return this.raycaster.intersectObject(this.ground)[0]?.point ?? null;
+    return this.raycaster.intersectObject(this.ground.mesh)[0]?.point ?? null;
   }
 
   render(world: WorldState, deltaSeconds: number, presentation: EntityPresentation): void {
@@ -296,7 +288,7 @@ export class WorldRenderer {
       this.scene.background.copy(sky);
     }
     this.scene.fog?.color.copy(sky);
-    this.town?.update(deltaSeconds, light);
+    this.towns.forEach((town) => town.update(deltaSeconds, light));
   }
 
   private syncEntities(world: WorldState, deltaSeconds: number, presentation: EntityPresentation): void {
@@ -467,8 +459,8 @@ export class WorldRenderer {
     if (!source) {
       return null;
     }
-    this.generatedModels.request(source.key);
-    return this.generatedModels.instantiate(source.key, source.hints);
+    this.models.request(source.key);
+    return this.models.instantiate(source.key, source.hints);
   }
 
   /** Swaps procedural bodies for a model that just finished downloading, keeping position, label and death pose. */
@@ -499,7 +491,7 @@ export class WorldRenderer {
     if (view.generated || view.source?.key !== modelKey) {
       return null;
     }
-    const model = this.generatedModels.instantiate(modelKey, view.source.hints);
+    const model = this.models.instantiate(modelKey, view.source.hints);
     if (!model) {
       return null;
     }
@@ -527,43 +519,6 @@ export class WorldRenderer {
     }
   }
 
-  private buildDecor(zone: ZoneDefinition, settlement: Settlement, style: TownStyle): void {
-    this.decor.clear();
-    const random = seededRandom(hashHue(zone.id) * 0xffffffff);
-    const keepClear = [zone.spawn, ...zone.portals.map((portal) => portal.position), ...zone.nodes.map((node) => node.position)];
-    const obstacles = settlementObstacles(settlement);
-    const townClearance = settlement.kind === "town" || settlement.kind === "village" ? settlement.radius + 6 : 0;
-    const count = Math.round((zone.sizeMeters * zone.sizeMeters) / 10000 * DECOR_PER_HECTARE);
-    const trunk = new THREE.MeshStandardMaterial({ color: 0x5a3f28, flatShading: true });
-    const leaves = new THREE.MeshStandardMaterial({ color: style.foliage, flatShading: true });
-    const stone = new THREE.MeshStandardMaterial({ color: 0x8b8b86, flatShading: true });
-    for (let index = 0; index < count; index++) {
-      const point = { x: random() * zone.sizeMeters, z: random() * zone.sizeMeters };
-      const blocked = keepClear.some((spot) => distance(spot, point) < DECOR_CLEAR_RADIUS_METERS)
-        || distance(point, settlement.center) < townClearance
-        || obstacles.some((footprint) => containsPoint(footprint, point, 3));
-      if (blocked) {
-        continue;
-      }
-      const piece = new THREE.Group();
-      if (random() < 0.75) {
-        piece.add(...treeMeshes(style, trunk, leaves));
-      } else {
-        const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.9, 0), stone);
-        rock.position.y = 0.4;
-        piece.add(rock);
-      }
-      piece.traverse((child) => {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      });
-      piece.scale.setScalar(0.7 + random() * 0.9);
-      piece.rotation.y = random() * Math.PI * 2;
-      piece.position.set(point.x, 0, point.z);
-      this.decor.add(piece);
-    }
-  }
-
   private resize(): void {
     const width = this.container.clientWidth;
     const height = this.container.clientHeight;
@@ -576,35 +531,10 @@ export class WorldRenderer {
   }
 }
 
-function treeMeshes(style: TownStyle, trunk: THREE.Material, leaves: THREE.Material): THREE.Mesh[] {
-  const place = (mesh: THREE.Mesh, y: number) => {
-    mesh.position.y = y;
-    return mesh;
-  };
-  switch (style.tree) {
-    case "palm": {
-      const fronds = Array.from({ length: 5 }, (_, index) => {
-        const frond = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.06, 2), leaves);
-        frond.position.y = 3.6;
-        frond.rotation.set(0.5, (index / 5) * Math.PI * 2, 0);
-        frond.translateZ(0.9);
-        return frond;
-      });
-      return [place(new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.25, 3.6, 6), trunk), 1.8), ...fronds];
-    }
-    case "dead":
-      return [place(new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.25, 2.8, 5), trunk), 1.4)];
-    case "round":
-      return [
-        place(new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.3, 1.4, 5), trunk), 0.7),
-        place(new THREE.Mesh(new THREE.IcosahedronGeometry(1.3, 0), leaves), 2.3),
-      ];
-    case "pine":
-      return [
-        place(new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.3, 1.4, 5), trunk), 0.7),
-        place(new THREE.Mesh(new THREE.ConeGeometry(1.3, 2.6, 6), leaves), 2.4),
-      ];
-  }
+/** The zone's own land keeps its continent colour; land around a foreign town takes that town's colour. */
+function groundTint(zone: ZoneDefinition, kind: GroundKind, zoneStyle: TownStyle): number {
+  const site = zone.settlements.find((settlement) => groundForContinent(settlement.continentId) === kind);
+  return kind !== groundForContinent(zone.continentId) && site ? styleFor(site.continentId).ground : zoneStyle.ground;
 }
 
 function modelSourceFor(entity: WorldEntity, npc: NpcLook | undefined): ModelSource | null {
@@ -627,27 +557,4 @@ function findEntityId(object: THREE.Object3D | null): number | null {
     }
   }
   return null;
-}
-
-function groundTexture(color: number, sizeMeters: number): THREE.CanvasTexture {
-  const size = 128;
-  const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
-  const context = canvas.getContext("2d")!;
-  const base = new THREE.Color(color);
-  context.fillStyle = `#${base.getHexString()}`;
-  context.fillRect(0, 0, size, size);
-  const random = seededRandom(color);
-  for (let index = 0; index < 900; index++) {
-    const shade = base.clone().offsetHSL(0, 0, (random() - 0.5) * 0.08);
-    context.fillStyle = `#${shade.getHexString()}`;
-    context.fillRect(random() * size, random() * size, 3, 3);
-  }
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  texture.repeat.set(sizeMeters / GROUND_TILE_METERS, sizeMeters / GROUND_TILE_METERS);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
 }

@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { Building, PropPlacement, Settlement, wallRotation } from "../world/settlement";
 import { distance } from "../world/geometry";
+import { groundTexture, ROAD_TILE_METERS } from "./groundTextures";
 import { TownStyle } from "./townStyles";
 
 const WALL_HEIGHT = 3.2;
@@ -8,6 +9,7 @@ const WALL_THICKNESS = 0.9;
 const STOREY_METERS = 2.8;
 const DECAL_HEIGHT = 0.025;
 const NIGHT_WINDOW_GLOW = 1.6;
+const DOOR_PATH_RADIUS = 1.6;
 
 /** Shared materials per town: buildings are static, so one material per colour keeps draw state small. */
 class Palette {
@@ -72,33 +74,31 @@ export class TownRenderer {
   }
 
   private buildGround(): void {
-    const roadMaterial = new THREE.MeshStandardMaterial({ color: this.style.road, roughness: 1, polygonOffset: true, polygonOffsetFactor: -1 });
+    const roadMaterial = this.decalMaterial(groundTexture("road", this.style.road), -1);
     for (const road of this.settlement.roads) {
       const length = distance(road.from, road.to);
-      const strip = new THREE.Mesh(new THREE.BoxGeometry(road.width, DECAL_HEIGHT, length), roadMaterial);
+      const strip = this.decal(tiledPlane(road.width, length), roadMaterial, (road.from.x + road.to.x) / 2, (road.from.z + road.to.z) / 2, DECAL_HEIGHT);
       strip.rotation.y = Math.atan2(road.to.x - road.from.x, road.to.z - road.from.z);
-      strip.position.set((road.from.x + road.to.x) / 2, DECAL_HEIGHT, (road.from.z + road.to.z) / 2);
-      strip.receiveShadow = true;
-      strip.userData.decal = true;
-      this.group.add(strip);
+      [road.from, road.to].forEach((end) => this.decal(tiledDisc(road.width / 2), roadMaterial, end.x, end.z, DECAL_HEIGHT));
     }
     if (this.settlement.kind === "town" || this.settlement.kind === "village") {
-      const plaza = new THREE.Mesh(
-        new THREE.CircleGeometry(this.settlement.plazaRadius + 2, 40),
-        new THREE.MeshStandardMaterial({ color: this.style.plaza, roughness: 0.95, polygonOffset: true, polygonOffsetFactor: -2 }));
-      plaza.rotation.x = -Math.PI / 2;
-      plaza.position.set(this.settlement.center.x, DECAL_HEIGHT * 1.5, this.settlement.center.z);
-      plaza.receiveShadow = true;
-      plaza.userData.decal = true;
-      this.group.add(plaza);
-      for (const building of this.settlement.buildings) {
-        const path = new THREE.Mesh(new THREE.CircleGeometry(1.6, 12), roadMaterial);
-        path.rotation.x = -Math.PI / 2;
-        path.position.set(building.door.x, DECAL_HEIGHT, building.door.z);
-        path.userData.decal = true;
-        this.group.add(path);
-      }
+      const plazaMaterial = this.decalMaterial(groundTexture("cobble", this.style.plaza), -2);
+      this.decal(tiledDisc(this.settlement.plazaRadius + 2), plazaMaterial, this.settlement.center.x, this.settlement.center.z, DECAL_HEIGHT * 1.5);
+      this.settlement.buildings.forEach((building) => this.decal(tiledDisc(DOOR_PATH_RADIUS), roadMaterial, building.door.x, building.door.z, DECAL_HEIGHT));
     }
+  }
+
+  private decalMaterial(map: THREE.Texture, offset: number): THREE.MeshStandardMaterial {
+    return new THREE.MeshStandardMaterial({ map, roughness: 0.95, polygonOffset: true, polygonOffsetFactor: offset, polygonOffsetUnits: offset });
+  }
+
+  private decal(geometry: THREE.BufferGeometry, material: THREE.Material, x: number, z: number, height: number): THREE.Mesh {
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(x, height, z);
+    mesh.receiveShadow = true;
+    mesh.userData.decal = true;
+    this.group.add(mesh);
+    return mesh;
   }
 
   private building(building: Building): THREE.Group {
@@ -474,4 +474,21 @@ export class TownRenderer {
       this.group.add(tower);
     }
   }
+}
+
+/** A flat strip lying on the ground, length along +Z, with the texture repeating every ROAD_TILE_METERS. */
+function tiledPlane(width: number, length: number): THREE.BufferGeometry {
+  return scaleUv(new THREE.PlaneGeometry(width, length).rotateX(-Math.PI / 2), width, length);
+}
+
+function tiledDisc(radius: number): THREE.BufferGeometry {
+  return scaleUv(new THREE.CircleGeometry(radius, 32).rotateX(-Math.PI / 2), radius * 2, radius * 2);
+}
+
+function scaleUv(geometry: THREE.BufferGeometry, width: number, length: number): THREE.BufferGeometry {
+  const uv = geometry.getAttribute("uv") as THREE.BufferAttribute;
+  for (let index = 0; index < uv.count; index++) {
+    uv.setXY(index, (uv.getX(index) * width) / ROAD_TILE_METERS, (uv.getY(index) * length) / ROAD_TILE_METERS);
+  }
+  return geometry;
 }

@@ -14,9 +14,13 @@ const NEIGHBOURS: Array<[number, number, number]> = [
  * Walkability grid over a zone. The server moves entities in straight lines, so the client turns a
  * click into a chain of straight legs that avoid buildings and sends them one at a time.
  */
+interface SearchBuffers { cost: Float32Array; parent: Int32Array; state: Uint32Array }
+
 export class NavigationGrid {
   private readonly size: number;
   private readonly blocked: Uint8Array;
+  private searchBuffers: SearchBuffers | null = null;
+  private searchStamp = 0;
 
   constructor(zoneSizeMeters: number, obstacles: Footprint[]) {
     this.size = Math.ceil(zoneSizeMeters / CELL_METERS);
@@ -62,15 +66,22 @@ export class NavigationGrid {
     return true;
   }
 
+  /**
+   * A* over the grid. The buffers are reused between searches and stamped per search instead of cleared, because
+   * an open-world zone has millions of cells and a fresh allocation per click would stall the frame.
+   */
   private search(startCell: number, goalCell: number): number[] {
     const size = this.size;
-    const cost = new Float32Array(size * size).fill(Number.POSITIVE_INFINITY);
-    const parent = new Int32Array(size * size).fill(-1);
-    const closed = new Uint8Array(size * size);
+    const { cost, parent, state } = this.buffers();
+    const open = (this.searchStamp += 2);
+    const closed = open + 1;
+    const costOf = (cell: number) => (state[cell] >= open ? cost[cell] : Number.POSITIVE_INFINITY);
     const goalX = goalCell % size;
     const goalZ = Math.floor(goalCell / size);
     const heap = new MinHeap();
     cost[startCell] = 0;
+    parent[startCell] = -1;
+    state[startCell] = open;
     heap.push(startCell, 0);
     let expanded = 0;
     while (heap.length > 0 && expanded < MAX_EXPANDED_NODES) {
@@ -78,10 +89,10 @@ export class NavigationGrid {
       if (current === goalCell) {
         return this.reconstruct(parent, goalCell);
       }
-      if (closed[current]) {
+      if (state[current] === closed) {
         continue;
       }
-      closed[current] = 1;
+      state[current] = closed;
       expanded++;
       const x = current % size;
       const z = Math.floor(current / size);
@@ -92,21 +103,28 @@ export class NavigationGrid {
           continue;
         }
         const next = nz * size + nx;
-        if (this.blocked[next] || closed[next]) {
+        if (this.blocked[next] || state[next] === closed) {
           continue;
         }
         if (dx !== 0 && dz !== 0 && (this.blocked[z * size + nx] || this.blocked[nz * size + x])) {
           continue;
         }
         const tentative = cost[current] + stepCost;
-        if (tentative < cost[next]) {
+        if (tentative < costOf(next)) {
           cost[next] = tentative;
           parent[next] = current;
+          state[next] = open;
           heap.push(next, tentative + octile(nx - goalX, nz - goalZ));
         }
       }
     }
     return [];
+  }
+
+  private buffers(): SearchBuffers {
+    const cells = this.size * this.size;
+    this.searchBuffers ??= { cost: new Float32Array(cells), parent: new Int32Array(cells), state: new Uint32Array(cells) };
+    return this.searchBuffers;
   }
 
   private reconstruct(parent: Int32Array, goalCell: number): number[] {

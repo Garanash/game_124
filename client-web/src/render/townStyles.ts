@@ -18,6 +18,10 @@ export interface TownStyle {
 }
 
 export const CONTINENT_STYLES: Record<string, TownStyle> = {
+  aldmark: {
+    wall: 0xeadfc4, trim: 0x6a4a2e, roof: 0x5a6070, roofShape: "gable", timber: 0x4e3320, stone: 0x9c958a,
+    cloth: [0x2a4a9a, 0xe8c040, 0xb02a2a], ground: 0x78a04a, sky: 0xb0d4f0, foliage: 0x4a8a3a, road: 0x9a8460, plaza: 0xaea690, tree: "round",
+  },
   eldarwen: {
     wall: 0xece6d6, trim: 0xb8a07a, roof: 0x3a64b0, roofShape: "steep", timber: 0x8a6a48, stone: 0xc8c4ba,
     cloth: [0x3a7ad8, 0xe8e0c8, 0x6ab06a], ground: 0x5f9a4a, sky: 0xa8d0ec, foliage: 0x3a8a40, road: 0xb8aa88, plaza: 0xd8d2c4, tree: "round",
