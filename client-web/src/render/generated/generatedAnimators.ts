@@ -126,8 +126,8 @@ export class ClipAnimator implements Animator {
     this.flash.update(deltaSeconds);
     const target = this.dead || speed < IDLE_BELOW_SPEED ? "idle" : speed > RUN_ABOVE_SPEED && this.actions.has("run") ? "run" : "walk";
     const blend = Math.min(1, deltaSeconds * LOCOMOTION_BLEND_RATE);
-    const deathWeight = this.actions.get("death")?.getEffectiveWeight() ?? 0;
-    const shotWeight = this.oneShot?.getEffectiveWeight() ?? 0;
+    const deathWeight = scheduledWeight(this.actions.get("death"));
+    const shotWeight = scheduledWeight(this.oneShot);
     const locomotionShare = Math.max(0, 1 - Math.max(deathWeight, shotWeight));
     for (const slot of ["idle", "walk", "run"] as const) {
       this.weights[slot] += ((slot === target ? 1 : 0) - this.weights[slot]) * blend;
@@ -207,6 +207,11 @@ export class StaticMeshAnimator implements Animator {
       this.pivot.position.y += pulse * this.height * 0.2;
     }
   }
+}
+
+/** Actions report weight 1 before they ever play, so only count the ones the mixer is running. */
+function scheduledWeight(action: THREE.AnimationAction | null | undefined): number {
+  return action?.isScheduled() ? action.getEffectiveWeight() : 0;
 }
 
 function playbackRate(speed: number, clipSpeed: number): number {

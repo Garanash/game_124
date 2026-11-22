@@ -25,6 +25,8 @@ const RIGGING = "/openapi/v1/rigging";
 const ANIMATIONS = "/openapi/v1/animations";
 /** Low enough for dozens of characters on screen in a browser, high enough to keep faces readable. */
 const TARGET_POLYCOUNT = 12000;
+/** Smart Topology builds a clean game mesh at the target face count, which rigging needs. */
+const GEOMETRY_MODEL = "meshy-t2.5";
 const MAX_TEXTURE_PROMPT = 800;
 const DEFAULT_CONCURRENCY = 2;
 
@@ -140,8 +142,9 @@ async function generate(client, store, library, asset, log) {
     mode: "preview",
     prompt: asset.prompt,
     model_type: "smart-topology",
+    ai_model: GEOMETRY_MODEL,
     target_polycount: TARGET_POLYCOUNT,
-    ...(asset.rig === "biped" ? { pose_mode: "a-pose" } : {}),
+    ...(asset.rig === "biped" ? { pose_mode: "t-pose" } : {}),
     target_formats: ["glb"],
   }));
   await client.waitFor(TEXT_TO_3D, preview, (progress) => log(`меш ${progress}%`));

@@ -134,7 +134,9 @@ function clipsBySlot(entry: ManifestEntry, animations: GLTF | null): Map<ClipSlo
   const clips = new Map<ClipSlot, THREE.AnimationClip>();
   for (const [slot, name] of Object.entries(entry.clips) as [ClipSlot, string][]) {
     const wanted = clipNameKey(name);
-    const clip = animations?.animations.find((candidate) => clipNameKey(candidate.name).includes(wanted));
+    const candidates = animations?.animations ?? [];
+    const clip = candidates.find((candidate) => clipNameKey(candidate.name) === wanted)
+      ?? candidates.find((candidate) => clipNameKey(candidate.name).includes(wanted));
     if (clip) {
       clips.set(slot, clip);
     }
@@ -142,7 +144,7 @@ function clipsBySlot(entry: ManifestEntry, animations: GLTF | null): Map<ClipSlo
   return clips;
 }
 
-/** Meshy's merged GLB may rename clips ("Walk Forward" vs "walk_forward"), so compare letters and digits only. */
-function clipNameKey(name: string): string {
-  return name.toLowerCase().replace(/[^a-z0-9]/g, "");
+/** Meshy's merged GLB renames library clips ("Run 2" becomes "Run_02"), so compare words and numeric values only. */
+export function clipNameKey(name: string): string {
+  return name.toLowerCase().replace(/\d+/g, (digits) => String(Number(digits))).replace(/[^a-z0-9]/g, "");
 }
