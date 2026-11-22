@@ -46,12 +46,33 @@ public sealed class CharacterOperations
             return DomainResult<CharacterState>.Fail(DomainResult.From(valid));
         }
         CharacterSheet sheet = CharacterRules.Create(characterId, accountId, request, _catalog, nowUtc);
-        return DomainResult<CharacterState>.Ok(new CharacterState
+        var state = new CharacterState
         {
             Sheet = sheet,
             FactionId = FactionRules.HomeFaction(_catalog, sheet.RaceId) ?? string.Empty,
-        });
+        };
+        GiveStarterKit(state);
+        return DomainResult<CharacterState>.Ok(state);
     }
+
+    /// <summary>
+    /// Every hero leaves home armed. The kit also teaches the backpack: the whetstone sharpens the sword
+    /// when placed beside it, and the two daggers in the bag fuse into twin daggers once they touch.
+    /// </summary>
+    private void GiveStarterKit(CharacterState state)
+    {
+        foreach (string itemId in StarterBackpackItems.Where(_catalog.Items.ContainsKey))
+        {
+            state.Backpack.TryAutoPlace(Guid.NewGuid(), itemId, _catalog, out _);
+        }
+        foreach ((string itemId, int quantity) in StarterBagItems.Where(entry => _catalog.Items.ContainsKey(entry.ItemId)))
+        {
+            state.Materials.Add(itemId, quantity);
+        }
+    }
+
+    private static readonly string[] StarterBackpackItems = { "short_sword", "leather_vest", "whetstone" };
+    private static readonly (string ItemId, int Quantity)[] StarterBagItems = { ("dagger", 2), ("healing_potion", 2) };
 
     public RewardOutcome GrantRewards(CharacterState state, long xp, LootResult loot)
     {
