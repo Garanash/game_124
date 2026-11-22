@@ -30,6 +30,15 @@ dotnet run --project tools/BotClient -- http://127.0.0.1:5080   # бот про�
 Клиент: выполнить `tools/sync_unity.sh` (собирает общие DLL и копирует контент), затем открыть `client/`
 в Unity `6000.0.30f1`.
 
+Веб-клиент (Three.js, играет в браузере с тем же сервером):
+
+```bash
+cd client-web && npm install
+npm run dev                          # http://localhost:5173, /api проксируется на gateway :5080
+npm test                             # юнит-тесты клиента
+node scripts/combat-bot.mjs elf      # смоук-тест: бой с манекеном по JSON-протоколу и проверка опыта
+```
+
 ## Контент и новые локации
 
 ```bash
