@@ -13,7 +13,7 @@ public class ShippedContentTests
     {
         IReadOnlyList<ContentIssue> issues = ContentValidator.Validate(ContentRepository.Catalog);
 
-        Assert.Empty(issues.Where(issue => issue.Severity == IssueSeverity.Error));
+        Assert.DoesNotContain(issues, issue => issue.Severity == IssueSeverity.Error);
     }
 
     [Fact]

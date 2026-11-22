@@ -28,6 +28,8 @@ try
             return ExitOk;
         case "export-unity" when args.Length >= 3:
             return ExportForUnity(contentDirectory, args[2]);
+        case "new-zone" when args.Length >= 6:
+            return ScaffoldZone(contentDirectory, catalog, args);
         default:
             PrintUsage();
             return ExitUsage;
@@ -78,10 +80,43 @@ static int ExportForUnity(string contentDirectory, string outputDirectory)
     return ExitOk;
 }
 
+static int ScaffoldZone(string contentDirectory, ContentCatalog catalog, string[] args)
+{
+    if (!Enum.TryParse(args[4], ignoreCase: true, out ZoneKind kind))
+    {
+        Console.Error.WriteLine($"ERROR unknown zone kind '{args[4]}'. Expected one of: {string.Join(", ", Enum.GetNames<ZoneKind>())}");
+        return ExitUsage;
+    }
+    var request = new ZoneScaffoldRequest
+    {
+        ZoneId = args[2],
+        ContinentId = args[3],
+        Kind = kind,
+        Name = args[5],
+        LinkedZoneId = args.Length >= 7 ? args[6] : null,
+    };
+    string yaml;
+    try
+    {
+        yaml = ZoneScaffold.CreateYaml(request, catalog);
+    }
+    catch (ArgumentException exception)
+    {
+        Console.Error.WriteLine("ERROR " + exception.Message);
+        return ExitInvalidContent;
+    }
+    string path = Path.Combine(contentDirectory, ZoneScaffold.RelativePath(request.ZoneId));
+    File.WriteAllText(path, yaml);
+    Console.WriteLine($"Created {path}. Next: add a portal to it from '{request.LinkedZoneId ?? "a parent zone"}', " +
+                      $"create the Unity scene '{ZoneScaffold.SceneAddress(request.ContinentId, request.ZoneId)}' as an Addressable, then run validate and codegen.");
+    return ExitOk;
+}
+
 static void PrintUsage()
 {
     Console.WriteLine("Usage:");
     Console.WriteLine("  ContentTool validate <contentDir>");
     Console.WriteLine("  ContentTool codegen <contentDir> <output.cs>");
     Console.WriteLine("  ContentTool export-unity <contentDir> <unityResourcesDir>");
+    Console.WriteLine("  ContentTool new-zone <contentDir> <zoneId> <continentId> <kind> <name> [linkedZoneId]");
 }
