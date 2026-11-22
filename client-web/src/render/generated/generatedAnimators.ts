@@ -33,7 +33,7 @@ class HitFlash {
   constructor(root: THREE.Object3D) {
     root.traverse((child) => {
       if (child instanceof THREE.Mesh) {
-        const materials = (Array.isArray(child.material) ? child.material : [child.material]).map((material) => material.clone());
+        const materials = (Array.isArray(child.material) ? child.material : [child.material]).map(cloneMaterial);
         child.material = Array.isArray(child.material) ? materials : materials[0];
         materials.filter((material): material is THREE.MeshStandardMaterial => material instanceof THREE.MeshStandardMaterial).forEach((material) => {
           this.materials.push(material);
@@ -207,6 +207,13 @@ export class StaticMeshAnimator implements Animator {
       this.pivot.position.y += pulse * this.height * 0.2;
     }
   }
+}
+
+/** Material.clone() drops shader patches, which kit materials use to layer face and outfit textures. */
+function cloneMaterial(material: THREE.Material): THREE.Material {
+  const copy = material.clone();
+  copy.onBeforeCompile = material.onBeforeCompile;
+  return copy;
 }
 
 /** Actions report weight 1 before they ever play, so only count the ones the mixer is running. */

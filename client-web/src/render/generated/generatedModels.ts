@@ -1,35 +1,25 @@
-import * as THREE from "three";
-import { GLTF, GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { clone as cloneSkinned } from "three/addons/utils/SkeletonUtils.js";
-import { Animator } from "../characters/rig";
-import { ClipAnimator, ClipSlot, StaticMeshAnimator } from "./generatedAnimators";
+import * as THREE from "three";
+import { AppearanceKit, KitManifest } from "./appearanceKit";
+import { ClipAnimator, StaticMeshAnimator } from "./generatedAnimators";
+import { AppearanceHints } from "./kitAppearance";
+import { castShadows, GeneratedModel, LoadedAsset, loadAsset, ManifestEntry } from "./modelAssets";
+
+export { clipNameKey } from "./modelAssets";
+export type { GeneratedModel } from "./modelAssets";
+export type { AppearanceHints } from "./kitAppearance";
 
 const MANIFEST_URL = "/models/manifest.json";
+const RACE_KEY_PREFIX = "race:";
 
-/** One entry of public/models/manifest.json, written by scripts/meshy-generate.mjs. */
-interface ManifestEntry {
-  model: string;
-  animations?: string;
-  rig: "biped" | "quadruped" | "none";
-  height: number;
-  clips: Partial<Record<ClipSlot, string>>;
-}
-
-interface LoadedAsset {
-  entry: ManifestEntry;
-  scene: THREE.Object3D;
-  clips: Map<ClipSlot, THREE.AnimationClip>;
-}
-
-export interface GeneratedModel {
-  /** Pivot the animator moves; already scaled to the entry height and standing on y = 0. */
-  body: THREE.Group;
-  animator: Animator;
-  height: number;
+interface Manifest {
+  assets?: Record<string, ManifestEntry>;
+  kits?: Record<string, KitManifest>;
 }
 
 export function raceModelKey(raceId: string): string {
-  return `race:${raceId}`;
+  return `${RACE_KEY_PREFIX}${raceId}`;
 }
 
 export function mobModelKey(mobId: string): string {
@@ -37,13 +27,16 @@ export function mobModelKey(mobId: string): string {
 }
 
 /**
- * Meshy-made GLB models, loaded on demand. Everything is optional: with no manifest or a failed download
- * the renderer keeps its procedural models, and a model that arrives later replaces them in place.
+ * Meshy-made models, loaded on demand. A race with an appearance kit builds every character from kit parts;
+ * other keys use one model. Everything is optional: with no manifest or a failed download the renderer keeps
+ * its procedural models, and a model that arrives later replaces them in place.
  */
 export class GeneratedModels {
   private readonly loader = new GLTFLoader();
-  private readonly manifest = new Map<string, ManifestEntry>();
+  private readonly entries = new Map<string, ManifestEntry>();
+  private readonly kits = new Map<string, AppearanceKit>();
   private readonly loaded = new Map<string, LoadedAsset>();
+  private readonly readyKits = new Set<string>();
   private readonly loading = new Set<string>();
   private readonly wanted = new Set<string>();
   private readonly listeners: ((key: string) => void)[] = [];
@@ -60,39 +53,40 @@ export class GeneratedModels {
   /** Starts loading in the background; calling it again for the same key is free. */
   request(key: string): void {
     this.wanted.add(key);
-    if (!this.manifestReady || this.loaded.has(key) || this.loading.has(key)) {
+    if (!this.manifestReady || this.loading.has(key) || this.loaded.has(key) || this.readyKits.has(key)) {
       return;
     }
-    const entry = this.manifest.get(key);
+    const kit = this.kits.get(key);
+    if (kit) {
+      void this.track(key, () => kit.load(), () => this.readyKits.add(key));
+      return;
+    }
+    const entry = this.entries.get(key);
     if (entry) {
-      void this.load(key, entry);
+      void this.track(key, () => loadAsset(this.loader, entry), (asset) => this.loaded.set(key, asset));
     }
   }
 
-  instantiate(key: string): GeneratedModel | null {
-    const asset = this.loaded.get(key);
-    if (!asset) {
-      return null;
+  /** Hints pick the look inside an appearance kit; single models ignore them. */
+  instantiate(key: string, hints: AppearanceHints): GeneratedModel | null {
+    if (this.readyKits.has(key)) {
+      return this.kits.get(key)!.instantiate(hints);
     }
-    const model = cloneSkinned(asset.scene);
-    model.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        child.castShadow = true;
-      }
-    });
-    const body = new THREE.Group();
-    body.add(model);
-    const animator = asset.entry.rig === "none" || asset.clips.size === 0
-      ? new StaticMeshAnimator(body, asset.entry.height)
-      : new ClipAnimator(model, asset.clips);
-    return { body, animator, height: asset.entry.height };
+    const asset = this.loaded.get(key);
+    return asset ? instantiateAsset(asset) : null;
   }
 
   private async loadManifest(): Promise<void> {
     try {
       const response = await fetch(MANIFEST_URL);
-      const manifest = response.ok ? await response.json() as { assets: Record<string, ManifestEntry> } : { assets: {} };
-      Object.entries(manifest.assets).forEach(([key, entry]) => this.manifest.set(key, entry));
+      const manifest: Manifest = response.ok ? await response.json() : {};
+      Object.entries(manifest.assets ?? {}).forEach(([key, entry]) => this.entries.set(key, entry));
+      for (const [raceId, kitManifest] of Object.entries(manifest.kits ?? {})) {
+        const kit = new AppearanceKit(kitManifest, this.loader);
+        if (!kit.isEmpty) {
+          this.kits.set(raceModelKey(raceId), kit);
+        }
+      }
     } catch {
       // No generated models yet: procedural ones are used everywhere.
     }
@@ -100,14 +94,10 @@ export class GeneratedModels {
     [...this.wanted].forEach((key) => this.request(key));
   }
 
-  private async load(key: string, entry: ManifestEntry): Promise<void> {
+  private async track<T>(key: string, load: () => Promise<T>, store: (result: T) => void): Promise<void> {
     this.loading.add(key);
     try {
-      const [model, animations] = await Promise.all([
-        this.loader.loadAsync(`/${entry.model}`),
-        entry.animations ? this.loader.loadAsync(`/${entry.animations}`) : Promise.resolve(null),
-      ]);
-      this.loaded.set(key, { entry, scene: normalize(model.scene, entry.height), clips: clipsBySlot(entry, animations) });
+      store(await load());
       this.listeners.forEach((listener) => listener(key));
     } catch (error) {
       console.warn(`Generated model ${key} failed to load, keeping the procedural one`, error);
@@ -117,34 +107,13 @@ export class GeneratedModels {
   }
 }
 
-/** Scales to the intended height, centres on the feet and faces +Z like the procedural models. */
-function normalize(scene: THREE.Object3D, height: number): THREE.Object3D {
-  const holder = new THREE.Group();
-  holder.add(scene);
-  const bounds = new THREE.Box3().setFromObject(scene);
-  const size = bounds.getSize(new THREE.Vector3());
-  const scale = size.y > 0 ? height / size.y : 1;
-  scene.scale.multiplyScalar(scale);
-  const center = bounds.getCenter(new THREE.Vector3());
-  scene.position.set(-center.x * scale, -bounds.min.y * scale, -center.z * scale);
-  return holder;
-}
-
-function clipsBySlot(entry: ManifestEntry, animations: GLTF | null): Map<ClipSlot, THREE.AnimationClip> {
-  const clips = new Map<ClipSlot, THREE.AnimationClip>();
-  for (const [slot, name] of Object.entries(entry.clips) as [ClipSlot, string][]) {
-    const wanted = clipNameKey(name);
-    const candidates = animations?.animations ?? [];
-    const clip = candidates.find((candidate) => clipNameKey(candidate.name) === wanted)
-      ?? candidates.find((candidate) => clipNameKey(candidate.name).includes(wanted));
-    if (clip) {
-      clips.set(slot, clip);
-    }
-  }
-  return clips;
-}
-
-/** Meshy's merged GLB renames library clips ("Run 2" becomes "Run_02"), so compare words and numeric values only. */
-export function clipNameKey(name: string): string {
-  return name.toLowerCase().replace(/\d+/g, (digits) => String(Number(digits))).replace(/[^a-z0-9]/g, "");
+function instantiateAsset(asset: LoadedAsset): GeneratedModel {
+  const model = cloneSkinned(asset.scene);
+  castShadows(model);
+  const body = new THREE.Group();
+  body.add(model);
+  const animator = asset.entry.rig === "none" || asset.clips.size === 0
+    ? new StaticMeshAnimator(body, asset.entry.height)
+    : new ClipAnimator(model, asset.clips);
+  return { body, animator, height: asset.entry.height };
 }

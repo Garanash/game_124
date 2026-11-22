@@ -7,12 +7,13 @@ import { daylight, hourOfDay } from "../game/npcLife";
 import { AmbientPopulation, Critter, Villager } from "../world/ambientLife";
 import { containsPoint, distance, seededRandom } from "../world/geometry";
 import { Settlement, settlementObstacles } from "../world/settlement";
-import { citizenOutfit, raceLook } from "./characters/appearance";
+import { citizenOutfit, raceLook, stableHash } from "./characters/appearance";
 import { buildCritter } from "./characters/creatures";
 import { buildHumanoid } from "./characters/humanoid";
 import { ActionKind, Activity, Animator, CharacterAnimator } from "./characters/rig";
 import { CombatEffects } from "./combatEffects";
-import { GeneratedModels, mobModelKey, raceModelKey } from "./generated/generatedModels";
+import { AppearanceHints, GeneratedModel, GeneratedModels, mobModelKey, raceModelKey } from "./generated/generatedModels";
+import { castShadows } from "./generated/modelAssets";
 import { createModel, hashHue, labelHeightFor, npcMarker, NpcLook, placeMarker, selfRing } from "./models";
 import { TownRenderer } from "./townRenderer";
 import { styleFor, TownStyle } from "./townStyles";
@@ -48,8 +49,14 @@ const SPECIAL_ZONE_LOOKS: Record<string, Partial<TownStyle>> = {
 interface Embodied {
   root: THREE.Group;
   body: THREE.Object3D;
-  modelKey: string | null;
+  source: ModelSource | null;
   generated: boolean;
+}
+
+/** Which generated model a body wants and the hints that pick its look, so a late swap builds the same character. */
+interface ModelSource {
+  key: string;
+  hints: AppearanceHints;
 }
 
 interface EntityView extends Embodied {
@@ -67,7 +74,7 @@ interface EntityView extends Embodied {
 
 interface AmbientView extends Embodied {
   animator: Animator;
-  source: Villager | Critter;
+  life: Villager | Critter;
 }
 
 export interface PickResult {
@@ -373,8 +380,8 @@ export class WorldRenderer {
 
   private createView(entity: WorldEntity, isSelf: boolean): EntityView {
     const npc = entity.kind === EntityKind.Npc ? this.npcLook(entity.definitionId) : undefined;
-    const modelKey = generatedModelKey(entity, npc?.raceId);
-    const generated = this.requestGenerated(modelKey);
+    const source = modelSourceFor(entity, npc);
+    const generated = this.requestGenerated(source);
     const procedural = generated ? null : createModel({ kind: entity.kind, definitionId: entity.definitionId, name: entity.name, isSelf, npc });
     const body = generated?.body ?? procedural!.root;
     const labelHeight = generated ? labelHeightFor(generated.height) : procedural!.labelHeight;
@@ -406,7 +413,7 @@ export class WorldRenderer {
     this.scene.add(root);
     const latest = entity.latest;
     const view: EntityView = {
-      root, body, modelKey, generated: generated !== null, labelObject, label, hpFill, activityLine,
+      root, body, source, generated: generated !== null, labelObject, label, hpFill, activityLine,
       animator: generated?.animator ?? (procedural!.rig ? new CharacterAnimator(procedural!.rig) : null),
       labelHeight,
       heading: latest.heading,
@@ -433,13 +440,13 @@ export class WorldRenderer {
 
   private buildAmbient(population: AmbientPopulation): void {
     for (const villager of population.villagers) {
-      const modelKey = raceModelKey(villager.raceId);
-      const generated = this.requestGenerated(modelKey);
+      const source = { key: raceModelKey(villager.raceId), hints: { seed: villager.seed, isAdventurer: false } };
+      const generated = this.requestGenerated(source);
       if (generated) {
-        this.addAmbient(generated.body, generated.animator, villager, modelKey, true);
+        this.addAmbient(generated.body, generated.animator, villager, source, true);
       } else {
         const rig = buildHumanoid(raceLook(villager.raceId), citizenOutfit(villager.seed));
-        this.addAmbient(rig.root, new CharacterAnimator(rig), villager, modelKey, false);
+        this.addAmbient(rig.root, new CharacterAnimator(rig), villager, source, false);
       }
     }
     for (const critter of population.critters) {
@@ -448,20 +455,20 @@ export class WorldRenderer {
     }
   }
 
-  private addAmbient(body: THREE.Object3D, animator: Animator, source: Villager | Critter, modelKey: string | null, generated: boolean): void {
+  private addAmbient(body: THREE.Object3D, animator: Animator, life: Villager | Critter, source: ModelSource | null, generated: boolean): void {
     castShadows(body);
     const root = new THREE.Group();
     root.add(body);
     this.scene.add(root);
-    this.ambient.push({ root, body, modelKey, generated, animator, source });
+    this.ambient.push({ root, body, source, generated, animator, life });
   }
 
-  private requestGenerated(modelKey: string | null): ReturnType<GeneratedModels["instantiate"]> {
-    if (!modelKey) {
+  private requestGenerated(source: ModelSource | null): GeneratedModel | null {
+    if (!source) {
       return null;
     }
-    this.generatedModels.request(modelKey);
-    return this.generatedModels.instantiate(modelKey);
+    this.generatedModels.request(source.key);
+    return this.generatedModels.instantiate(source.key, source.hints);
   }
 
   /** Swaps procedural bodies for a model that just finished downloading, keeping position, label and death pose. */
@@ -488,11 +495,11 @@ export class WorldRenderer {
     }
   }
 
-  private swapBody(view: Embodied, modelKey: string): ReturnType<GeneratedModels["instantiate"]> {
-    if (view.generated || view.modelKey !== modelKey) {
+  private swapBody(view: Embodied, modelKey: string): GeneratedModel | null {
+    if (view.generated || view.source?.key !== modelKey) {
       return null;
     }
-    const model = this.generatedModels.instantiate(modelKey);
+    const model = this.generatedModels.instantiate(modelKey, view.source.hints);
     if (!model) {
       return null;
     }
@@ -506,7 +513,7 @@ export class WorldRenderer {
 
   private updateAmbient(serverTime: number, deltaSeconds: number): void {
     for (const view of this.ambient) {
-      const pose = view.source.poseAt(serverTime);
+      const pose = view.life.poseAt(serverTime);
       view.root.position.set(pose.x, 0, pose.z);
       const near = distance(pose, { x: this.cameraTarget.x, z: this.cameraTarget.z }) < AMBIENT_VISIBLE_METERS;
       view.root.visible = near;
@@ -600,25 +607,17 @@ function treeMeshes(style: TownStyle, trunk: THREE.Material, leaves: THREE.Mater
   }
 }
 
-function generatedModelKey(entity: WorldEntity, npcRaceId: string | undefined): string | null {
+function modelSourceFor(entity: WorldEntity, npc: NpcLook | undefined): ModelSource | null {
   switch (entity.kind) {
     case EntityKind.Player:
-      return raceModelKey(entity.definitionId);
+      return { key: raceModelKey(entity.definitionId), hints: { seed: stableHash(entity.name), isAdventurer: true } };
     case EntityKind.Npc:
-      return npcRaceId ? raceModelKey(npcRaceId) : null;
+      return npc ? { key: raceModelKey(npc.raceId), hints: { seed: stableHash(entity.definitionId), role: npc.role, isAdventurer: false } } : null;
     case EntityKind.Mob:
-      return mobModelKey(entity.definitionId);
+      return { key: mobModelKey(entity.definitionId), hints: { seed: entity.id, isAdventurer: false } };
     default:
       return null;
   }
-}
-
-function castShadows(object: THREE.Object3D): void {
-  object.traverse((child) => {
-    if (child instanceof THREE.Mesh) {
-      child.castShadow = true;
-    }
-  });
 }
 
 function findEntityId(object: THREE.Object3D | null): number | null {
