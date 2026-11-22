@@ -85,6 +85,7 @@ public sealed class MobEntity : WorldEntity
     public float SpawnZ { get; }
     public int RespawnSeconds { get; }
     public double RespawnAt { get; set; }
+    public double NextIdleMoveAt { get; set; }
 }
 
 public sealed class NpcEntity : WorldEntity
@@ -97,6 +98,11 @@ public sealed class NpcEntity : WorldEntity
 
     public NpcDefinition Definition { get; }
     public string Activity { get; set; } = string.Empty;
+    /// <summary>The schedule spot the NPC idles around; set once its first schedule entry is applied.</summary>
+    public bool HasAnchor { get; set; }
+    public float AnchorX { get; set; }
+    public float AnchorZ { get; set; }
+    public double NextIdleMoveAt { get; set; }
 }
 
 public sealed class NodeEntity : WorldEntity

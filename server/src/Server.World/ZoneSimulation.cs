@@ -174,6 +174,7 @@ public sealed partial class ZoneSimulation
         _tick++;
         Now += TickSeconds;
         UpdateNpcSchedules();
+        UpdateIdleLife();
         MoveEntities();
         CompleteGathering();
         RespawnMobs();
@@ -356,9 +357,7 @@ public sealed partial class ZoneSimulation
             {
                 continue;
             }
-            npc.Activity = entry.Activity;
-            npc.TargetX = entry.Position.X;
-            npc.TargetZ = entry.Position.Z;
+            AssignNpcAnchor(npc, entry.Activity, entry.Position.X, entry.Position.Z);
         }
     }
 
