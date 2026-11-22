@@ -1,6 +1,7 @@
 import { ABILITY_LABELS, AbilityName, ContentCatalog } from "../api/content";
 import { CharacterState, CharacterStats } from "../api/gateway";
 import { levelForXp, xpForNextLevel } from "../game/rules";
+import { CharacterViewer } from "../render/characterViewer";
 import { h, replaceChildren } from "./dom";
 import { damageText, signed, STAT_LABELS } from "./labels";
 
@@ -15,12 +16,14 @@ export class CharacterWindow {
   readonly root = h("div", { class: "game-window character-window panel hidden" });
   private readonly body = h("div", { class: "character-body" });
 
-  constructor(private readonly catalog: ContentCatalog, onClose: () => void) {
+  constructor(private readonly catalog: ContentCatalog, private readonly viewer: CharacterViewer, onClose: () => void) {
     this.root.append(
       h("div", { class: "window-header" },
         h("h3", {}, "Персонаж"),
         h("button", { class: "small window-close", title: "Закрыть (C)", onclick: onClose }, "✕")),
-      this.body);
+      h("div", { class: "character-layout" },
+        h("div", { class: "hero-stage" }, viewer.element, h("p", { class: "muted hint-line" }, "Тяните — повернуть · колесо — приблизить")),
+        this.body));
   }
 
   get isOpen(): boolean {
@@ -29,6 +32,7 @@ export class CharacterWindow {
 
   setOpen(open: boolean): void {
     this.root.classList.toggle("hidden", !open);
+    this.viewer.setActive(open);
   }
 
   render(state: CharacterState, stats: CharacterStats | null): void {
@@ -36,6 +40,7 @@ export class CharacterWindow {
     const race = this.catalog.races[sheet.raceId];
     const level = levelForXp(sheet.xp);
     const next = xpForNextLevel(level);
+    this.viewer.show({ raceId: sheet.raceId, name: sheet.name });
     const classes = Object.entries(sheet.classLevels).map(([id, classLevel]) => `${this.catalog.classes[id]?.name ?? id} ${classLevel}`);
     replaceChildren(this.body,
       h("div", { class: "character-identity" },

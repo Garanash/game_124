@@ -2,10 +2,12 @@ import { ContentCatalog, ItemDefinition } from "../api/content";
 import { BackpackState, CharacterState, CharacterStats, PlacedItem } from "../api/gateway";
 import { canPlace, Cell, findFreeSpot, Placement, ROTATION_COUNT, shapeCells, synergizingItems } from "../game/backpack";
 import { h, replaceChildren } from "./dom";
+import { ItemIcons } from "./itemIcons";
 import { itemSummary, modifierText, RARITY_LABELS, STAT_LABELS, signed } from "./labels";
 
 const CELL_PIXELS = 56;
 /** Pointer travel before a press becomes a drag, so double-clicks don't start one. */
+const ICON_INSET_PIXELS = 4;
 const DRAG_THRESHOLD_PIXELS = 5;
 const TOOLTIP_OFFSET_PIXELS = 16;
 
@@ -39,10 +41,16 @@ export class InventoryWindow {
   private readonly gold = h("span", { class: "gold" });
   private readonly tooltip = h("div", { class: "item-tooltip hidden" });
   private state: CharacterState | null = null;
+  private stats: CharacterStats | null = null;
   private drag: DragState | null = null;
   private busy = false;
 
-  constructor(private readonly catalog: ContentCatalog, private readonly actions: InventoryActions, onClose: () => void) {
+  constructor(
+    private readonly catalog: ContentCatalog,
+    private readonly icons: ItemIcons,
+    private readonly actions: InventoryActions,
+    onClose: () => void,
+  ) {
     this.root.append(
       h("div", { class: "window-header" },
         h("h3", {}, "Инвентарь"), this.gold,
@@ -61,6 +69,7 @@ export class InventoryWindow {
     window.addEventListener("pointermove", (event) => this.onPointerMove(event));
     window.addEventListener("pointerup", (event) => void this.onPointerUp(event));
     window.addEventListener("keydown", (event) => this.onKey(event), true);
+    void icons.ready.then(() => this.rerender());
   }
 
   get isOpen(): boolean {
@@ -77,6 +86,7 @@ export class InventoryWindow {
 
   render(state: CharacterState, stats: CharacterStats | null): void {
     this.state = state;
+    this.stats = stats;
     this.gold.textContent = `${state.sheet.gold} з.`;
     this.renderGrid(state.backpack);
     this.renderBag(state.materials.stacks);
@@ -101,16 +111,9 @@ export class InventoryWindow {
   private placedItemElement(placed: PlacedItem, synergizing: boolean): HTMLElement {
     const definition = this.catalog.items[placed.itemId];
     const shape = definition ? shapeCells(definition, placed.rotation) : [{ x: 0, y: 0 }];
-    const element = h("div", { class: `backpack-item rarity-${(definition?.rarity ?? "Common").toLowerCase()}${synergizing ? " synergy" : ""}` });
+    const element = this.itemTiles(placed.itemId, shape, synergizing ? "synergy" : "");
     element.style.left = `${placed.x * CELL_PIXELS}px`;
     element.style.top = `${placed.y * CELL_PIXELS}px`;
-    for (const cell of shape) {
-      const part = h("div", { class: "item-cell" });
-      part.style.left = `${cell.x * CELL_PIXELS}px`;
-      part.style.top = `${cell.y * CELL_PIXELS}px`;
-      element.append(part);
-    }
-    element.append(h("span", { class: "item-name" }, definition?.name ?? placed.itemId));
     element.addEventListener("pointerdown", (event) => {
       const grab = this.cellUnderPointer(event) ?? { x: placed.x, y: placed.y };
       const grabCell = { x: grab.x - placed.x, y: grab.y - placed.y };
@@ -130,8 +133,11 @@ export class InventoryWindow {
     entries.sort(([first], [second]) => (this.catalog.items[first]?.name ?? first).localeCompare(this.catalog.items[second]?.name ?? second, "ru"));
     replaceChildren(this.bag, ...entries.map(([itemId, quantity]) => {
       const definition = this.catalog.items[itemId];
-      const row = h("div", { class: `bag-item rarity-${(definition?.rarity ?? "Common").toLowerCase()}` },
-        h("span", {}, definition?.name ?? itemId),
+      const icon = this.icons.urlFor(itemId);
+      const row = h("div", { class: `bag-item ${rarityClass(definition)}` },
+        h("span", { class: "bag-item-title" },
+          icon ? h("img", { class: "bag-icon", src: icon, alt: "", draggable: "false" }) : null,
+          definition?.name ?? itemId),
         quantity > 1 ? h("span", { class: "muted" }, `×${quantity}`) : null);
       row.addEventListener("pointerdown", (event) => this.beginDrag(event, { kind: "bag" }, itemId, 0, { x: 0, y: 0 }));
       row.addEventListener("dblclick", () => void this.placeAnywhere(itemId));
@@ -246,15 +252,40 @@ export class InventoryWindow {
 
   private ghostFor(itemId: string, rotation: number): HTMLElement {
     const definition = this.catalog.items[itemId];
-    const ghost = h("div", { class: `backpack-item drag-ghost rarity-${(definition?.rarity ?? "Common").toLowerCase()}` });
-    for (const cell of definition ? shapeCells(definition, rotation) : [{ x: 0, y: 0 }]) {
+    return this.itemTiles(itemId, definition ? shapeCells(definition, rotation) : [{ x: 0, y: 0 }], "drag-ghost");
+  }
+
+  /** One framed tile per cell of the item's shape, with the painted icon stretched over the whole shape. */
+  private itemTiles(itemId: string, shape: Cell[], extraClass: string): HTMLElement {
+    const definition = this.catalog.items[itemId];
+    const element = h("div", { class: `backpack-item ${rarityClass(definition)} ${extraClass}`.trim() });
+    for (const cell of shape) {
       const part = h("div", { class: "item-cell" });
       part.style.left = `${cell.x * CELL_PIXELS}px`;
       part.style.top = `${cell.y * CELL_PIXELS}px`;
-      ghost.append(part);
+      element.append(part);
     }
-    ghost.append(h("span", { class: "item-name" }, definition?.name ?? itemId));
-    return ghost;
+    const icon = this.icons.urlFor(itemId);
+    if (icon) {
+      const columns = Math.max(...shape.map((cell) => cell.x)) + 1;
+      const rows = Math.max(...shape.map((cell) => cell.y)) + 1;
+      const side = Math.min(columns, rows) * CELL_PIXELS - ICON_INSET_PIXELS * 2;
+      const image = h("img", { class: "item-icon", src: icon, alt: definition?.name ?? itemId, draggable: "false" });
+      image.style.width = `${side}px`;
+      image.style.height = `${side}px`;
+      image.style.left = `${(columns * CELL_PIXELS - side) / 2}px`;
+      image.style.top = `${(rows * CELL_PIXELS - side) / 2}px`;
+      element.append(image);
+    } else {
+      element.append(h("span", { class: "item-name" }, definition?.name ?? itemId));
+    }
+    return element;
+  }
+
+  private rerender(): void {
+    if (this.state && this.isOpen) {
+      this.render(this.state, this.stats);
+    }
   }
 
   private cancelDrag(): void {
@@ -323,4 +354,8 @@ export class InventoryWindow {
 
 function sourceInstance(source: DragSource): string | undefined {
   return source.kind === "backpack" ? source.instanceId : undefined;
+}
+
+function rarityClass(definition: ItemDefinition | undefined): string {
+  return `rarity-${(definition?.rarity ?? "Common").toLowerCase()}`;
 }

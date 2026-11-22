@@ -1,9 +1,12 @@
 import { ContentCatalog } from "../api/content";
 import { ApiError, CharacterState, CharacterStats, GatewayClient } from "../api/gateway";
 import { playerErrorText } from "../net/errorText";
+import { CharacterViewer } from "../render/characterViewer";
+import { GeneratedModels } from "../render/generated/generatedModels";
 import { CharacterWindow } from "../ui/characterWindow";
 import { Hud } from "../ui/hud";
 import { InventoryWindow } from "../ui/inventoryWindow";
+import { ItemIcons } from "../ui/itemIcons";
 
 /** Inventory and character sheet windows: fetch stats, run backpack actions, redraw from the server's answer. */
 export class CharacterPanels {
@@ -19,14 +22,15 @@ export class CharacterPanels {
     private readonly hud: Hud,
     /** Backpack changes alter max HP and the weapon, so the whole session refreshes its character. */
     private readonly onCharacterChanged: () => Promise<void>,
+    models: GeneratedModels,
   ) {
-    this.inventory = new InventoryWindow(catalog, {
+    this.inventory = new InventoryWindow(catalog, new ItemIcons(), {
       move: (instanceId, placement) => this.act(() => gateway.moveBackpackItem(characterId, instanceId, placement.x, placement.y, placement.rotation)),
       place: (itemId, placement) => this.act(() => gateway.placeFromBag(characterId, itemId, placement.x, placement.y, placement.rotation)),
       stash: (instanceId) => this.act(() => gateway.stashToBag(characterId, instanceId)),
       fuse: (recipeId) => this.act(() => gateway.fuse(characterId, recipeId), "Предметы слиты!"),
     }, () => this.toggleInventory());
-    this.sheet = new CharacterWindow(catalog, () => this.toggleCharacter());
+    this.sheet = new CharacterWindow(catalog, new CharacterViewer(models), () => this.toggleCharacter());
     hud.addWindow(this.inventory.root);
     hud.addWindow(this.sheet.root);
   }
