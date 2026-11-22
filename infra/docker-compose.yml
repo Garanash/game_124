@@ -65,6 +65,18 @@ services:
       ASPNETCORE_URLS: http://0.0.0.0:5080
     ports: ["5080:5080"]
 
+  store:
+    <<: *server
+    build:
+      context: ..
+      dockerfile: infra/docker/Dockerfile
+      args: { PROJECT: Server.Store }
+    environment:
+      <<: *server-env
+      ASPNETCORE_URLS: http://0.0.0.0:5090
+      Store__AllowDevPurchases: "true"
+    ports: ["5090:5090"]
+
   zone:
     <<: *server
     build:

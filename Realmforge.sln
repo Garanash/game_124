@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Core", "client\Clien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Core.Tests", "client\tests\Client.Core.Tests\Client.Core.Tests.csproj", "{5D9146AD-32C3-4FFF-B4B7-33FD274C10AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Store", "server\src\Server.Store\Server.Store.csproj", "{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -275,6 +277,18 @@ Global
 		{5D9146AD-32C3-4FFF-B4B7-33FD274C10AE}.Release|x64.Build.0 = Release|Any CPU
 		{5D9146AD-32C3-4FFF-B4B7-33FD274C10AE}.Release|x86.ActiveCfg = Release|Any CPU
 		{5D9146AD-32C3-4FFF-B4B7-33FD274C10AE}.Release|x86.Build.0 = Release|Any CPU
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}.Debug|x64.Build.0 = Debug|Any CPU
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}.Debug|x86.Build.0 = Debug|Any CPU
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}.Release|x64.ActiveCfg = Release|Any CPU
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}.Release|x64.Build.0 = Release|Any CPU
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}.Release|x86.ActiveCfg = Release|Any CPU
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -300,5 +314,6 @@ Global
 		{C593BF1B-1908-480E-B48D-AC0C0A454878} = {07C2787E-EAC7-C090-1BA3-A61EC2A24D84}
 		{4C6C9F51-17BA-4E20-9306-6CB8E38BE7F5} = {2CB42F12-E813-91B3-7D11-3220E40BEF4A}
 		{5D9146AD-32C3-4FFF-B4B7-33FD274C10AE} = {2CB42F12-E813-91B3-7D11-3220E40BEF4A}
+		{57378A8C-54AF-4978-9A15-CF7C3AD93B6E} = {2132E9AA-A8A6-6DB3-1CCB-FE240A8CB002}
 	EndGlobalSection
 EndGlobal

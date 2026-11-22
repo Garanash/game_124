@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Realmforge.Rules.Definitions;
 using Realmforge.Server.Core.Economy;
+using Realmforge.Server.Core.LiveOps;
 using Realmforge.Server.Gateway.Http;
 using Realmforge.Server.Grains;
 
@@ -10,7 +11,8 @@ public sealed record CreateListingRequest(Guid CharacterId, string ItemId, int Q
 
 public sealed record BuyListingRequest(Guid CharacterId);
 
-public sealed record ContentVersionResponse(string Version);
+/// <summary>Clients compare the version to re-download content bundles and hide features that are switched off.</summary>
+public sealed record ContentVersionResponse(string Version, IReadOnlyCollection<string> Features);
 
 public static class EconomyEndpoints
 {
@@ -50,7 +52,7 @@ public static class EconomyEndpoints
 
         routes.MapGet("/arena/ladder", (int? count, IGrainFactory grains) =>
             grains.GetGrain<IArenaLadderGrain>(GrainKeys.Global).Top(count ?? DefaultLadderSize));
-        routes.MapGet("/content/version", (ContentCatalog catalog) => new ContentVersionResponse(catalog.Version));
+        routes.MapGet("/content/version", (ContentCatalog catalog, FeatureFlags features) => new ContentVersionResponse(catalog.Version, features.Enabled()));
     }
 
     private static IAuctionGrain Auction(IGrainFactory grains) => grains.GetGrain<IAuctionGrain>(GrainKeys.Global);

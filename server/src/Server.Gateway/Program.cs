@@ -4,6 +4,7 @@ using Npgsql;
 using Realmforge.Rules.Definitions;
 using Realmforge.Server.Core;
 using Realmforge.Server.Core.Auth;
+using Realmforge.Server.Core.LiveOps;
 using Realmforge.Server.Gateway.Accounts;
 using Realmforge.Server.Gateway.Endpoints;
 using Realmforge.Server.Grains;
@@ -22,6 +23,9 @@ var tokens = new TokenService(tokenOptions, TimeProvider.System);
 builder.Services.AddSingleton(catalog);
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddSingleton(tokens);
+builder.Services.AddSingleton(builder.Configuration.GetSection(FeatureFlags.SectionName).Get<FeatureFlags>() ?? new FeatureFlags());
+builder.Services.AddRealmforgeMessageBus(builder.Configuration);
+builder.Services.AddRealmforgeAnalytics();
 AddAccountStore(builder);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
