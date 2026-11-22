@@ -13,6 +13,15 @@ const RUSSIAN_ERRORS: Record<string, string> = {
   "combat.unreachable": "Туда не дойти за этот ход.",
   "combat.cannot_engage": "Цель недоступна для атаки.",
   "combat.cannot_join": "К этому бою нельзя присоединиться.",
+  "backpack.out_of_bounds": "Предмет не помещается в рюкзак здесь.",
+  "backpack.overlap": "Эти клетки рюкзака заняты.",
+  "backpack.missing": "Этого предмета уже нет в рюкзаке.",
+  "backpack.not_found": "Этого предмета уже нет в рюкзаке.",
+  "backpack.unknown_item": "Неизвестный предмет.",
+  "bag.missing": "Этого предмета нет в сумке.",
+  "bag.insufficient": "В сумке не хватает предметов.",
+  "fusion.unavailable": "Для слияния предметы должны касаться друг друга.",
+  "fusion.no_space": "Не хватает места для нового предмета.",
 };
 
 export function playerErrorText(code: string, serverText: string): string {

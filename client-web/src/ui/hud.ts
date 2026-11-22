@@ -37,6 +37,11 @@ export interface CombatPanel {
   mode: "move" | "attack" | "ability";
 }
 
+export interface HudWindowButtons {
+  onCharacter: () => void;
+  onInventory: () => void;
+}
+
 export interface CombatActions {
   onAttackMode: () => void;
   onMoveMode: () => void;
@@ -60,9 +65,9 @@ export class Hud {
   private readonly combatLog = h("div", { class: "hud-log panel hidden" });
   private readonly quests = h("div", { class: "hud-quests panel" });
   private readonly hint = h("div", { class: "hud-hint" },
-    "ЛКМ — идти или взаимодействовать · колесо — масштаб · Enter — чат");
+    "ЛКМ — идти или взаимодействовать · колесо — масштаб · Enter — чат · I — инвентарь · C — персонаж");
 
-  constructor(onChat: (channel: string, text: string) => void, onLeave: () => void) {
+  constructor(onChat: (channel: string, text: string) => void, onLeave: () => void, windows: HudWindowButtons) {
     const chat = h("div", { class: "hud-chat panel" }, this.chatLines,
       h("div", { class: "row" }, this.channelSelect, this.chatInput));
     this.chatInput.addEventListener("keydown", (event) => {
@@ -75,8 +80,15 @@ export class Hud {
         this.chatInput.blur();
       }
     });
-    const menu = h("button", { class: "hud-menu small", onclick: onLeave }, "К героям");
+    const menu = h("div", { class: "hud-menu" },
+      h("button", { class: "small", title: "Клавиша C", onclick: windows.onCharacter }, "Персонаж (C)"),
+      h("button", { class: "small", title: "Клавиша I", onclick: windows.onInventory }, "Инвентарь (I)"),
+      h("button", { class: "small", onclick: onLeave }, "К героям"));
     this.root.append(this.player, this.zone, menu, this.quests, this.toasts, chat, this.dialogue, this.combat, this.combatLog, this.hint);
+  }
+
+  addWindow(window: HTMLElement): void {
+    this.root.append(window);
   }
 
   focusChat(): void {

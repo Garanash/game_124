@@ -10,12 +10,35 @@ export interface CreateCharacterRequest { name: string; raceId: string; alignmen
 export interface CharacterSheet {
   id: string; name: string; raceId: string; xp: number; currentHp: number; gold: number;
   classLevels: Record<string, number>; perks: string[]; zoneId: string;
+  baseAbilities: number[];
+  /** Alignment axes: positive is lawful / good, negative chaotic / evil. */
+  lawChaos: number; goodEvil: number;
+  reputation: Record<string, number>; professionXp: Record<string, number>;
+  achievements: string[]; completedQuests: string[];
 }
+
+export interface PlacedItem { instanceId: string; itemId: string; x: number; y: number; rotation: number }
+export interface BackpackState { width: number; height: number; items: PlacedItem[] }
 
 export interface CharacterState {
   sheet: CharacterSheet;
+  backpack: BackpackState;
+  /** Unplaced items ("the bag"): stacks by item id. */
   materials: { stacks: Record<string, number> };
   activeQuests: { questId: string; stepId: string; count: number; isComplete: boolean }[];
+  factionId: string;
+}
+
+export interface AbilityScoreSummary { ability: string; base: number; total: number; modifier: number }
+
+/** Server-computed numbers, identical to what an encounter uses (CharacterStats.Build). */
+export interface CharacterStats {
+  level: number; proficiencyBonus: number; maxHp: number; armorClass: number; speedCells: number; initiative: number;
+  attackBonus: number; weaponId: string; damage: string; damageType: string; damageBonus: number; rangeCells: number;
+  spellAttackBonus: number; spellSaveDc: number; spellSlots: number[];
+  abilities: AbilityScoreSummary[];
+  bonuses: Record<string, number>;
+  availableFusions: string[];
 }
 
 export class ApiError extends Error {
@@ -58,6 +81,26 @@ export class GatewayClient {
 
   character(characterId: string): Promise<CharacterState> {
     return this.request<CharacterState>("GET", `/characters/${characterId}`);
+  }
+
+  stats(characterId: string): Promise<CharacterStats> {
+    return this.request<CharacterStats>("GET", `/characters/${characterId}/stats`);
+  }
+
+  moveBackpackItem(characterId: string, instanceId: string, x: number, y: number, rotation: number): Promise<unknown> {
+    return this.request("POST", `/characters/${characterId}/backpack/move`, { instanceId, x, y, rotation });
+  }
+
+  placeFromBag(characterId: string, itemId: string, x: number, y: number, rotation: number): Promise<unknown> {
+    return this.request("POST", `/characters/${characterId}/backpack/place`, { itemId, x, y, rotation });
+  }
+
+  stashToBag(characterId: string, instanceId: string): Promise<unknown> {
+    return this.request("POST", `/characters/${characterId}/backpack/${instanceId}/stash`, {});
+  }
+
+  fuse(characterId: string, recipeId: string): Promise<unknown> {
+    return this.request("POST", `/characters/${characterId}/fusions/${recipeId}`, {});
   }
 
   enterWorld(characterId: string): Promise<EnterWorldResponse> {

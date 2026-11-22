@@ -30,8 +30,20 @@ export interface AbilityDefinition {
   rangeCells: number; areaRadiusCells: number; spellLevel: number; cooldownRounds: number;
 }
 
-export interface PerkDefinition { id: string; name: string; grantsAbilities: string[] }
-export interface ItemDefinition { id: string; name: string; rarity: string; tags: string[] }
+export interface StatModifier { stat: string; value: number }
+export interface PerkDefinition { id: string; name: string; description: string; grantsAbilities: string[]; modifiers: StatModifier[] }
+export interface CellOffset { x: number; y: number }
+export type ItemRarity = "Common" | "Uncommon" | "Rare" | "Epic";
+export interface ItemDefinition {
+  id: string; name: string; rarity: ItemRarity; tags: string[];
+  /** Backpack cells relative to the item origin; empty means one cell. */
+  shape: CellOffset[];
+  modifiers: StatModifier[]; weaponDamage: string; weaponDamageType: string; maxStack: number; value: number;
+}
+export interface SynergyDefinition { id: string; sourceTag: string; neighborTag: string; bonus: StatModifier[] }
+export interface FusionRecipe { id: string; inputs: string[]; output: string }
+export interface FactionDefinition { id: string; name: string }
+export interface ProfessionDefinition { id: string; name: string; kind: string; keyAbility: AbilityName }
 export interface MobDefinition { id: string; name: string; level: number; isGame: boolean; speedCells: number }
 export interface ScheduleEntry { fromHour: number; toHour: number; activity: string; position: Point }
 export interface NpcDefinition { id: string; name: string; role: string; raceId: string; zoneId: string; schedule: ScheduleEntry[] }
@@ -56,6 +68,10 @@ export interface ContentCatalog {
   abilities: Record<string, AbilityDefinition>;
   perks: Record<string, PerkDefinition>;
   items: Record<string, ItemDefinition>;
+  synergies: Record<string, SynergyDefinition>;
+  fusions: Record<string, FusionRecipe>;
+  factions: Record<string, FactionDefinition>;
+  professions: Record<string, ProfessionDefinition>;
   mobs: Record<string, MobDefinition>;
   npcs: Record<string, NpcDefinition>;
   quests: Record<string, QuestDefinition>;

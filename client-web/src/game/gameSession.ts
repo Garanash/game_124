@@ -12,6 +12,7 @@ import { Hud } from "../ui/hud";
 import { populate } from "../world/ambientLife";
 import { NavigationGrid } from "../world/navigation";
 import { generateSettlement, settlementObstacles } from "../world/settlement";
+import { CharacterPanels } from "./characterPanels";
 import { CombatPresenter } from "./combatPresenter";
 import { CombatState } from "./combatState";
 import { npcActivity } from "./npcLife";
@@ -43,6 +44,7 @@ export class GameSession {
   private readonly overlay: CombatOverlay;
   private readonly hud: Hud;
   private readonly presenter: CombatPresenter;
+  private readonly panels: CharacterPanels;
   private readonly route = new RouteFollower();
   private readonly observedEncounters = new Map<string, CombatState>();
   /** Combatants can leave the interest area mid-fight; the log should still name them. */
@@ -74,8 +76,12 @@ export class GameSession {
   ) {
     this.renderer = new WorldRenderer(container, (definitionId) => this.npcLook(definitionId));
     this.overlay = new CombatOverlay(this.renderer.scene);
-    this.hud = new Hud((channel, text) => this.connection?.send("ChatSendRequest", { channel, text }), () => this.leave());
+    this.hud = new Hud((channel, text) => this.connection?.send("ChatSendRequest", { channel, text }), () => this.leave(), {
+      onCharacter: () => this.panels.toggleCharacter(),
+      onInventory: () => this.panels.toggleInventory(),
+    });
     container.appendChild(this.hud.root);
+    this.panels = new CharacterPanels(gateway, catalog, characterId, this.hud, () => this.refreshCharacter());
     this.presenter = new CombatPresenter({
       world: this.world,
       renderer: this.renderer,
@@ -298,6 +304,7 @@ export class GameSession {
       }
       this.updatePlayerPanel();
       this.updateQuests();
+      this.panels.update(this.character);
     } catch (error) {
       this.hud.toast(error instanceof Error ? error.message : String(error), "error");
     }
@@ -534,7 +541,12 @@ export class GameSession {
       if (event.key === "Enter") {
         event.preventDefault();
         this.hud.focusChat();
+      } else if (event.code === "KeyI") {
+        this.panels.toggleInventory();
+      } else if (event.code === "KeyC") {
+        this.panels.toggleCharacter();
       } else if (event.key === "Escape") {
+        this.panels.closeAll();
         this.hud.hideDialogue();
         this.setCombatMode("move");
       } else if (event.code === "Space" && this.isMyTurn()) {
