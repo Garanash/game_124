@@ -14,6 +14,7 @@ public interface IClientConnection
 {
     long Id { get; }
     string RemoteAddress { get; }
+    IMessageCodec Codec { get; }
     void Send(byte[] payload, Delivery delivery);
     void Close();
 }

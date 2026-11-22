@@ -10,6 +10,7 @@ namespace Realmforge.Server.Zone.Transport;
 public sealed class WebSocketTransport : IZoneTransport
 {
     public const string Path = "/ws";
+    public const string FormatQueryKey = "format";
 
     private readonly ZoneOptions _options;
     private readonly ConnectionInbox _inbox;
@@ -39,8 +40,12 @@ public sealed class WebSocketTransport : IZoneTransport
             http.Response.StatusCode = StatusCodes.Status400BadRequest;
             return;
         }
+        IMessageCodec codec = http.Request.Query[FormatQueryKey] == JsonMessageCodec.FormatQueryValue
+            ? JsonMessageCodec.Instance
+            : BinaryMessageCodec.Instance;
         using WebSocket socket = await http.WebSockets.AcceptWebSocketAsync();
-        var connection = new WebSocketConnection(ConnectionInbox.NextConnectionId(), socket, http.Connection.RemoteIpAddress?.ToString() ?? "unknown", _options.SendQueueLength);
+        var connection = new WebSocketConnection(
+            ConnectionInbox.NextConnectionId(), socket, http.Connection.RemoteIpAddress?.ToString() ?? "unknown", codec, _options.SendQueueLength);
         _inbox.Post(new ConnectionEvent(connection, ConnectionEventKind.Connected, null));
         Task sending = connection.RunSendLoop(http.RequestAborted);
         try
@@ -77,7 +82,8 @@ public sealed class WebSocketTransport : IZoneTransport
             {
                 return;
             }
-            if (received.MessageType == WebSocketMessageType.Binary)
+            WebSocketMessageType expected = connection.Codec.IsText ? WebSocketMessageType.Text : WebSocketMessageType.Binary;
+            if (received.MessageType == expected)
             {
                 _inbox.Post(new ConnectionEvent(connection, ConnectionEventKind.Message, buffer[..length]));
             }
@@ -89,11 +95,12 @@ public sealed class WebSocketTransport : IZoneTransport
         private readonly WebSocket _socket;
         private readonly Channel<byte[]> _outgoing;
 
-        public WebSocketConnection(long id, WebSocket socket, string remoteAddress, int queueLength)
+        public WebSocketConnection(long id, WebSocket socket, string remoteAddress, IMessageCodec codec, int queueLength)
         {
             Id = id;
             _socket = socket;
             RemoteAddress = remoteAddress;
+            Codec = codec;
             _outgoing = Channel.CreateBounded<byte[]>(new BoundedChannelOptions(queueLength)
             {
                 FullMode = BoundedChannelFullMode.DropOldest,
@@ -103,6 +110,7 @@ public sealed class WebSocketTransport : IZoneTransport
 
         public long Id { get; }
         public string RemoteAddress { get; }
+        public IMessageCodec Codec { get; }
 
         /// <summary>TCP already orders and retransmits, so both delivery kinds share one queue.</summary>
         public void Send(byte[] payload, Delivery delivery) => _outgoing.Writer.TryWrite(payload);
@@ -119,7 +127,8 @@ public sealed class WebSocketTransport : IZoneTransport
                     {
                         return;
                     }
-                    await _socket.SendAsync(payload, WebSocketMessageType.Binary, endOfMessage: true, cancellation);
+                    WebSocketMessageType frameType = Codec.IsText ? WebSocketMessageType.Text : WebSocketMessageType.Binary;
+                    await _socket.SendAsync(payload, frameType, endOfMessage: true, cancellation);
                 }
                 if (_socket.State == WebSocketState.Open)
                 {

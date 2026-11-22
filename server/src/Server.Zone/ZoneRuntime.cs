@@ -200,7 +200,7 @@ public sealed class ZoneRuntime : BackgroundService, IZoneOutput
         IClientMessage? message;
         try
         {
-            message = ProtocolCodec.DecodeClient(payload);
+            message = session.Connection.Codec.Decode(payload);
         }
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
@@ -330,7 +330,7 @@ public sealed class ZoneRuntime : BackgroundService, IZoneOutput
     private static void Deliver(Session session, IServerMessage message)
     {
         Delivery delivery = message is WorldSnapshotMessage ? Delivery.Latest : Delivery.Reliable;
-        session.Connection.Send(ProtocolCodec.Encode(message), delivery);
+        session.Connection.Send(session.Connection.Codec.Encode(message), delivery);
     }
 
     private ZoneSimulation? SimulationFor(ZoneTicket ticket)

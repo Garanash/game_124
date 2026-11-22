@@ -88,6 +88,7 @@ public sealed class UdpTransport : IZoneTransport
 
         public long Id { get; }
         public string RemoteAddress => _peer.Address.ToString();
+        public IMessageCodec Codec => BinaryMessageCodec.Instance;
 
         public void Send(byte[] payload, Delivery delivery)
         {

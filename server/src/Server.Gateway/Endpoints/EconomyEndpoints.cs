@@ -53,6 +53,7 @@ public static class EconomyEndpoints
         routes.MapGet("/arena/ladder", (int? count, IGrainFactory grains) =>
             grains.GetGrain<IArenaLadderGrain>(GrainKeys.Global).Top(count ?? DefaultLadderSize));
         routes.MapGet("/content/version", (ContentCatalog catalog, FeatureFlags features) => new ContentVersionResponse(catalog.Version, features.Enabled()));
+        routes.MapGet("/content/catalog", (ContentCatalog catalog) => catalog);
     }
 
     private static IAuctionGrain Auction(IGrainFactory grains) => grains.GetGrain<IAuctionGrain>(GrainKeys.Global);
