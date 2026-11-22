@@ -113,5 +113,227 @@
   "kit:elf:hair:5": {
     "preview": "01a204f5-ce30-753a-ae1d-df22c65c1f74",
     "refine": "01a204f6-197a-75ad-863a-75dd33bc9763"
+  },
+  "kit:human:base:male": {
+    "preview": "01a20500-6d30-7376-b63f-d100c67024fc",
+    "refine": "01a20501-2b4a-7245-9ee0-5e6f2cc94430",
+    "rig": "01a20501-917b-7396-a330-956a44469d32",
+    "animation": "01a20501-c40b-714d-a288-4ec8160227f7"
+  },
+  "kit:human:base:female": {
+    "preview": "01a20500-6cee-775d-b5c7-2fa934c89b47",
+    "refine": "01a20501-2b17-7183-ba40-6336812cc991",
+    "rig": "01a20501-9693-7114-aa2a-55d68df5c886",
+    "animation": "01a20501-c645-7731-a4c8-4ca99b2121c5"
+  },
+  "kit:dwarf:base:male": {
+    "preview": "01a20500-6e09-702d-af69-ed939b3461e5",
+    "refine": "01a20501-293f-7687-b60d-4b3348e4433c",
+    "rig": "01a20501-90a1-74c5-912e-0495858cc5d2",
+    "animation": "01a20501-d095-7003-bbb0-e40036fd2090"
+  },
+  "kit:dwarf:base:female": {
+    "preview": "01a20500-6dbf-719d-837d-22b5c93948b1",
+    "refine": "01a20501-2917-75e1-911e-3e2d9a56307e",
+    "rig": "01a20501-90b3-7660-8db9-156e10ed84c7",
+    "animation": "01a20501-c3b0-72c0-857d-965537c5f3cd"
+  },
+  "kit:dwarf:skin:female:2": {
+    "retexture": "01a20507-cc06-761b-8921-dc2d97855a8a"
+  },
+  "kit:dwarf:skin:female:0": {
+    "retexture": "01a20507-cbdb-7241-a147-3b574259518b"
+  },
+  "kit:dwarf:skin:female:1": {
+    "retexture": "01a20507-cbff-756e-adc1-4df85255e3e6"
+  },
+  "kit:dwarf:skin:female:5": {
+    "retexture": "01a20507-cc11-73a0-ab80-ed70de5a3207"
+  },
+  "kit:human:skin:female:2": {
+    "retexture": "01a20507-cbe8-7072-a939-1a196d42d223"
+  },
+  "kit:human:skin:female:5": {
+    "retexture": "01a20507-cbe4-711c-b636-ed6025d296e4"
+  },
+  "kit:dwarf:skin:female:3": {
+    "retexture": "01a20507-cc04-7304-b3c3-8ad6615a649e"
+  },
+  "kit:dwarf:skin:female:4": {
+    "retexture": "01a20507-cd6b-771d-be9a-d453d286aedf"
+  },
+  "kit:human:skin:female:0": {
+    "retexture": "01a20507-cbb3-7427-80dc-c417e042754f"
+  },
+  "kit:human:skin:female:1": {
+    "retexture": "01a20507-cbdd-7271-b643-5d60c61dcc96"
+  },
+  "kit:human:skin:female:3": {
+    "retexture": "01a20507-cbf0-72d8-8614-9fb081e13e2e"
+  },
+  "kit:human:skin:female:4": {
+    "retexture": "01a20507-cbcc-7726-8993-ee6a26177f87"
+  },
+  "kit:dwarf:skin:male:0": {
+    "retexture": "01a20508-3bd5-740a-b14b-d9bc913aa06b"
+  },
+  "kit:human:skin:male:0": {
+    "retexture": "01a20508-3f96-76ad-a05a-024a373b0bbc"
+  },
+  "kit:human:skin:male:1": {
+    "retexture": "01a20508-41fc-77f4-80c5-ae2bae94fad3"
+  },
+  "kit:dwarf:skin:male:1": {
+    "retexture": "01a20508-45fe-73a1-85ee-ee472688719c"
+  },
+  "kit:human:skin:male:2": {
+    "retexture": "01a20508-45f0-7001-9a1b-b64bab5dd67e"
+  },
+  "kit:human:skin:male:3": {
+    "retexture": "01a20508-47b2-758e-8505-b9d141a7c093"
+  },
+  "kit:dwarf:skin:male:2": {
+    "retexture": "01a20508-4905-76f5-a272-79da52576116"
+  },
+  "kit:human:outfit:commoner:female": {
+    "retexture": "01a20508-4c11-76ad-9c2e-4e14b6360184"
+  },
+  "kit:human:skin:male:4": {
+    "retexture": "01a20508-4de5-7198-805d-7a3b175ccc7d"
+  },
+  "kit:dwarf:skin:male:3": {
+    "retexture": "01a20508-4deb-71c8-adce-182821f1385a"
+  },
+  "kit:dwarf:skin:male:4": {
+    "retexture": "01a20508-50db-7630-83ae-ad57cce4df1b"
+  },
+  "kit:dwarf:outfit:commoner:female": {
+    "retexture": "01a20508-65bc-7638-acf0-bfe497eed5d4"
+  },
+  "kit:human:outfit:commoner:male": {
+    "retexture": "01a20509-1937-727b-9edc-9f2ee27a6240"
+  },
+  "kit:dwarf:outfit:commoner:male": {
+    "retexture": "01a20509-1920-70a7-a80a-a22d21595e88"
+  },
+  "kit:human:outfit:ranger:female": {
+    "retexture": "01a20509-1ed7-71f2-852c-1aa2cf10eaea"
+  },
+  "kit:dwarf:outfit:ranger:female": {
+    "retexture": "01a20509-21fd-7776-98aa-b7cb476e8724"
+  },
+  "kit:human:outfit:ranger:male": {
+    "retexture": "01a20509-225a-7175-867a-9b6256540331"
+  },
+  "kit:dwarf:outfit:ranger:male": {
+    "retexture": "01a20509-2d08-75e5-b99c-7aa987089941"
+  },
+  "kit:human:outfit:mage:female": {
+    "retexture": "01a20509-2d0d-71c0-bd5d-24dfee938091"
+  },
+  "kit:dwarf:outfit:mage:female": {
+    "retexture": "01a20509-304d-77a1-ae30-f629d18fd9eb"
+  },
+  "kit:dwarf:outfit:mage:male": {
+    "retexture": "01a20509-353e-7370-925c-1ee6f954da92"
+  },
+  "kit:human:outfit:mage:male": {
+    "retexture": "01a20509-3964-75c8-8810-d66b54045923"
+  },
+  "kit:human:outfit:noble:female": {
+    "retexture": "01a20509-3d6a-71af-a7b5-b3868cbc7122"
+  },
+  "kit:dwarf:outfit:noble:female": {
+    "retexture": "01a20509-418b-773c-a7b8-f11a4aeb9375"
+  },
+  "kit:dwarf:outfit:noble:male": {
+    "retexture": "01a20509-d7a4-73b1-b3c6-72d81c945f43"
+  },
+  "kit:human:outfit:noble:male": {
+    "retexture": "01a20509-db7e-771a-b37c-6d59c3750188"
+  },
+  "kit:dwarf:outfit:guard:female": {
+    "retexture": "01a20509-de8b-7004-8ebf-8185027f0da0"
+  },
+  "kit:dwarf:outfit:artisan:female": {
+    "retexture": "01a20509-e6dd-7622-a051-2e40ca18998a"
+  },
+  "kit:human:outfit:guard:female": {
+    "retexture": "01a20509-f419-716a-9e4b-858926771913"
+  },
+  "kit:dwarf:outfit:artisan:male": {
+    "retexture": "01a2050a-0074-76cb-90f5-b718a3681d23"
+  },
+  "kit:human:outfit:guard:male": {
+    "retexture": "01a2050a-0432-756b-a2fc-e5b27b62c579"
+  },
+  "kit:human:outfit:artisan:female": {
+    "retexture": "01a2050a-0abc-70bc-8144-72cd80787aae"
+  },
+  "kit:dwarf:hair:0": {
+    "preview": "01a2050a-179a-7088-9d64-2a509db177b2",
+    "refine": "01a2050a-8a0a-74f0-8686-6f94b90b992a"
+  },
+  "kit:human:outfit:artisan:male": {
+    "retexture": "01a2050a-1cba-75df-8a9b-22039b09a5ca"
+  },
+  "kit:human:hair:0": {
+    "preview": "01a2050a-8087-74b5-b0ed-ee588952bb31",
+    "refine": "01a2050b-2e9a-7160-a415-34963eb2c0ca"
+  },
+  "kit:dwarf:hair:1": {
+    "preview": "01a2050a-8a6d-77f4-8031-92f8ab32d58c",
+    "refine": "01a2050b-17c6-76ef-a2f9-55743c13df31"
+  },
+  "kit:human:hair:1": {
+    "preview": "01a2050a-92a7-7541-8f3a-585b4969b545",
+    "refine": "01a2050b-0202-7776-9933-c4a5edb6535e"
+  },
+  "kit:human:hair:2": {
+    "preview": "01a2050a-96c7-7010-9e79-e80ee2a9200e",
+    "refine": "01a2050b-244e-7234-a66a-859a8683764d"
+  },
+  "kit:dwarf:hair:2": {
+    "preview": "01a2050a-9ba4-7512-be41-f80f79607290",
+    "refine": "01a2050b-4694-7551-886f-7b38561530d9"
+  },
+  "kit:dwarf:hair:3": {
+    "preview": "01a2050a-9e9a-77c7-aa90-88ddc45511b2",
+    "refine": "01a2050b-2e78-76b6-a6d0-127d52a99bca"
+  },
+  "kit:human:hair:3": {
+    "preview": "01a2050a-ac1b-728f-b334-6ab7a010efff",
+    "refine": "01a2050b-3763-70d7-a989-f24c813c356e"
+  },
+  "kit:dwarf:hair:4": {
+    "preview": "01a2050a-ba58-76bd-9d2a-d52c8dabb960",
+    "refine": "01a2050b-45a1-702f-8d99-89b83d511a81"
+  },
+  "kit:human:hair:4": {
+    "preview": "01a2050a-bdd0-72f1-b884-29881d4f6b48",
+    "refine": "01a2050b-4c4e-733a-9376-52f649c74c41"
+  },
+  "kit:dwarf:outfit:guard:male": {
+    "retexture": "01a20509-e434-757f-9655-c3e5f94f21bf"
+  },
+  "kit:human:hair:5": {
+    "preview": "01a2050a-d3bd-7386-80d1-289328a76a66",
+    "refine": "01a2050b-6138-76a2-b6c5-61abd436dc14"
+  },
+  "kit:dwarf:hair:5": {
+    "preview": "01a2050a-e059-7630-aea1-e17ed70f659e",
+    "refine": "01a2050b-8ca0-742f-b322-ee304ceeb9c0"
+  },
+  "kit:dwarf:hair:6": {
+    "preview": "01a2050b-337b-7371-9fff-d5e7cf1ee07a"
+  },
+  "kit:human:hair:6": {
+    "preview": "01a2050b-8b7b-77eb-9959-001c6242afb7"
+  },
+  "kit:dwarf:hair:7": {
+    "preview": "01a2050b-b717-76bf-85de-c9ba8e3e8a1c"
+  },
+  "kit:human:hair:7": {
+    "preview": "01a2050b-bedf-75cc-91f0-8aace3f3395a"
   }
 }

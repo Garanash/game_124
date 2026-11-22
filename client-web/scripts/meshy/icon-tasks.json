@@ -1,0 +1,155 @@
+{
+  "icon:flame_blade": {
+    "image": "01a20502-b94e-7158-81ab-c0a7db136562"
+  },
+  "icon:healing_potion": {
+    "image": "01a20502-b964-7524-a359-0ab3423709c5"
+  },
+  "icon:short_sword": {
+    "image": "01a20503-2c8b-73c4-96c3-a14036338013"
+  },
+  "icon:twin_daggers": {
+    "image": "01a20503-2c9c-705c-9fd0-c473ab73eef8"
+  },
+  "icon:mace": {
+    "image": "01a20503-2c8f-739f-ac3e-fa66a2d54538"
+  },
+  "icon:dagger": {
+    "image": "01a20503-2c9e-70a8-b303-35128f03f74d"
+  },
+  "icon:great_sword": {
+    "image": "01a20503-2c7d-72de-ad1a-10f0b62ac763"
+  },
+  "icon:long_sword": {
+    "image": "01a20503-2c8b-76df-b0fe-11305d87b3ef"
+  },
+  "icon:holy_mace": {
+    "image": "01a20503-7406-7053-a81f-a24dfe7e62c1"
+  },
+  "icon:short_bow": {
+    "image": "01a20503-74ce-75c3-b848-bb11d2925925"
+  },
+  "icon:long_bow": {
+    "image": "01a20503-74c6-75f6-9f85-858a17c0bcd1"
+  },
+  "icon:quiver": {
+    "image": "01a20503-74e1-7542-8fe0-36d56c8e0340"
+  },
+  "icon:oak_staff": {
+    "image": "01a20503-9469-765f-961f-4962618ce141"
+  },
+  "icon:arcane_staff": {
+    "image": "01a20503-bb27-739e-a333-1f5c8e556e83"
+  },
+  "icon:spellbook": {
+    "image": "01a20503-db2e-7751-ab9a-9a55c00d3032"
+  },
+  "icon:holy_symbol": {
+    "image": "01a20503-dcaa-77ba-9ee6-711909ae964d"
+  },
+  "icon:wooden_shield": {
+    "image": "01a20503-f76e-7685-9d65-b02dc8777c77"
+  },
+  "icon:iron_shield": {
+    "image": "01a20503-f976-761e-94e4-2b2e0f289f37"
+  },
+  "icon:tower_shield": {
+    "image": "01a20503-fd26-77ac-b897-829106c6a67b"
+  },
+  "icon:leather_vest": {
+    "image": "01a20504-232e-71ba-85e3-5eacd3c82a35"
+  },
+  "icon:chain_shirt": {
+    "image": "01a20504-3e63-70a0-832a-a055bc1a382a"
+  },
+  "icon:whetstone": {
+    "image": "01a20504-4075-7331-8f7c-7bf430ad69ed"
+  },
+  "icon:ruby": {
+    "image": "01a20504-441f-75f3-884a-939fa8b64722"
+  },
+  "icon:sapphire": {
+    "image": "01a20504-61fe-7755-9904-f34af7785463"
+  },
+  "icon:lucky_coin": {
+    "image": "01a20504-67f5-717f-a9b9-fd86ce6a2fda"
+  },
+  "icon:four_leaf_clover": {
+    "image": "01a20504-8545-76b6-9cbf-10e24a55b36f"
+  },
+  "icon:fortune_charm": {
+    "image": "01a20504-8614-741c-9799-1e31074e2b07"
+  },
+  "icon:greater_healing_potion": {
+    "image": "01a20504-8a5f-74f7-92fd-261afdf7e85c"
+  },
+  "icon:dragon_scale": {
+    "image": "01a20504-a6e6-76f0-8f9f-c327e9082f53"
+  },
+  "icon:herb": {
+    "image": "01a20504-adb8-73d9-885b-a1e73ea2d16f"
+  },
+  "icon:moonpetal": {
+    "image": "01a20504-cbd6-70df-9d76-e3da0b90f6c3"
+  },
+  "icon:copper_ore": {
+    "image": "01a20504-cfd4-7252-8ddd-5fc09a2a4fc2"
+  },
+  "icon:iron_ore": {
+    "image": "01a20504-e221-76de-a19e-cca3710c4c18"
+  },
+  "icon:crystal_shard": {
+    "image": "01a20504-ec1f-71fc-a54b-dae662e6c2ff"
+  },
+  "icon:wood_log": {
+    "image": "01a20504-ee98-7440-abdd-a0708065559a"
+  },
+  "icon:hide": {
+    "image": "01a20504-f2bc-729a-96eb-4120d63279b1"
+  },
+  "icon:raw_meat": {
+    "image": "01a20505-159d-73fb-843f-14171f607cd2"
+  },
+  "icon:fish": {
+    "image": "01a20505-284e-74d5-8a91-893d0ffabea7"
+  },
+  "icon:cotton": {
+    "image": "01a20505-3151-7331-ab5d-60f1bcc65369"
+  },
+  "icon:stone": {
+    "image": "01a20505-342b-76ab-affe-1aa0606d76da"
+  },
+  "icon:iron_ingot": {
+    "image": "01a20505-3610-7165-8c92-e2bcc3710adb"
+  },
+  "icon:plank": {
+    "image": "01a20505-59cf-72e1-b90e-80cde9e1dff0"
+  },
+  "icon:leather": {
+    "image": "01a20505-5ba0-71c0-ae86-023cdfdd92d6"
+  },
+  "icon:linen": {
+    "image": "01a20505-6f76-7547-98ff-05c7e5aa708f"
+  },
+  "icon:stone_block": {
+    "image": "01a20505-7a44-7525-a01f-36b251f17c5c"
+  },
+  "icon:cooked_meat": {
+    "image": "01a20505-7c92-7183-9d24-6196aefd2877"
+  },
+  "icon:grilled_fish": {
+    "image": "01a20505-9850-768f-9470-8a83dc03a8d9"
+  },
+  "icon:mana_crystal": {
+    "image": "01a20505-9efd-73dc-acef-38b1734f146d"
+  },
+  "icon:bone": {
+    "image": "01a20505-c0dc-77b0-9c3a-3a022ef753ae"
+  },
+  "icon:goblin_ear": {
+    "image": "01a20505-c51a-776c-8aaa-8bfc7e04f264"
+  },
+  "icon:ash_essence": {
+    "image": "01a20505-e2be-763d-89a2-851f77fa535c"
+  }
+}

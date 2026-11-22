@@ -5,6 +5,7 @@
 //   node scripts/meshy-kit.mjs --race elf --dry-run              # jobs, prompts and credits, spends nothing
 //   node scripts/meshy-kit.mjs --race elf --only kit:elf:hair:0  # selected jobs
 //   node scripts/meshy-kit.mjs --race elf                        # the whole kit
+//   node scripts/meshy-kit.mjs --race human,dwarf                # several kits in one process
 //   node scripts/meshy-kit.mjs --race elf --redo kit:elf:hair:1  # discard a rejected part and generate it again
 //   node scripts/meshy-kit.mjs --race elf --drop kit:elf:hair:1  # discard a rejected part now; a later run remakes it
 import { join } from "node:path";
@@ -74,14 +75,23 @@ async function runJob(job, item, kit, library) {
   }
 }
 
+/** Several races run in one process because parallel processes would overwrite each other's tasks.json. */
 async function main() {
   const options = parseArgs(process.argv.slice(2));
-  const kit = KITS[options.raceId];
-  if (!kit) {
-    console.error(`Нет набора для расы ${options.raceId}. Есть: ${Object.keys(KITS).join(", ")}`);
+  const raceIds = options.raceId.split(",").map((id) => id.trim());
+  const unknown = raceIds.filter((id) => !KITS[id]);
+  if (unknown.length > 0) {
+    console.error(`Нет набора для расы ${unknown.join(", ")}. Есть: ${Object.keys(KITS).join(", ")}`);
     process.exit(1);
   }
   const store = new Store();
+  const results = await Promise.all(raceIds.map((raceId) => generateKit(KITS[raceId], store, options)));
+  if (results.some((result) => result === "failed")) {
+    process.exitCode = 1;
+  }
+}
+
+async function generateKit(kit, store, options) {
   const jobs = kitJobs(kit);
   const discarded = [...options.redo, ...options.drop];
   if (!options.dryRun) {
@@ -103,23 +113,30 @@ async function main() {
   console.log(`Набор ${kit.raceId}: заданий ${pending.length}, примерно ${credits} кредитов`);
   if (options.dryRun) {
     pending.forEach((job) => console.log(`  ${job.key}: ${job.prompt}`));
-    return;
+    return "planned";
   }
-  const apiKey = loadApiKey(join(ROOT, ".env.local"));
-  if (!apiKey) {
-    console.error("Нет MESHY_API_KEY: задайте переменную окружения или строку MESHY_API_KEY=msy_… в client-web/.env.local");
-    process.exit(1);
-  }
-  const client = new MeshyClient(apiKey);
+  const client = meshyClient();
   const library = pending.some((job) => job.kind === "base") ? await client.animationLibrary() : [];
   const run = async (job, item) => store.publishKit(kit.raceId, manifestPath(item), await runJob(job, item, kit, library));
   const failures = [
     ...await runJobs(client, store, pending.filter((job) => job.kind === "base"), options.concurrency, run),
     ...await runJobs(client, store, pending.filter((job) => job.kind !== "base"), options.concurrency, run),
   ];
-  store.manifest.kits[kit.raceId].heights = kit.heights;
+  if (store.manifest.kits[kit.raceId]) {
+    store.manifest.kits[kit.raceId].heights = kit.heights;
+  }
   await store.flush();
-  console.log(failures.length ? `Не удалось: ${failures.join(", ")} (перезапуск продолжит с места ошибки)` : "Набор готов.");
+  console.log(failures.length ? `Не удалось: ${failures.join(", ")} (перезапуск продолжит с места ошибки)` : `Набор ${kit.raceId} готов.`);
+  return failures.length ? "failed" : "done";
+}
+
+function meshyClient() {
+  const apiKey = loadApiKey(join(ROOT, ".env.local"));
+  if (!apiKey) {
+    console.error("Нет MESHY_API_KEY: задайте переменную окружения или строку MESHY_API_KEY=msy_… в client-web/.env.local");
+    process.exit(1);
+  }
+  return new MeshyClient(apiKey);
 }
 
 await main();

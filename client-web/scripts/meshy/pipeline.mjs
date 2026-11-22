@@ -13,6 +13,7 @@ const STATE_FILE = join(ROOT, "scripts", "meshy", "tasks.json");
 
 export const TEXT_TO_3D = "/openapi/v2/text-to-3d";
 export const RETEXTURE = "/openapi/v1/retexture";
+const TEXT_TO_IMAGE = "/openapi/v1/text-to-image";
 const RIGGING = "/openapi/v1/rigging";
 const ANIMATIONS = "/openapi/v1/animations";
 /** Low enough for dozens of characters on screen in a browser, high enough to keep faces readable. */
@@ -54,10 +55,13 @@ export function publicPath(absolutePath) {
 
 /** Serialises writes to the shared task state and manifest from parallel workers. */
 export class Store {
-  constructor() {
-    mkdirSync(MODELS, { recursive: true });
-    this.tasks = readJson(STATE_FILE, {});
-    this.manifest = { assets: {}, kits: {}, ...readJson(MANIFEST, {}) };
+  /** Separate state and manifest files let independent generators run at the same time without overwriting each other. */
+  constructor({ stateFile = STATE_FILE, manifestFile = MANIFEST, emptyManifest = { assets: {}, kits: {} } } = {}) {
+    mkdirSync(dirname(manifestFile), { recursive: true });
+    this.stateFile = stateFile;
+    this.manifestFile = manifestFile;
+    this.tasks = readJson(stateFile, {});
+    this.manifest = { ...emptyManifest, ...readJson(manifestFile, {}) };
     this.writing = Promise.resolve();
   }
 
@@ -100,8 +104,8 @@ export class Store {
 
   flush() {
     this.writing = this.writing.then(() => Promise.all([
-      writeFile(STATE_FILE, JSON.stringify(this.tasks, null, 2) + "\n"),
-      writeFile(MANIFEST, JSON.stringify(this.manifest, null, 2) + "\n"),
+      writeFile(this.stateFile, JSON.stringify(this.tasks, null, 2) + "\n"),
+      writeFile(this.manifestFile, JSON.stringify(this.manifest, null, 2) + "\n"),
     ]));
     return this.writing;
   }
@@ -190,14 +194,27 @@ export class AssetJob {
     await downloadTexture(this.client, finished.texture_urls[0].base_color, texturePath);
     return publicPath(texturePath);
   }
+
+  /** A square painting saved as a JPEG of `sizePixels`. */
+  async textToImage({ prompt, model, imagePath, sizePixels }) {
+    const task = await this.step("image", () => this.client.create(TEXT_TO_IMAGE, {
+      ai_model: model,
+      prompt: prompt.slice(0, MAX_PROMPT),
+      aspect_ratio: "1:1",
+    }));
+    const finished = await this.wait(TEXT_TO_IMAGE, task, "картинка");
+    await downloadTexture(this.client, finished.image_urls[0], imagePath, sizePixels);
+    return publicPath(imagePath);
+  }
 }
 
-/** Meshy textures are 2K PNGs; JPEG keeps the download small. Uses macOS sips, which the art machine has. */
-async function downloadTexture(client, url, jpegPath) {
+/** Meshy images are large PNGs; JPEG keeps the download small. Uses macOS sips, which the art machine has. */
+async function downloadTexture(client, url, jpegPath, maxSizePixels) {
   const pngPath = jpegPath.replace(/\.jpg$/, ".png");
   await client.download(url, pngPath);
+  const resize = maxSizePixels ? ["-Z", String(maxSizePixels)] : [];
   try {
-    execFileSync("sips", ["-s", "format", "jpeg", "-s", "formatOptions", TEXTURE_JPEG_QUALITY, pngPath, "--out", jpegPath], { stdio: "ignore" });
+    execFileSync("sips", ["-s", "format", "jpeg", "-s", "formatOptions", TEXTURE_JPEG_QUALITY, ...resize, pngPath, "--out", jpegPath], { stdio: "ignore" });
   } catch {
     throw new Error(`не удалось сконвертировать ${pngPath} в JPEG (нужен sips из macOS)`);
   }
