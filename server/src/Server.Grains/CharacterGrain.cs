@@ -1,7 +1,9 @@
 using Orleans.Runtime;
+using Realmforge.Rules.Characters;
 using Realmforge.Rules.Combat;
 using Realmforge.Rules.Definitions;
 using Realmforge.Rules.Dice;
+using Realmforge.Rules.Inventory;
 using Realmforge.Rules.Quests;
 using Realmforge.Server.Core;
 using Realmforge.Server.Core.Characters;
@@ -36,7 +38,7 @@ public sealed class CharacterGrain : Grain, ICharacterGrain, IRemindable
 
     public override async Task OnActivateAsync(CancellationToken cancellationToken)
     {
-        if (_state.RecordExists && _operations.RelocateIfZoneRemoved(Character))
+        if (_state.RecordExists && _operations.Migrate(Character))
         {
             await _state.WriteStateAsync();
         }
@@ -71,7 +73,12 @@ public sealed class CharacterGrain : Grain, ICharacterGrain, IRemindable
 
     public Task<DomainResult<RewardOutcome>> Craft(string recipeId) => Mutate(state => _operations.Craft(state, recipeId));
 
-    public Task<DomainResult> Fuse(string recipeId) => Mutate(state => _operations.Fuse(state, recipeId, Guid.NewGuid()));
+    public Task<DomainResult> RaiseAbility(Ability ability) => Mutate(state => CharacterOperations.RaiseAbility(state, ability));
+
+    public Task<DomainResult> Equip(Guid instanceId, EquipmentSlot slot) => Mutate(state => _operations.Equip(state, instanceId, slot));
+
+    public Task<DomainResult> Unequip(EquipmentSlot slot, int x, int y, int rotation) =>
+        Mutate(state => _operations.Unequip(state, slot, x, y, rotation));
 
     public Task<DomainResult> MoveBackpackItem(Guid instanceId, int x, int y, int rotation) =>
         Mutate(state => _operations.MoveBackpackItem(state, instanceId, x, y, rotation));

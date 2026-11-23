@@ -17,6 +17,8 @@ namespace Realmforge.Rules.Characters
         public string Name { get; set; } = string.Empty;
         public string RaceId { get; set; } = string.Empty;
         public int[] BaseAbilities { get; set; } = new int[AbilityScores.AbilityCount];
+        /// <summary>Null for heroes created before looks could be chosen; clients then derive one from the name.</summary>
+        public CharacterLook? Look { get; set; }
         public int LawChaos { get; set; }
         public int GoodEvil { get; set; }
         public long Xp { get; set; }

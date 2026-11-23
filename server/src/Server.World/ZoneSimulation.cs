@@ -13,7 +13,7 @@ namespace Realmforge.Server.World;
 
 public sealed record PlayerJoin(
     CharacterSheet Sheet,
-    Backpack Backpack,
+    Equipment Equipment,
     Guid? PartyId,
     Guid? GuildId,
     string FactionId,
@@ -78,7 +78,7 @@ public sealed partial class ZoneSimulation
         bool hasSavedPosition = join.Sheet.ZoneId == Zone.Id;
         float x = hasSavedPosition ? join.Sheet.PositionX : Zone.Spawn.X;
         float z = hasSavedPosition ? join.Sheet.PositionZ : Zone.Spawn.Z;
-        var player = new PlayerEntity(_nextEntityId++, join.Sheet, join.Backpack, x, z)
+        var player = new PlayerEntity(_nextEntityId++, join.Sheet, join.Equipment, x, z)
         {
             SpeedMetersPerSecond = PlayerSpeedMetersPerSecond,
             PartyId = join.PartyId,
@@ -123,14 +123,29 @@ public sealed partial class ZoneSimulation
         }
     }
 
-    public void ReplaceSheet(Guid characterId, CharacterSheet sheet, Backpack backpack)
+    public void ReplaceSheet(Guid characterId, CharacterSheet sheet, Equipment equipment)
     {
         PlayerEntity? player = FindPlayer(characterId);
-        if (player != null && !player.InCombat)
+        if (player == null || player.InCombat)
         {
-            player.Sheet = sheet;
-            player.Backpack = backpack;
-            RefreshDerivedStats(player);
+            return;
+        }
+        string[] heldBefore = player.Held;
+        player.Sheet = sheet;
+        player.Equipment = equipment;
+        RefreshDerivedStats(player);
+        if (!heldBefore.SequenceEqual(player.Held))
+        {
+            BroadcastGear(player);
+        }
+    }
+
+    private void BroadcastGear(PlayerEntity player)
+    {
+        var message = new EntityGearMessage { EntityId = player.Id, Held = player.Held };
+        foreach (PlayerEntity viewer in Players.Where(viewer => viewer == player || viewer.KnownEntities.Contains(player.Id)))
+        {
+            Send(viewer.Id, message);
         }
     }
 

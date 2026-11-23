@@ -1,5 +1,6 @@
 using Realmforge.Rules.Characters;
 using Realmforge.Rules.Definitions;
+using Realmforge.Rules.Inventory;
 using Realmforge.Rules.Stats;
 
 namespace Realmforge.Rules.Tests;
@@ -61,6 +62,7 @@ internal static class TestCatalog
             Shape = { new CellOffset(0, 0), new CellOffset(0, 1) },
             WeaponDamage = "1d8",
             WeaponDamageType = DamageType.Slashing,
+            Slot = ItemSlotKind.Weapon,
         };
         catalog.Items["whetstone"] = new ItemDefinition { Id = "whetstone", Tags = { "stone" } };
         catalog.Items["great_sword"] = new ItemDefinition
@@ -70,15 +72,21 @@ internal static class TestCatalog
             Tags = { "weapon", "blade" },
             Shape = { new CellOffset(0, 0), new CellOffset(0, 1), new CellOffset(0, 2) },
             WeaponDamage = "2d6",
+            Slot = ItemSlotKind.TwoHanded,
         };
-        catalog.Synergies["sharpened"] = new SynergyDefinition
+        catalog.Items["shield"] = new ItemDefinition
         {
-            Id = "sharpened",
-            SourceTag = "blade",
-            NeighborTag = "stone",
-            Bonus = { new StatModifier(Stat.DamageBonus, 1) },
+            Id = "shield",
+            Shape = { new CellOffset(0, 0), new CellOffset(1, 0), new CellOffset(0, 1), new CellOffset(1, 1) },
+            Modifiers = { new StatModifier(Stat.ArmorClass, 2) },
+            Slot = ItemSlotKind.OffHand,
         };
-        catalog.Fusions["forge_great_sword"] = new FusionRecipe { Id = "forge_great_sword", Inputs = { "sword", "sword" }, Output = "great_sword" };
+        catalog.Items["ring"] = new ItemDefinition
+        {
+            Id = "ring",
+            Modifiers = { new StatModifier(Stat.DamageBonus, 1) },
+            Slot = ItemSlotKind.Ring,
+        };
         return catalog;
     }
 

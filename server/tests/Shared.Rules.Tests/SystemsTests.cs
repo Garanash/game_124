@@ -25,36 +25,6 @@ public class SystemsTests
     }
 
     [Fact]
-    public void Adjacent_items_trigger_synergy()
-    {
-        var catalog = TestCatalog.Create();
-        var backpack = new Backpack();
-        backpack.Place(Guid.NewGuid(), "sword", 0, 0, 0, catalog);
-        backpack.Place(Guid.NewGuid(), "whetstone", 3, 0, 0, catalog);
-        Assert.Equal(0, BackpackRules.ComputeBonuses(backpack, catalog)[Stat.DamageBonus]);
-
-        backpack.Place(Guid.NewGuid(), "whetstone", 1, 1, 0, catalog);
-        Assert.Equal(1, BackpackRules.ComputeBonuses(backpack, catalog)[Stat.DamageBonus]);
-    }
-
-    [Fact]
-    public void Touching_items_fuse_into_better_item()
-    {
-        var catalog = TestCatalog.Create();
-        var backpack = new Backpack();
-        backpack.Place(Guid.NewGuid(), "sword", 0, 0, 0, catalog);
-        backpack.Place(Guid.NewGuid(), "sword", 3, 0, 0, catalog);
-        Assert.Empty(BackpackRules.FindFusions(backpack, catalog));
-
-        backpack.Place(Guid.NewGuid(), "sword", 1, 0, 0, catalog);
-        Assert.Single(BackpackRules.FindFusions(backpack, catalog));
-
-        Assert.True(BackpackRules.Fuse(backpack, "forge_great_sword", Guid.NewGuid(), catalog).Success);
-        Assert.Contains(backpack.Items, item => item.ItemId == "great_sword");
-        Assert.Equal(2, backpack.Items.Count);
-    }
-
-    [Fact]
     public void Quest_choice_shifts_alignment_and_completion_unlocks_class()
     {
         var catalog = TestCatalog.Create();

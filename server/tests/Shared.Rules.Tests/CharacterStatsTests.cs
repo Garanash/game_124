@@ -12,12 +12,12 @@ public class CharacterStatsTests
     {
         var catalog = TestCatalog.Create();
         CharacterSheet sheet = CharacterRules.Create(Guid.NewGuid(), Guid.NewGuid(), TestCatalog.DwarfRequest(), catalog, DateTime.UtcNow);
-        var backpack = new Backpack();
-        backpack.Place(Guid.NewGuid(), "sword", 0, 0, 0, catalog);
-        backpack.Place(Guid.NewGuid(), "whetstone", 1, 0, 0, catalog);
+        var equipment = new Equipment();
+        equipment.Slots[EquipmentSlot.MainHand] = new EquippedItem { InstanceId = Guid.NewGuid(), ItemId = "sword" };
+        equipment.Slots[EquipmentSlot.LeftRing] = new EquippedItem { InstanceId = Guid.NewGuid(), ItemId = "ring" };
 
-        CharacterStats stats = CharacterStats.Build(sheet, backpack, catalog);
-        Combatant combatant = CombatantFactory.FromCharacter(0, sheet, backpack, catalog, 0);
+        CharacterStats stats = CharacterStats.Build(sheet, equipment, catalog);
+        Combatant combatant = CombatantFactory.FromCharacter(0, sheet, equipment, catalog, 0);
 
         Assert.Equal(combatant.ArmorClass, stats.ArmorClass);
         Assert.Equal(combatant.Attack.AttackBonus, stats.AttackBonus);
@@ -30,15 +30,12 @@ public class CharacterStatsTests
     }
 
     [Fact]
-    public void Touching_fusion_inputs_are_offered()
+    public void Points_left_from_creation_are_reported()
     {
         var catalog = TestCatalog.Create();
         CharacterSheet sheet = CharacterRules.Create(Guid.NewGuid(), Guid.NewGuid(), TestCatalog.DwarfRequest(), catalog, DateTime.UtcNow);
-        var backpack = new Backpack();
-        backpack.Place(Guid.NewGuid(), "sword", 0, 0, 0, catalog);
-        Assert.Empty(CharacterStats.Build(sheet, backpack, catalog).AvailableFusions);
+        sheet.BaseAbilities = new[] { 8, 8, 8, 8, 8, 8 };
 
-        backpack.Place(Guid.NewGuid(), "sword", 1, 0, 0, catalog);
-        Assert.Equal(new[] { "forge_great_sword" }, CharacterStats.Build(sheet, backpack, catalog).AvailableFusions);
+        Assert.Equal(PointBuy.Budget, CharacterStats.Build(sheet, new Equipment(), catalog).UnspentAbilityPoints);
     }
 }

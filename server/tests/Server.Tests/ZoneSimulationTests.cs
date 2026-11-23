@@ -46,7 +46,7 @@ public class ZoneSimulationTests
     private static PlayerJoin Join(string name, Guid? partyId = null)
     {
         var sheet = new CharacterSheet { Id = Guid.NewGuid(), Name = name, RaceId = "dwarf", BaseAbilities = SturdyAbilities, ZoneId = ZoneId, PositionX = 100, PositionZ = 100 };
-        return new PlayerJoin(sheet, new Backpack(), partyId, null, "faction_test", Array.Empty<string>());
+        return new PlayerJoin(sheet, new Equipment(), partyId, null, "faction_test", Array.Empty<string>());
     }
 
     private static void MovePlayerNextTo(ZoneSimulation simulation, PlayerEntity player, float x, float z)

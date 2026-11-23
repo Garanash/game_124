@@ -12,6 +12,8 @@ namespace Realmforge.Rules.Characters
         public string RaceId { get; set; } = string.Empty;
         public AlignmentCell Alignment { get; set; } = AlignmentCell.TrueNeutral;
         public int[] Abilities { get; set; } = new int[AbilityScores.AbilityCount];
+        /// <summary>Optional so older clients can still create heroes.</summary>
+        public CharacterLook? Look { get; set; }
     }
 
     public static class CharacterRules
@@ -43,6 +45,14 @@ namespace Realmforge.Rules.Characters
             {
                 return RuleResult.Fail("character.abilities", "Six ability scores are required.");
             }
+            if (request.Look != null)
+            {
+                RuleResult look = CharacterLookRules.Validate(request.Look);
+                if (!look.Success)
+                {
+                    return look;
+                }
+            }
             return PointBuy.Validate(AbilityScores.FromArray(request.Abilities));
         }
 
@@ -62,6 +72,7 @@ namespace Realmforge.Rules.Characters
                 Name = request.Name.Trim(),
                 RaceId = race.Id,
                 BaseAbilities = (int[])request.Abilities.Clone(),
+                Look = request.Look,
                 Gold = StartingGold,
                 CreatedAtUtc = nowUtc,
             };
@@ -183,6 +194,17 @@ namespace Realmforge.Rules.Characters
                 }
             }
             return known.Distinct().ToList();
+        }
+
+        public static RuleResult RaiseAbility(CharacterSheet sheet, Ability ability)
+        {
+            AbilityScores scores = AbilityScores.FromArray(sheet.BaseAbilities);
+            RuleResult allowed = PointBuy.CanRaise(scores, ability);
+            if (allowed.Success)
+            {
+                sheet.BaseAbilities[(int)ability]++;
+            }
+            return allowed;
         }
 
         public static long GrantXp(CharacterSheet sheet, long amount)

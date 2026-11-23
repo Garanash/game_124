@@ -216,7 +216,7 @@ public sealed partial class ZoneSimulation
     private void AddPlayerCombatant(WorldEncounter encounter, PlayerEntity player, int team)
     {
         player.GatheringNodeEntityId = null;
-        AddCombatant(encounter, player, CombatantFactory.FromCharacter(player.Id, player.Sheet, player.Backpack, _catalog, team));
+        AddCombatant(encounter, player, CombatantFactory.FromCharacter(player.Id, player.Sheet, player.Equipment, _catalog, team));
     }
 
     private void AddCombatant(WorldEncounter encounter, WorldEntity entity, Combatant combatant)
@@ -461,7 +461,7 @@ public sealed partial class ZoneSimulation
 
     private void RefreshDerivedStats(PlayerEntity player)
     {
-        var bonuses = CombatantFactory.CharacterBonuses(player.Sheet, player.Backpack, _catalog);
+        var bonuses = CombatantFactory.CharacterBonuses(player.Sheet, player.Equipment, _catalog);
         player.MaxHp = CharacterRules.MaxHp(player.Sheet, _catalog, bonuses);
         if (player.Sheet.CurrentHp <= 0 || player.Sheet.CurrentHp > player.MaxHp)
         {

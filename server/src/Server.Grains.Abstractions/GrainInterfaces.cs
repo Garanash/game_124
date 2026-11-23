@@ -1,6 +1,7 @@
 using Realmforge.Rules.Characters;
 using Realmforge.Rules.Combat;
 using Realmforge.Rules.Definitions;
+using Realmforge.Rules.Inventory;
 using Realmforge.Rules.Quests;
 using Realmforge.Server.Core;
 using Realmforge.Server.Core.Characters;
@@ -43,7 +44,9 @@ public interface ICharacterGrain : IGrainWithGuidKey
     Task<DomainResult<RewardOutcome>> Gather(string nodeId);
     Task<DomainResult<RewardOutcome>> Craft(string recipeId);
 
-    Task<DomainResult> Fuse(string recipeId);
+    Task<DomainResult> RaiseAbility(Ability ability);
+    Task<DomainResult> Equip(Guid instanceId, EquipmentSlot slot);
+    Task<DomainResult> Unequip(EquipmentSlot slot, int x, int y, int rotation);
     Task<DomainResult> MoveBackpackItem(Guid instanceId, int x, int y, int rotation);
     Task<DomainResult> PlaceFromBag(string itemId, int x, int y, int rotation);
     Task<DomainResult> StashToBag(Guid instanceId);

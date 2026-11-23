@@ -13,20 +13,20 @@ namespace Realmforge.Rules.Combat
         private const int DefaultSpeedCells = 6;
         private const string UnarmedDamage = "1d4";
 
-        public static StatBlock CharacterBonuses(CharacterSheet sheet, Backpack backpack, ContentCatalog catalog)
+        public static StatBlock CharacterBonuses(CharacterSheet sheet, Equipment equipment, ContentCatalog catalog)
         {
-            StatBlock bonuses = BackpackRules.ComputeBonuses(backpack, catalog);
+            StatBlock bonuses = EquipmentRules.Bonuses(equipment, catalog);
             bonuses.Merge(PerkRules.Bonuses(sheet, catalog));
             return bonuses;
         }
 
-        public static Combatant FromCharacter(long entityId, CharacterSheet sheet, Backpack backpack, ContentCatalog catalog, int team)
+        public static Combatant FromCharacter(long entityId, CharacterSheet sheet, Equipment equipment, ContentCatalog catalog, int team)
         {
-            StatBlock bonuses = CharacterBonuses(sheet, backpack, catalog);
+            StatBlock bonuses = CharacterBonuses(sheet, equipment, catalog);
             AbilityScores abilities = ApplyAbilityBonuses(sheet.Abilities(catalog), bonuses);
             int level = sheet.Level;
             int proficiency = Progression.ProficiencyBonus(level);
-            ItemDefinition? weapon = BackpackRules.BestWeapon(backpack, catalog);
+            ItemDefinition? weapon = equipment.Weapon(catalog);
             bool finesse = weapon != null && weapon.Tags.Contains("finesse");
             bool ranged = weapon != null && weapon.Tags.Contains("ranged");
             Ability attackAbility = finesse || ranged ? Ability.Dexterity : Ability.Strength;

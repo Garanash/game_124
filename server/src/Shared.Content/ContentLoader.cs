@@ -43,8 +43,6 @@ namespace Realmforge.Content
                 { "abilities", (catalog, yaml, path) => AddAll(catalog.Abilities, Parse<AbilityDefinition>(yaml, path), item => item.Id, path) },
                 { "perks", (catalog, yaml, path) => AddAll(catalog.Perks, Parse<PerkDefinition>(yaml, path), item => item.Id, path) },
                 { "items", (catalog, yaml, path) => AddAll(catalog.Items, Parse<ItemDefinition>(yaml, path), item => item.Id, path) },
-                { "synergies", (catalog, yaml, path) => AddAll(catalog.Synergies, Parse<SynergyDefinition>(yaml, path), item => item.Id, path) },
-                { "fusions", (catalog, yaml, path) => AddAll(catalog.Fusions, Parse<FusionRecipe>(yaml, path), item => item.Id, path) },
                 { "loot", (catalog, yaml, path) => AddAll(catalog.LootTables, Parse<LootTable>(yaml, path), item => item.Id, path) },
                 { "continents", (catalog, yaml, path) => AddAll(catalog.Continents, Parse<ContinentDefinition>(yaml, path), item => item.Id, path) },
                 { "zones", (catalog, yaml, path) => AddAll(catalog.Zones, Parse<ZoneDefinition>(yaml, path), item => item.Id, path) },

@@ -16,17 +16,13 @@ namespace Realmforge.Rules.Inventory
     }
 
     /// <summary>
-    /// Grid backpack in the spirit of Backpack Brawl: shaped items, neighbour synergies, and fusions of touching items.
+    /// Diablo-style grid backpack: shaped items are stored here; only what is worn on the doll (<see cref="Equipment"/>) counts.
     /// </summary>
     public sealed class Backpack
     {
-        public const int DefaultWidth = 6;
-        public const int DefaultHeight = 4;
-        public const int MaxWidth = 9;
-        public const int MaxHeight = 7;
+        public const int DefaultWidth = 14;
+        public const int DefaultHeight = 6;
         private const int RotationCount = 4;
-
-        private static readonly (int X, int Y)[] OrthogonalSteps = { (1, 0), (-1, 0), (0, 1), (0, -1) };
 
         public int Width { get; set; } = DefaultWidth;
         public int Height { get; set; } = DefaultHeight;
@@ -137,20 +133,13 @@ namespace Realmforge.Rules.Inventory
             return Items.RemoveAll(item => item.InstanceId == instanceId) > 0;
         }
 
-        public bool AreAdjacent(PlacedItem first, PlacedItem second, ContentCatalog catalog)
+        /// <summary>Saves from the time of the small 6×4 backpack keep their items and get the full grid.</summary>
+        public bool GrowToDefault()
         {
-            var secondCells = new HashSet<(int X, int Y)>(OccupiedCells(second, catalog));
-            foreach ((int X, int Y) cell in OccupiedCells(first, catalog))
-            {
-                foreach ((int X, int Y) step in OrthogonalSteps)
-                {
-                    if (secondCells.Contains((cell.X + step.X, cell.Y + step.Y)))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            bool grown = Width < DefaultWidth || Height < DefaultHeight;
+            Width = Math.Max(Width, DefaultWidth);
+            Height = Math.Max(Height, DefaultHeight);
+            return grown;
         }
     }
 }

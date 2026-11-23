@@ -6,7 +6,7 @@ namespace Realmforge.Protocol
     public static class ProtocolCodec
     {
         /// <summary>Bumped on any breaking wire change; the zone rejects mismatched clients in Hello.</summary>
-        public const int ProtocolVersion = 1;
+        public const int ProtocolVersion = 2;
 
         public static byte[] Encode(IClientMessage message)
         {

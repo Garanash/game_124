@@ -11,8 +11,6 @@ namespace Realmforge.Rules.Definitions
         public Dictionary<string, AbilityDefinition> Abilities { get; } = new Dictionary<string, AbilityDefinition>();
         public Dictionary<string, PerkDefinition> Perks { get; } = new Dictionary<string, PerkDefinition>();
         public Dictionary<string, ItemDefinition> Items { get; } = new Dictionary<string, ItemDefinition>();
-        public Dictionary<string, SynergyDefinition> Synergies { get; } = new Dictionary<string, SynergyDefinition>();
-        public Dictionary<string, FusionRecipe> Fusions { get; } = new Dictionary<string, FusionRecipe>();
         public Dictionary<string, LootTable> LootTables { get; } = new Dictionary<string, LootTable>();
         public Dictionary<string, ContinentDefinition> Continents { get; } = new Dictionary<string, ContinentDefinition>();
         public Dictionary<string, ZoneDefinition> Zones { get; } = new Dictionary<string, ZoneDefinition>();

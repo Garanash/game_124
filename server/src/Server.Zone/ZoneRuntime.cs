@@ -110,7 +110,7 @@ public sealed class ZoneRuntime : BackgroundService, IZoneOutput
     {
         if (_sessionsByCharacter.TryGetValue(characterId, out Session? session) && session.Simulation != null)
         {
-            session.Simulation.ReplaceSheet(characterId, state.Sheet, state.Backpack);
+            session.Simulation.ReplaceSheet(characterId, state.Sheet, state.Equipment);
             session.Simulation.UpdateMembership(characterId, state.PartyId, state.GuildId);
         }
     }
@@ -270,7 +270,7 @@ public sealed class ZoneRuntime : BackgroundService, IZoneOutput
             Kick(previous, "session.replaced", "Вход выполнен с другого устройства.");
         }
         PlayerEntity player = simulation.AddPlayer(new PlayerJoin(
-            state.Sheet, state.Backpack, state.PartyId, state.GuildId, state.FactionId, state.Appearance.Slots.Values.ToArray()));
+            state.Sheet, state.Equipment, state.PartyId, state.GuildId, state.FactionId, state.Appearance.Slots.Values.ToArray()));
         session.Simulation = simulation;
         session.EntityId = player.Id;
         _sessionsByCharacter[ticket.CharacterId] = session;

@@ -155,20 +155,9 @@ namespace Realmforge.Content
                 string where = "items/" + item.Id;
                 Require(string.IsNullOrEmpty(item.WeaponDamage) || DiceExpression.TryParse(item.WeaponDamage, out _), where, "invalid weapon dice");
                 Require(item.Shape.All(cell => cell.X >= 0 && cell.Y >= 0), where, "shape offsets must be non-negative");
-                Require(item.Shape.All(cell => cell.X < Backpack.MaxWidth && cell.Y < Backpack.MaxHeight), where, "shape exceeds max backpack size");
-            }
-            HashSet<string> tags = new HashSet<string>(_catalog.Items.Values.SelectMany(item => item.Tags));
-            foreach (SynergyDefinition synergy in _catalog.Synergies.Values)
-            {
-                string where = "synergies/" + synergy.Id;
-                Require(tags.Contains(synergy.SourceTag), where, "no item carries tag " + synergy.SourceTag);
-                Require(tags.Contains(synergy.NeighborTag), where, "no item carries tag " + synergy.NeighborTag);
-            }
-            foreach (FusionRecipe fusion in _catalog.Fusions.Values)
-            {
-                string where = "fusions/" + fusion.Id;
-                Require(fusion.Inputs.Count >= 2, where, "fusion needs at least two inputs");
-                RequireItems(where, fusion.Inputs.Append(fusion.Output));
+                Require(item.Shape.All(cell => cell.X < Backpack.DefaultWidth && cell.Y < Backpack.DefaultHeight), where, "shape exceeds the backpack");
+                Require(item.Slot == ItemSlotKind.None || item.MaxStack <= 1, where, "wearable items cannot stack");
+                Require(item.Slot is not (ItemSlotKind.Weapon or ItemSlotKind.TwoHanded) || !string.IsNullOrEmpty(item.WeaponDamage), where, "weapons need weapon dice");
             }
         }
 

@@ -55,25 +55,38 @@ public sealed class CharacterOperations
         return DomainResult<CharacterState>.Ok(state);
     }
 
-    public bool RelocateIfZoneRemoved(CharacterState state) => CharacterRules.RelocateIfZoneRemoved(state.Sheet, _catalog);
-
     /// <summary>
-    /// Every hero leaves home armed. The kit also teaches the backpack: the whetstone sharpens the sword
-    /// when placed beside it, and the two daggers in the bag fuse into twin daggers once they touch.
+    /// Brings saves from older versions up to date: heroes in removed zones go home, the backpack grows to
+    /// the full grid, and gear that used to count from the backpack is put on. Returns true when anything changed.
     /// </summary>
+    public bool Migrate(CharacterState state)
+    {
+        bool relocated = CharacterRules.RelocateIfZoneRemoved(state.Sheet, _catalog);
+        bool grown = state.Backpack.GrowToDefault();
+        bool equipped = false;
+        if (state.Equipment.Slots.Count == 0)
+        {
+            EquipmentRules.EquipBestFromBackpack(state.Backpack, state.Equipment, _catalog);
+            equipped = state.Equipment.Slots.Count > 0;
+        }
+        return relocated || grown || equipped;
+    }
+
+    /// <summary>Every hero leaves home armed and dressed; spare daggers and potions wait in the bag.</summary>
     private void GiveStarterKit(CharacterState state)
     {
-        foreach (string itemId in StarterBackpackItems.Where(_catalog.Items.ContainsKey))
+        foreach (string itemId in StarterGear.Where(_catalog.Items.ContainsKey))
         {
             state.Backpack.TryAutoPlace(Guid.NewGuid(), itemId, _catalog, out _);
         }
+        EquipmentRules.EquipBestFromBackpack(state.Backpack, state.Equipment, _catalog);
         foreach ((string itemId, int quantity) in StarterBagItems.Where(entry => _catalog.Items.ContainsKey(entry.ItemId)))
         {
             state.Materials.Add(itemId, quantity);
         }
     }
 
-    private static readonly string[] StarterBackpackItems = { "short_sword", "leather_vest", "whetstone" };
+    private static readonly string[] StarterGear = { "short_sword", "leather_vest" };
     private static readonly (string ItemId, int Quantity)[] StarterBagItems = { ("dagger", 2), ("healing_potion", 2) };
 
     public RewardOutcome GrantRewards(CharacterState state, long xp, LootResult loot)
@@ -164,9 +177,19 @@ public sealed class CharacterOperations
         return DomainResult<RewardOutcome>.Ok(outcome with { Quests = outcome.Quests.Concat(craftUpdates).ToList() });
     }
 
-    public DomainResult Fuse(CharacterState state, string recipeId, Guid outputInstanceId)
+    public static DomainResult RaiseAbility(CharacterState state, Ability ability)
     {
-        return DomainResult.From(BackpackRules.Fuse(state.Backpack, recipeId, outputInstanceId, _catalog));
+        return DomainResult.From(CharacterRules.RaiseAbility(state.Sheet, ability));
+    }
+
+    public DomainResult Equip(CharacterState state, Guid instanceId, EquipmentSlot slot)
+    {
+        return DomainResult.From(EquipmentRules.Equip(state.Backpack, state.Equipment, instanceId, slot, _catalog));
+    }
+
+    public DomainResult Unequip(CharacterState state, EquipmentSlot slot, int x, int y, int rotation)
+    {
+        return DomainResult.From(EquipmentRules.Unequip(state.Backpack, state.Equipment, slot, x, y, rotation, _catalog));
     }
 
     public DomainResult MoveBackpackItem(CharacterState state, Guid instanceId, int x, int y, int rotation)
@@ -328,7 +351,7 @@ public sealed class CharacterOperations
 
     public StatBlock Bonuses(CharacterState state)
     {
-        StatBlock bonuses = CombatantFactory.CharacterBonuses(state.Sheet, state.Backpack, _catalog);
+        StatBlock bonuses = CombatantFactory.CharacterBonuses(state.Sheet, state.Equipment, _catalog);
         if (state.House != null)
         {
             bonuses.Merge(state.House.Bonuses(_catalog));

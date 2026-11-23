@@ -41,23 +41,7 @@ namespace Realmforge.Rules.Definitions
         public DamageType WeaponDamageType { get; set; } = DamageType.Bludgeoning;
         public int MaxStack { get; set; } = 1;
         public int Value { get; set; }
-    }
-
-    /// <summary>Bonus applied to items tagged <see cref="SourceTag"/> for each orthogonally adjacent item tagged <see cref="NeighborTag"/>.</summary>
-    public sealed class SynergyDefinition
-    {
-        public string Id { get; set; } = string.Empty;
-        public string SourceTag { get; set; } = string.Empty;
-        public string NeighborTag { get; set; } = string.Empty;
-        public List<StatModifier> Bonus { get; set; } = new List<StatModifier>();
-    }
-
-    /// <summary>Backpack fusion: when all inputs touch each other in the grid, they can be merged into the output.</summary>
-    public sealed class FusionRecipe
-    {
-        public string Id { get; set; } = string.Empty;
-        public List<string> Inputs { get; set; } = new List<string>();
-        public string Output { get; set; } = string.Empty;
+        public Inventory.ItemSlotKind Slot { get; set; } = Inventory.ItemSlotKind.None;
     }
 
     public sealed class LootEntry

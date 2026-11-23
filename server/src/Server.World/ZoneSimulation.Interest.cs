@@ -1,4 +1,5 @@
 using Realmforge.Protocol;
+using Realmforge.Rules.Characters;
 
 namespace Realmforge.Server.World;
 
@@ -59,6 +60,8 @@ public sealed partial class ZoneSimulation
         {
             case PlayerEntity player:
                 message.Cosmetics = player.Cosmetics;
+                message.Look = LookOf(player.Sheet.Look);
+                message.Held = player.Held;
                 message.Hp = player.Sheet.CurrentHp;
                 message.MaxHp = player.MaxHp;
                 message.Level = player.Sheet.Level;
@@ -70,5 +73,20 @@ public sealed partial class ZoneSimulation
                 break;
         }
         return message;
+    }
+
+    private static LookDto? LookOf(CharacterLook? look)
+    {
+        return look == null ? null : new LookDto
+        {
+            Sex = look.Sex,
+            Face = look.Face,
+            Hair = look.Hair,
+            HairColor = look.HairColor,
+            EyeColor = look.EyeColor,
+            Build = look.Build,
+            HeightPercent = look.HeightPercent,
+            Outfit = look.Outfit,
+        };
     }
 }

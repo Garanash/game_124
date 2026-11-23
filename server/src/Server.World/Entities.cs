@@ -44,15 +44,22 @@ public abstract class WorldEntity
 
 public sealed class PlayerEntity : WorldEntity
 {
-    public PlayerEntity(long id, CharacterSheet sheet, Backpack backpack, float x, float z)
+    public PlayerEntity(long id, CharacterSheet sheet, Equipment equipment, float x, float z)
         : base(id, EntityKind.Player, sheet.Name, sheet.RaceId, x, z)
     {
         Sheet = sheet;
-        Backpack = backpack;
+        Equipment = equipment;
     }
 
     public CharacterSheet Sheet { get; set; }
-    public Backpack Backpack { get; set; }
+    public Equipment Equipment { get; set; }
+
+    /// <summary>What other players see in this hero's hands: main hand, then off hand; empty string for a free hand.</summary>
+    public string[] Held => new[]
+    {
+        Equipment.Slots.GetValueOrDefault(EquipmentSlot.MainHand)?.ItemId ?? string.Empty,
+        Equipment.Slots.GetValueOrDefault(EquipmentSlot.OffHand)?.ItemId ?? string.Empty,
+    };
     public Guid CharacterId => Sheet.Id;
     public int MaxHp { get; set; }
     public Guid? PartyId { get; set; }

@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Realmforge.Rules.Characters;
 using Realmforge.Rules.Combat;
 using Realmforge.Rules.Definitions;
+using Realmforge.Rules.Inventory;
 using Realmforge.Server.Core.Auth;
 using Realmforge.Server.Core.Characters;
 using Realmforge.Server.Gateway.Http;
@@ -14,6 +15,10 @@ public sealed record EnterWorldResponse(string ZoneId, string Host, int UdpPort,
 public sealed record BackpackMoveRequest(Guid InstanceId, int X, int Y, int Rotation);
 
 public sealed record BackpackPlaceRequest(string ItemId, int X, int Y, int Rotation);
+
+public sealed record EquipRequest(Guid InstanceId, EquipmentSlot Slot);
+
+public sealed record UnequipRequest(EquipmentSlot Slot, int X, int Y, int Rotation);
 
 public sealed record OfflineJobRequest(string JobId, double Hours);
 
@@ -39,7 +44,7 @@ public static class CharacterEndpoints
         character.MapGet("/stats", async (Guid characterId, IGrainFactory grains, ContentCatalog catalog) =>
         {
             CharacterState state = await Character(grains, characterId).GetState();
-            return CharacterStats.Build(state.Sheet, state.Backpack, catalog);
+            return CharacterStats.Build(state.Sheet, state.Equipment, catalog);
         });
         character.MapPost("/enter", EnterWorld);
 
@@ -54,8 +59,12 @@ public static class CharacterEndpoints
             ApiResults.From(await Character(grains, characterId).PlaceFromBag(request.ItemId, request.X, request.Y, request.Rotation)));
         character.MapPost("/backpack/{instanceId:guid}/stash", async (Guid characterId, Guid instanceId, IGrainFactory grains) =>
             ApiResults.From(await Character(grains, characterId).StashToBag(instanceId)));
-        character.MapPost("/fusions/{recipeId}", async (Guid characterId, string recipeId, IGrainFactory grains) =>
-            ApiResults.From(await Character(grains, characterId).Fuse(recipeId)));
+        character.MapPost("/equipment/equip", async (Guid characterId, EquipRequest request, IGrainFactory grains) =>
+            ApiResults.From(await Character(grains, characterId).Equip(request.InstanceId, request.Slot)));
+        character.MapPost("/equipment/unequip", async (Guid characterId, UnequipRequest request, IGrainFactory grains) =>
+            ApiResults.From(await Character(grains, characterId).Unequip(request.Slot, request.X, request.Y, request.Rotation)));
+        character.MapPost("/abilities/{ability}/raise", async (Guid characterId, Ability ability, IGrainFactory grains) =>
+            ApiResults.From(await Character(grains, characterId).RaiseAbility(ability)));
         character.MapPost("/crafts/{recipeId}", async (Guid characterId, string recipeId, IGrainFactory grains) =>
             ApiResults.From(await Character(grains, characterId).Craft(recipeId)));
 

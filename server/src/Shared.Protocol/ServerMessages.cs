@@ -18,6 +18,7 @@ namespace Realmforge.Protocol
     [MemoryPackUnion(11, typeof(ZoneTransferMessage))]
     [MemoryPackUnion(12, typeof(DialogueMessage))]
     [MemoryPackUnion(13, typeof(InventoryChangedMessage))]
+    [MemoryPackUnion(14, typeof(EntityGearMessage))]
     public partial interface IServerMessage
     {
     }
@@ -50,6 +51,10 @@ namespace Realmforge.Protocol
         /// <summary>Race id for players, mob/npc/node definition id otherwise; picks the prefab on the client.</summary>
         public string DefinitionId { get; set; } = string.Empty;
         public string[] Cosmetics { get; set; } = Array.Empty<string>();
+        /// <summary>Chosen look of a player; null for other entities and for heroes made before looks existed.</summary>
+        public LookDto? Look { get; set; }
+        /// <summary>Item ids in the main and off hand, empty when the hand is free; players only.</summary>
+        public string[] Held { get; set; } = Array.Empty<string>();
         public float X { get; set; }
         public float Z { get; set; }
         public int Hp { get; set; }
@@ -219,5 +224,26 @@ namespace Realmforge.Protocol
     {
         public ItemStackDto[] Added { get; set; } = Array.Empty<ItemStackDto>();
         public long Gold { get; set; }
+    }
+
+    [MemoryPackable]
+    public partial class LookDto
+    {
+        public string Sex { get; set; } = string.Empty;
+        public int Face { get; set; }
+        public int Hair { get; set; }
+        public int HairColor { get; set; }
+        public int EyeColor { get; set; }
+        public string Build { get; set; } = string.Empty;
+        public int HeightPercent { get; set; }
+        public string Outfit { get; set; } = string.Empty;
+    }
+
+    /// <summary>A visible player changed what they hold; sent to everyone who can see them.</summary>
+    [MemoryPackable]
+    public partial class EntityGearMessage : IServerMessage
+    {
+        public long EntityId { get; set; }
+        public string[] Held { get; set; } = Array.Empty<string>();
     }
 }

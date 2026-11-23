@@ -104,19 +104,45 @@ namespace Realmforge.Rules.Characters
 
         public static RuleResult Validate(AbilityScores scores)
         {
-            int spent = 0;
             foreach (Ability ability in Enum.GetValues(typeof(Ability)))
             {
-                int score = scores[ability];
-                if (score < MinScore || score > MaxScore)
+                if (scores[ability] < MinScore || scores[ability] > MaxScore)
                 {
                     return RuleResult.Fail("point_buy.out_of_range", ability + " must be between 8 and 15.");
                 }
-                spent += CostOf(score);
             }
+            int spent = Spent(scores);
             return spent <= Budget
                 ? RuleResult.Ok()
                 : RuleResult.Fail("point_buy.over_budget", "Spent " + spent + " of " + Budget + " points.");
+        }
+
+        /// <summary>
+        /// Points left from creation. Derived from the scores rather than stored, so a hero who skipped
+        /// spending them keeps them, and so do heroes created before points could be spent later.
+        /// </summary>
+        public static int Unspent(AbilityScores scores)
+        {
+            return Validate(scores).Success ? Budget - Spent(scores) : 0;
+        }
+
+        public static RuleResult CanRaise(AbilityScores scores, Ability ability)
+        {
+            int next = scores[ability] + 1;
+            if (next > MaxScore)
+            {
+                return RuleResult.Fail("point_buy.max", ability + " is already at the point-buy maximum.");
+            }
+            if (!Validate(scores).Success || CostOf(next) - CostOf(scores[ability]) > Unspent(scores))
+            {
+                return RuleResult.Fail("point_buy.no_points", "Not enough unspent points.");
+            }
+            return RuleResult.Ok();
+        }
+
+        private static int Spent(AbilityScores scores)
+        {
+            return Enum.GetValues(typeof(Ability)).Cast<Ability>().Sum(ability => CostOf(scores[ability]));
         }
     }
 }

@@ -15,6 +15,7 @@ public sealed class CharacterState
 {
     public CharacterSheet Sheet { get; set; } = new();
     public Backpack Backpack { get; set; } = new();
+    public Equipment Equipment { get; set; } = new();
     public StackInventory Materials { get; set; } = new();
     public List<QuestProgress> ActiveQuests { get; set; } = new();
     public AppearanceLoadout Appearance { get; set; } = new();
