@@ -1,0 +1,193 @@
+{
+  "props": {
+    "weapon:short_sword": {
+      "model": "models/props/weapon/short_sword.glb",
+      "height": 0.8
+    },
+    "nature:oak": {
+      "model": "models/props/nature/oak.glb",
+      "height": 7
+    },
+    "building:house_a_eldarwen": {
+      "model": "models/props/building/house_a_eldarwen.glb",
+      "height": 7
+    },
+    "building:tavern_eldarwen": {
+      "model": "models/props/building/tavern_eldarwen.glb",
+      "height": 9
+    },
+    "building:house_b_aldmark": {
+      "model": "models/props/building/house_b_aldmark.glb",
+      "height": 6
+    },
+    "building:house_a_aldmark": {
+      "model": "models/props/building/house_a_aldmark.glb",
+      "height": 7
+    },
+    "building:house_a_kargath": {
+      "model": "models/props/building/house_a_kargath.glb",
+      "height": 7
+    },
+    "building:house_b_eldarwen": {
+      "model": "models/props/building/house_b_eldarwen.glb",
+      "height": 6
+    },
+    "building:tavern_aldmark": {
+      "model": "models/props/building/tavern_aldmark.glb",
+      "height": 9
+    },
+    "building:house_b_kargath": {
+      "model": "models/props/building/house_b_kargath.glb",
+      "height": 6
+    },
+    "building:tavern_kargath": {
+      "model": "models/props/building/tavern_kargath.glb",
+      "height": 9
+    },
+    "building:watchtower": {
+      "model": "models/props/building/watchtower.glb",
+      "height": 12
+    },
+    "building:workshop": {
+      "model": "models/props/building/workshop.glb",
+      "height": 6
+    },
+    "building:market_stall": {
+      "model": "models/props/building/market_stall.glb",
+      "height": 3.2
+    },
+    "building:barn": {
+      "model": "models/props/building/barn.glb",
+      "height": 7
+    },
+    "prop:fountain": {
+      "model": "models/props/prop/fountain.glb",
+      "height": 2.4
+    },
+    "prop:bench": {
+      "model": "models/props/prop/bench.glb",
+      "height": 0.9
+    },
+    "prop:lamp": {
+      "model": "models/props/prop/lamp.glb",
+      "height": 3.2
+    },
+    "building:shrine": {
+      "model": "models/props/building/shrine.glb",
+      "height": 4
+    },
+    "prop:well": {
+      "model": "models/props/prop/well.glb",
+      "height": 2.6
+    },
+    "prop:barrel": {
+      "model": "models/props/prop/barrel.glb",
+      "height": 1.1
+    },
+    "prop:wall_section": {
+      "model": "models/props/prop/wall_section.glb",
+      "height": 3.4
+    },
+    "nature:elder_tree": {
+      "model": "models/props/nature/elder_tree.glb",
+      "height": 10
+    },
+    "prop:notice_board": {
+      "model": "models/props/prop/notice_board.glb",
+      "height": 2.2
+    },
+    "prop:crate": {
+      "model": "models/props/prop/crate.glb",
+      "height": 0.9
+    },
+    "prop:wall_tower": {
+      "model": "models/props/prop/wall_tower.glb",
+      "height": 6.5
+    },
+    "nature:pine": {
+      "model": "models/props/nature/pine.glb",
+      "height": 9
+    },
+    "nature:bush": {
+      "model": "models/props/nature/bush.glb",
+      "height": 1.3
+    },
+    "weapon:dagger": {
+      "model": "models/props/weapon/dagger.glb",
+      "height": 0.4
+    },
+    "nature:rock": {
+      "model": "models/props/nature/rock.glb",
+      "height": 1
+    },
+    "nature:cliff": {
+      "model": "models/props/nature/cliff.glb",
+      "height": 6
+    },
+    "nature:boulder": {
+      "model": "models/props/nature/boulder.glb",
+      "height": 2.2
+    },
+    "weapon:long_sword": {
+      "model": "models/props/weapon/long_sword.glb",
+      "height": 1.05
+    },
+    "weapon:great_sword": {
+      "model": "models/props/weapon/great_sword.glb",
+      "height": 1.5
+    },
+    "weapon:mace": {
+      "model": "models/props/weapon/mace.glb",
+      "height": 0.75
+    },
+    "weapon:flame_blade": {
+      "model": "models/props/weapon/flame_blade.glb",
+      "height": 1
+    },
+    "weapon:holy_mace": {
+      "model": "models/props/weapon/holy_mace.glb",
+      "height": 0.8
+    },
+    "weapon:short_bow": {
+      "model": "models/props/weapon/short_bow.glb",
+      "height": 1.1
+    },
+    "weapon:long_bow": {
+      "model": "models/props/weapon/long_bow.glb",
+      "height": 1.6
+    },
+    "weapon:oak_staff": {
+      "model": "models/props/weapon/oak_staff.glb",
+      "height": 1.7
+    },
+    "weapon:arcane_staff": {
+      "model": "models/props/weapon/arcane_staff.glb",
+      "height": 1.8
+    },
+    "weapon:tower_shield": {
+      "model": "models/props/weapon/tower_shield.glb",
+      "height": 1.2
+    },
+    "weapon:spellbook": {
+      "model": "models/props/weapon/spellbook.glb",
+      "height": 0.3
+    },
+    "weapon:iron_shield": {
+      "model": "models/props/weapon/iron_shield.glb",
+      "height": 0.75
+    },
+    "weapon:wooden_shield": {
+      "model": "models/props/weapon/wooden_shield.glb",
+      "height": 0.7
+    },
+    "weapon:quiver": {
+      "model": "models/props/weapon/quiver.glb",
+      "height": 0.7
+    }
+  },
+  "ui": {
+    "ui:slot": "models/props/ui/slot.jpg",
+    "ui:stone_panel": "models/props/ui/stone_panel.jpg",
+    "ui:frame": "models/props/ui/frame.jpg"
+  }
+}

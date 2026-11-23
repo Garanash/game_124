@@ -9,8 +9,6 @@ export interface Cell { x: number; y: number }
 
 export interface Placement { x: number; y: number; rotation: number }
 
-const ORTHOGONAL_STEPS: Cell[] = [{ x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }];
-
 /** Same as Backpack.ShapeCells: quarter turns clockwise, then shifted so the top-left cell is (0, 0). */
 export function shapeCells(item: ItemDefinition, rotation: number): Cell[] {
   let cells = item.shape.length === 0 ? [{ x: 0, y: 0 }] : item.shape.map((offset) => ({ x: offset.x, y: offset.y }));
@@ -56,32 +54,6 @@ export function findFreeSpot(backpack: BackpackState, catalog: ContentCatalog, i
     }
   }
   return null;
-}
-
-export function areAdjacent(first: PlacedItem, second: PlacedItem, catalog: ContentCatalog): boolean {
-  const secondCells = new Set(occupiedCells(second, catalog).map(cellKey));
-  return occupiedCells(first, catalog).some((cell) =>
-    ORTHOGONAL_STEPS.some((step) => secondCells.has(cellKey({ x: cell.x + step.x, y: cell.y + step.y }))));
-}
-
-/** Instances that currently trigger at least one synergy, as source or neighbour; the UI makes them glow. */
-export function synergizingItems(backpack: BackpackState, catalog: ContentCatalog): Set<string> {
-  const active = new Set<string>();
-  const synergies = Object.values(catalog.synergies);
-  for (const source of backpack.items) {
-    const sourceTags = catalog.items[source.itemId]?.tags ?? [];
-    for (const neighbour of backpack.items) {
-      if (neighbour.instanceId === source.instanceId || !areAdjacent(source, neighbour, catalog)) {
-        continue;
-      }
-      const neighbourTags = catalog.items[neighbour.itemId]?.tags ?? [];
-      if (synergies.some((synergy) => sourceTags.includes(synergy.sourceTag) && neighbourTags.includes(synergy.neighborTag))) {
-        active.add(source.instanceId);
-        active.add(neighbour.instanceId);
-      }
-    }
-  }
-  return active;
 }
 
 function cellKey(cell: Cell): string {

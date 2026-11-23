@@ -1,0 +1,297 @@
+{
+  "assets": {
+    "race:elf": {
+      "model": "models/race/elf.glb",
+      "rig": "biped",
+      "height": 1.75,
+      "clips": {
+        "idle": "Idle",
+        "walk": "Walking Woman",
+        "run": "Run 2",
+        "attack": "Attack",
+        "cast": "Charged Spell Cast",
+        "hit": "Hit Reaction with Bow",
+        "death": "Dead",
+        "cheer": "Motivational Cheer"
+      },
+      "animations": "models/race/elf.anim.glb"
+    }
+  },
+  "kits": {
+    "elf": {
+      "bases": {
+        "male": {
+          "model": "models/kits/elf/base-male.glb",
+          "rig": "biped",
+          "height": 1.8,
+          "clips": {
+            "idle": "Idle",
+            "walk": "Walking Woman",
+            "run": "Run 2",
+            "attack": "Attack",
+            "cast": "Charged Spell Cast",
+            "hit": "Hit Reaction with Bow",
+            "death": "Dead",
+            "cheer": "Motivational Cheer"
+          },
+          "animations": "models/kits/elf/base-male.anim.glb"
+        },
+        "female": {
+          "model": "models/kits/elf/base-female.glb",
+          "rig": "biped",
+          "height": 1.7,
+          "clips": {
+            "idle": "Idle",
+            "walk": "Walking Woman",
+            "run": "Run 2",
+            "attack": "Attack",
+            "cast": "Charged Spell Cast",
+            "hit": "Hit Reaction with Bow",
+            "death": "Dead",
+            "cheer": "Motivational Cheer"
+          },
+          "animations": "models/kits/elf/base-female.anim.glb"
+        }
+      },
+      "hair": {
+        "0": "models/kits/elf/hair-0.glb",
+        "2": "models/kits/elf/hair-2.glb",
+        "3": "models/kits/elf/hair-3.glb",
+        "4": "models/kits/elf/hair-4.glb",
+        "5": "models/kits/elf/hair-5.glb",
+        "6": "models/kits/elf/hair-6.glb",
+        "7": "models/kits/elf/hair-7.glb"
+      },
+      "heights": {
+        "female": 1.7,
+        "male": 1.8
+      },
+      "skins": {
+        "female": {
+          "0": "models/kits/elf/skin-female-0.jpg",
+          "1": "models/kits/elf/skin-female-1.jpg",
+          "2": "models/kits/elf/skin-female-2.jpg",
+          "3": "models/kits/elf/skin-female-3.jpg",
+          "4": "models/kits/elf/skin-female-4.jpg",
+          "5": "models/kits/elf/skin-female-5.jpg"
+        },
+        "male": {
+          "0": "models/kits/elf/skin-male-0.jpg",
+          "1": "models/kits/elf/skin-male-1.jpg",
+          "2": "models/kits/elf/skin-male-2.jpg",
+          "3": "models/kits/elf/skin-male-3.jpg",
+          "4": "models/kits/elf/skin-male-4.jpg"
+        }
+      },
+      "outfits": {
+        "commoner": {
+          "female": "models/kits/elf/outfit-commoner-female.jpg",
+          "male": "models/kits/elf/outfit-commoner-male.jpg"
+        },
+        "ranger": {
+          "male": "models/kits/elf/outfit-ranger-male.jpg",
+          "female": "models/kits/elf/outfit-ranger-female.jpg"
+        },
+        "mage": {
+          "female": "models/kits/elf/outfit-mage-female.jpg",
+          "male": "models/kits/elf/outfit-mage-male.jpg"
+        },
+        "noble": {
+          "male": "models/kits/elf/outfit-noble-male.jpg",
+          "female": "models/kits/elf/outfit-noble-female.jpg"
+        },
+        "guard": {
+          "female": "models/kits/elf/outfit-guard-female.jpg",
+          "male": "models/kits/elf/outfit-guard-male.jpg"
+        },
+        "artisan": {
+          "male": "models/kits/elf/outfit-artisan-male.jpg",
+          "female": "models/kits/elf/outfit-artisan-female.jpg"
+        }
+      }
+    },
+    "dwarf": {
+      "bases": {
+        "female": {
+          "model": "models/kits/dwarf/base-female.glb",
+          "rig": "biped",
+          "height": 1.32,
+          "clips": {
+            "idle": "Idle",
+            "walk": "Walking Woman",
+            "run": "Run 2",
+            "attack": "Attack",
+            "cast": "Charged Spell Cast",
+            "hit": "Hit Reaction with Bow",
+            "death": "Dead",
+            "cheer": "Motivational Cheer"
+          },
+          "animations": "models/kits/dwarf/base-female.anim.glb"
+        },
+        "male": {
+          "model": "models/kits/dwarf/base-male.glb",
+          "rig": "biped",
+          "height": 1.36,
+          "clips": {
+            "idle": "Idle",
+            "walk": "Walking Woman",
+            "run": "Run 2",
+            "attack": "Attack",
+            "cast": "Charged Spell Cast",
+            "hit": "Hit Reaction with Bow",
+            "death": "Dead",
+            "cheer": "Motivational Cheer"
+          },
+          "animations": "models/kits/dwarf/base-male.anim.glb"
+        }
+      },
+      "heights": {
+        "female": 1.32,
+        "male": 1.36
+      },
+      "skins": {
+        "female": {
+          "0": "models/kits/dwarf/skin-female-0.jpg",
+          "1": "models/kits/dwarf/skin-female-1.jpg",
+          "2": "models/kits/dwarf/skin-female-2.jpg",
+          "3": "models/kits/dwarf/skin-female-3.jpg",
+          "4": "models/kits/dwarf/skin-female-4.jpg",
+          "5": "models/kits/dwarf/skin-female-5.jpg"
+        },
+        "male": {
+          "0": "models/kits/dwarf/skin-male-0.jpg",
+          "1": "models/kits/dwarf/skin-male-1.jpg",
+          "2": "models/kits/dwarf/skin-male-2.jpg",
+          "3": "models/kits/dwarf/skin-male-3.jpg",
+          "4": "models/kits/dwarf/skin-male-4.jpg"
+        }
+      },
+      "outfits": {
+        "commoner": {
+          "female": "models/kits/dwarf/outfit-commoner-female.jpg",
+          "male": "models/kits/dwarf/outfit-commoner-male.jpg"
+        },
+        "ranger": {
+          "female": "models/kits/dwarf/outfit-ranger-female.jpg",
+          "male": "models/kits/dwarf/outfit-ranger-male.jpg"
+        },
+        "mage": {
+          "female": "models/kits/dwarf/outfit-mage-female.jpg",
+          "male": "models/kits/dwarf/outfit-mage-male.jpg"
+        },
+        "noble": {
+          "female": "models/kits/dwarf/outfit-noble-female.jpg",
+          "male": "models/kits/dwarf/outfit-noble-male.jpg"
+        },
+        "guard": {
+          "female": "models/kits/dwarf/outfit-guard-female.jpg",
+          "male": "models/kits/dwarf/outfit-guard-male.jpg"
+        },
+        "artisan": {
+          "female": "models/kits/dwarf/outfit-artisan-female.jpg",
+          "male": "models/kits/dwarf/outfit-artisan-male.jpg"
+        }
+      },
+      "hair": {
+        "0": "models/kits/dwarf/hair-0.glb",
+        "1": "models/kits/dwarf/hair-1.glb",
+        "2": "models/kits/dwarf/hair-2.glb",
+        "4": "models/kits/dwarf/hair-4.glb",
+        "5": "models/kits/dwarf/hair-5.glb",
+        "6": "models/kits/dwarf/hair-6.glb"
+      }
+    },
+    "human": {
+      "bases": {
+        "male": {
+          "model": "models/kits/human/base-male.glb",
+          "rig": "biped",
+          "height": 1.8,
+          "clips": {
+            "idle": "Idle",
+            "walk": "Walking Woman",
+            "run": "Run 2",
+            "attack": "Attack",
+            "cast": "Charged Spell Cast",
+            "hit": "Hit Reaction with Bow",
+            "death": "Dead",
+            "cheer": "Motivational Cheer"
+          },
+          "animations": "models/kits/human/base-male.anim.glb"
+        },
+        "female": {
+          "model": "models/kits/human/base-female.glb",
+          "rig": "biped",
+          "height": 1.68,
+          "clips": {
+            "idle": "Idle",
+            "walk": "Walking Woman",
+            "run": "Run 2",
+            "attack": "Attack",
+            "cast": "Charged Spell Cast",
+            "hit": "Hit Reaction with Bow",
+            "death": "Dead",
+            "cheer": "Motivational Cheer"
+          },
+          "animations": "models/kits/human/base-female.anim.glb"
+        }
+      },
+      "heights": {
+        "female": 1.68,
+        "male": 1.8
+      },
+      "skins": {
+        "female": {
+          "0": "models/kits/human/skin-female-0.jpg",
+          "1": "models/kits/human/skin-female-1.jpg",
+          "2": "models/kits/human/skin-female-2.jpg",
+          "3": "models/kits/human/skin-female-3.jpg",
+          "4": "models/kits/human/skin-female-4.jpg",
+          "5": "models/kits/human/skin-female-5.jpg"
+        },
+        "male": {
+          "0": "models/kits/human/skin-male-0.jpg",
+          "1": "models/kits/human/skin-male-1.jpg",
+          "2": "models/kits/human/skin-male-2.jpg",
+          "3": "models/kits/human/skin-male-3.jpg",
+          "4": "models/kits/human/skin-male-4.jpg"
+        }
+      },
+      "outfits": {
+        "commoner": {
+          "female": "models/kits/human/outfit-commoner-female.jpg",
+          "male": "models/kits/human/outfit-commoner-male.jpg"
+        },
+        "ranger": {
+          "female": "models/kits/human/outfit-ranger-female.jpg",
+          "male": "models/kits/human/outfit-ranger-male.jpg"
+        },
+        "noble": {
+          "female": "models/kits/human/outfit-noble-female.jpg",
+          "male": "models/kits/human/outfit-noble-male.jpg"
+        },
+        "mage": {
+          "male": "models/kits/human/outfit-mage-male.jpg",
+          "female": "models/kits/human/outfit-mage-female.jpg"
+        },
+        "guard": {
+          "female": "models/kits/human/outfit-guard-female.jpg",
+          "male": "models/kits/human/outfit-guard-male.jpg"
+        },
+        "artisan": {
+          "female": "models/kits/human/outfit-artisan-female.jpg",
+          "male": "models/kits/human/outfit-artisan-male.jpg"
+        }
+      },
+      "hair": {
+        "1": "models/kits/human/hair-1.glb",
+        "2": "models/kits/human/hair-2.glb",
+        "3": "models/kits/human/hair-3.glb",
+        "4": "models/kits/human/hair-4.glb",
+        "5": "models/kits/human/hair-5.glb",
+        "6": "models/kits/human/hair-6.glb",
+        "7": "models/kits/human/hair-7.glb"
+      }
+    }
+  }
+}

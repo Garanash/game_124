@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { ContentCatalog, ItemDefinition } from "../api/content";
 import { BackpackState } from "../api/gateway";
-import { canPlace, findFreeSpot, shapeCells, synergizingItems } from "./backpack";
+import { canPlace, findFreeSpot, shapeCells } from "./backpack";
 
 function item(id: string, tags: string[], shape: { x: number; y: number }[] = []): ItemDefinition {
-  return { id, name: id, rarity: "Common", tags, shape, modifiers: [], weaponDamage: "", weaponDamageType: "", maxStack: 1, value: 1 };
+  return { id, name: id, rarity: "Common", tags, slot: "None", shape, modifiers: [], weaponDamage: "", weaponDamageType: "", maxStack: 1, value: 1 };
 }
 
 const catalog = {
@@ -12,7 +12,6 @@ const catalog = {
     sword: item("sword", ["weapon", "blade"], [{ x: 0, y: 0 }, { x: 0, y: 1 }]),
     whetstone: item("whetstone", ["stone"]),
   },
-  synergies: { sharpened: { id: "sharpened", sourceTag: "blade", neighborTag: "stone", bonus: [] } },
 } as unknown as ContentCatalog;
 
 function backpack(...items: BackpackState["items"]): BackpackState {
@@ -37,10 +36,4 @@ describe("backpack mirror", () => {
     expect(findFreeSpot(pack, catalog, "whetstone")).toEqual({ x: 1, y: 0, rotation: 0 });
   });
 
-  it("marks touching blade and stone as synergizing", () => {
-    const apart = backpack({ instanceId: "a", itemId: "sword", x: 0, y: 0, rotation: 0 }, { instanceId: "b", itemId: "whetstone", x: 2, y: 0, rotation: 0 });
-    expect(synergizingItems(apart, catalog).size).toBe(0);
-    const touching = backpack({ instanceId: "a", itemId: "sword", x: 0, y: 0, rotation: 0 }, { instanceId: "b", itemId: "whetstone", x: 1, y: 1, rotation: 0 });
-    expect([...synergizingItems(touching, catalog)].sort()).toEqual(["a", "b"]);
-  });
 });

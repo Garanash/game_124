@@ -24,13 +24,16 @@ export class CharacterPanels {
     private readonly onCharacterChanged: () => Promise<void>,
     models: GeneratedModels,
   ) {
-    this.inventory = new InventoryWindow(catalog, new ItemIcons(), {
+    this.inventory = new InventoryWindow(catalog, new ItemIcons(), new CharacterViewer(models), {
       move: (instanceId, placement) => this.act(() => gateway.moveBackpackItem(characterId, instanceId, placement.x, placement.y, placement.rotation)),
       place: (itemId, placement) => this.act(() => gateway.placeFromBag(characterId, itemId, placement.x, placement.y, placement.rotation)),
       stash: (instanceId) => this.act(() => gateway.stashToBag(characterId, instanceId)),
-      fuse: (recipeId) => this.act(() => gateway.fuse(characterId, recipeId), "Предметы слиты!"),
+      equip: (instanceId, slot) => this.act(() => gateway.equip(characterId, instanceId, slot)),
+      unequip: (slot, placement) => this.act(() => gateway.unequip(characterId, slot, placement.x, placement.y, placement.rotation)),
     }, () => this.toggleInventory());
-    this.sheet = new CharacterWindow(catalog, new CharacterViewer(models), () => this.toggleCharacter());
+    this.sheet = new CharacterWindow(catalog, new CharacterViewer(models),
+      (ability) => void this.act(() => gateway.raiseAbility(characterId, ability)),
+      () => this.toggleCharacter());
     hud.addWindow(this.inventory.root);
     hud.addWindow(this.sheet.root);
   }

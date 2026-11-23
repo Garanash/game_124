@@ -1,6 +1,6 @@
 import { ABILITY_LABELS, AbilityName, ContentCatalog } from "../api/content";
 import { CharacterState, CharacterStats } from "../api/gateway";
-import { levelForXp, xpForNextLevel } from "../game/rules";
+import { canChangeScore, levelForXp, xpForNextLevel } from "../game/rules";
 import { CharacterViewer } from "../render/characterViewer";
 import { h, replaceChildren } from "./dom";
 import { damageText, signed, STAT_LABELS } from "./labels";
@@ -16,7 +16,12 @@ export class CharacterWindow {
   readonly root = h("div", { class: "game-window character-window panel hidden" });
   private readonly body = h("div", { class: "character-body" });
 
-  constructor(private readonly catalog: ContentCatalog, private readonly viewer: CharacterViewer, onClose: () => void) {
+  constructor(
+    private readonly catalog: ContentCatalog,
+    private readonly viewer: CharacterViewer,
+    private readonly onRaiseAbility: (ability: string) => void,
+    onClose: () => void,
+  ) {
     this.root.append(
       h("div", { class: "window-header" },
         h("h3", {}, "Персонаж"),
@@ -50,24 +55,34 @@ export class CharacterWindow {
           h("span", {}, `${race?.name ?? sheet.raceId} · ${classes.length ? classes.join(", ") : "Странник"} · ур. ${level}`),
           h("span", { class: "muted" }, `${alignmentLabel(sheet.lawChaos, sheet.goodEvil)} · опыт ${sheet.xp}${next === null ? "" : ` / ${next}`}`))),
       h("div", { class: "character-columns" },
-        h("section", {}, h("h4", {}, "Характеристики"), this.abilityTable(stats)),
+        h("section", {}, h("h4", {}, "Характеристики"), this.abilityTable(stats, state.sheet.baseAbilities)),
         h("section", {}, h("h4", {}, "Бой"), stats ? this.combatBlock(stats, state) : h("p", { class: "muted" }, "Загрузка…"))),
       h("div", { class: "character-columns" },
         h("section", {}, h("h4", {}, "Особенности"), this.traitsBlock(state)),
         h("section", {}, h("h4", {}, "Репутация и ремёсла"), this.socialBlock(state))));
   }
 
-  private abilityTable(stats: CharacterStats | null): HTMLElement {
+  private abilityTable(stats: CharacterStats | null, baseScores: number[]): HTMLElement {
     if (!stats) {
       return h("p", { class: "muted" }, "Загрузка…");
     }
-    return h("table", { class: "ability-table" },
-      h("thead", {}, h("tr", {}, h("th", {}, ""), h("th", {}, "База"), h("th", {}, "Итог"), h("th", {}, "Мод."))),
-      h("tbody", {}, ...stats.abilities.map((score) => h("tr", {},
-        h("td", {}, ABILITY_LABELS[score.ability as AbilityName] ?? score.ability),
-        h("td", { class: "muted" }, String(score.base)),
-        h("td", { class: score.total > score.base ? "boosted" : "" }, String(score.total)),
-        h("td", { class: "modifier" }, signed(score.modifier))))));
+    const unspent = stats.unspentAbilityPoints;
+    return h("div", {},
+      unspent > 0 ? h("p", { class: "unspent-points" }, `Свободных очков: ${unspent}. Нажмите «+», чтобы вложить их.`) : null,
+      h("table", { class: "ability-table" },
+        h("thead", {}, h("tr", {}, h("th", {}, ""), h("th", {}, "База"), h("th", {}, "Итог"), h("th", {}, "Мод."), unspent > 0 ? h("th", {}, "") : null)),
+        h("tbody", {}, ...stats.abilities.map((score, index) => h("tr", {},
+          h("td", {}, ABILITY_LABELS[score.ability as AbilityName] ?? score.ability),
+          h("td", { class: "muted" }, String(score.base)),
+          h("td", { class: score.total > score.base ? "boosted" : "" }, String(score.total)),
+          h("td", { class: "modifier" }, signed(score.modifier)),
+          unspent > 0 ? h("td", {}, this.raiseButton(score.ability, canChangeScore(baseScores, index, 1))) : null)))));
+  }
+
+  private raiseButton(ability: string, allowed: boolean): HTMLElement {
+    const button = h("button", { class: "small raise-ability", title: "Вложить очко", onclick: () => this.onRaiseAbility(ability) }, "+");
+    button.toggleAttribute("disabled", !allowed);
+    return button;
   }
 
   private combatBlock(stats: CharacterStats, state: CharacterState): HTMLElement {

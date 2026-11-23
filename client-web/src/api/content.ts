@@ -38,14 +38,15 @@ export interface StatModifier { stat: string; value: number }
 export interface PerkDefinition { id: string; name: string; description: string; grantsAbilities: string[]; modifiers: StatModifier[] }
 export interface CellOffset { x: number; y: number }
 export type ItemRarity = "Common" | "Uncommon" | "Rare" | "Epic";
+export type ItemSlotKind = "None" | "Head" | "Amulet" | "Chest" | "Weapon" | "TwoHanded" | "OffHand" | "Gloves" | "Belt" | "Ring" | "Boots";
 export interface ItemDefinition {
   id: string; name: string; rarity: ItemRarity; tags: string[];
+  /** Where the item is worn; "None" items only ever sit in the backpack. */
+  slot: ItemSlotKind;
   /** Backpack cells relative to the item origin; empty means one cell. */
   shape: CellOffset[];
   modifiers: StatModifier[]; weaponDamage: string; weaponDamageType: string; maxStack: number; value: number;
 }
-export interface SynergyDefinition { id: string; sourceTag: string; neighborTag: string; bonus: StatModifier[] }
-export interface FusionRecipe { id: string; inputs: string[]; output: string }
 export interface FactionDefinition { id: string; name: string }
 export interface ProfessionDefinition { id: string; name: string; kind: string; keyAbility: AbilityName }
 export interface MobDefinition { id: string; name: string; level: number; isGame: boolean; speedCells: number }
@@ -76,8 +77,6 @@ export interface ContentCatalog {
   abilities: Record<string, AbilityDefinition>;
   perks: Record<string, PerkDefinition>;
   items: Record<string, ItemDefinition>;
-  synergies: Record<string, SynergyDefinition>;
-  fusions: Record<string, FusionRecipe>;
   factions: Record<string, FactionDefinition>;
   professions: Record<string, ProfessionDefinition>;
   mobs: Record<string, MobDefinition>;

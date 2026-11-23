@@ -1,3 +1,7 @@
+import "@fontsource/alegreya-sans/400.css";
+import "@fontsource/alegreya-sans/500.css";
+import "@fontsource/alegreya-sc/500.css";
+import "@fontsource/alegreya-sc/700.css";
 import "./styles.css";
 import { ContentCatalog } from "./api/content";
 import { CharacterSummary, GatewayClient } from "./api/gateway";

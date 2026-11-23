@@ -1,4 +1,4 @@
-import { ItemDefinition, ItemRarity, StatModifier } from "../api/content";
+import { ItemDefinition, ItemRarity, ItemSlotKind, StatModifier } from "../api/content";
 
 export const STAT_LABELS: Record<string, string> = {
   MaxHp: "Здоровье",
@@ -62,10 +62,27 @@ export function damageText(dice: string, bonus: number, damageType: string): str
   return `${total} (${DAMAGE_TYPE_LABELS[damageType] ?? damageType})`;
 }
 
+const SLOT_KIND_LABELS: Record<ItemSlotKind, string> = {
+  None: "",
+  Head: "голова",
+  Amulet: "шея",
+  Chest: "тело",
+  Weapon: "одноручное оружие",
+  TwoHanded: "двуручное оружие",
+  OffHand: "левая рука",
+  Gloves: "руки",
+  Belt: "пояс",
+  Ring: "палец",
+  Boots: "ноги",
+};
+
 export function itemSummary(item: ItemDefinition): string[] {
   const lines: string[] = [];
   if (item.weaponDamage) {
     lines.push(`Урон: ${damageText(item.weaponDamage, 0, item.weaponDamageType)}`);
+  }
+  if (item.slot && item.slot !== "None") {
+    lines.push(`Надевается: ${SLOT_KIND_LABELS[item.slot]}`);
   }
   lines.push(...item.modifiers.map(modifierText));
   if (item.tags.length > 0) {

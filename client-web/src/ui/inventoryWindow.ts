@@ -1,13 +1,16 @@
 import { ContentCatalog, ItemDefinition } from "../api/content";
-import { BackpackState, CharacterState, CharacterStats, PlacedItem } from "../api/gateway";
-import { canPlace, Cell, findFreeSpot, Placement, ROTATION_COUNT, shapeCells, synergizingItems } from "../game/backpack";
+import { BackpackState, CharacterState, CharacterStats, EquipmentSlot, PlacedItem } from "../api/gateway";
+import { canPlace, Cell, findFreeSpot, Placement, ROTATION_COUNT, shapeCells } from "../game/backpack";
+import { isWearable, preferredSlot, slotsFor } from "../game/equipment";
+import { CharacterViewer } from "../render/characterViewer";
 import { h, replaceChildren } from "./dom";
 import { ItemIcons } from "./itemIcons";
-import { itemSummary, modifierText, RARITY_LABELS, STAT_LABELS, signed } from "./labels";
+import { itemSummary, RARITY_LABELS, STAT_LABELS, signed } from "./labels";
+import { PaperDoll } from "./paperDoll";
 
-const CELL_PIXELS = 56;
+const CELL_PIXELS = 40;
+const ICON_INSET_PIXELS = 3;
 /** Pointer travel before a press becomes a drag, so double-clicks don't start one. */
-const ICON_INSET_PIXELS = 4;
 const DRAG_THRESHOLD_PIXELS = 5;
 const TOOLTIP_OFFSET_PIXELS = 16;
 
@@ -15,10 +18,14 @@ export interface InventoryActions {
   move(instanceId: string, placement: Placement): Promise<void>;
   place(itemId: string, placement: Placement): Promise<void>;
   stash(instanceId: string): Promise<void>;
-  fuse(recipeId: string): Promise<void>;
+  equip(instanceId: string, slot: EquipmentSlot): Promise<void>;
+  unequip(slot: EquipmentSlot, placement: Placement): Promise<void>;
 }
 
-type DragSource = { kind: "backpack"; instanceId: string } | { kind: "bag" };
+type DragSource =
+  | { kind: "backpack"; instanceId: string }
+  | { kind: "bag" }
+  | { kind: "equipment"; slot: EquipmentSlot };
 
 interface DragState {
   source: DragSource;
@@ -32,7 +39,7 @@ interface DragState {
   ghost: HTMLElement | null;
 }
 
-/** Backpack Brawl style grid: drag items around, R rotates, drop on the bag to unequip. */
+/** Diablo-style equipment: a paper doll around the hero, a 14×6 backpack below and the bag of loose loot beside. */
 export class InventoryWindow {
   readonly root = h("div", { class: "game-window inventory-window panel hidden" });
   private readonly grid = h("div", { class: "backpack-grid" });
@@ -40,6 +47,7 @@ export class InventoryWindow {
   private readonly side = h("div", { class: "inventory-side" });
   private readonly gold = h("span", { class: "gold" });
   private readonly tooltip = h("div", { class: "item-tooltip hidden" });
+  private readonly doll: PaperDoll;
   private state: CharacterState | null = null;
   private stats: CharacterStats | null = null;
   private drag: DragState | null = null;
@@ -48,23 +56,30 @@ export class InventoryWindow {
   constructor(
     private readonly catalog: ContentCatalog,
     private readonly icons: ItemIcons,
+    private readonly viewer: CharacterViewer,
     private readonly actions: InventoryActions,
     onClose: () => void,
   ) {
+    this.doll = new PaperDoll(viewer.element, {
+      itemTile: (itemId, width, height) => this.slotTile(itemId, width, height),
+      onPress: (slot, event) => this.pressSlot(slot, event),
+      onDoubleClick: (slot) => void this.unequipAnywhere(slot),
+      describe: (element, itemId) => this.attachTooltip(element, this.catalog.items[itemId]),
+    });
     this.root.append(
       h("div", { class: "window-header" },
-        h("h3", {}, "Инвентарь"), this.gold,
+        h("h3", {}, "Снаряжение"), this.gold,
         h("button", { class: "small window-close", title: "Закрыть (I)", onclick: onClose }, "✕")),
       h("div", { class: "inventory-layout" },
-        h("div", {},
-          h("h4", {}, "Рюкзак"),
+        h("div", { class: "inventory-main" },
+          this.doll.element,
           this.grid,
-          h("p", { class: "muted hint-line" }, "Перетаскивайте предметы · R — повернуть · двойной клик — убрать в сумку")),
-        h("div", {},
+          h("p", { class: "muted hint-line" }, "Перетаскивайте вещи на куклу, чтобы надеть · R — повернуть · двойной клик — надеть или убрать в сумку")),
+        h("div", { class: "inventory-column" },
           h("h4", {}, "Сумка"),
           this.bag,
-          h("p", { class: "muted hint-line" }, "Двойной клик — положить в рюкзак")),
-        this.side));
+          h("p", { class: "muted hint-line" }, "Двойной клик — положить в рюкзак"),
+          this.side)));
     document.body.append(this.tooltip);
     window.addEventListener("pointermove", (event) => this.onPointerMove(event));
     window.addEventListener("pointerup", (event) => void this.onPointerUp(event));
@@ -78,6 +93,7 @@ export class InventoryWindow {
 
   setOpen(open: boolean): void {
     this.root.classList.toggle("hidden", !open);
+    this.viewer.setActive(open);
     if (!open) {
       this.cancelDrag();
       this.hideTooltip();
@@ -88,9 +104,11 @@ export class InventoryWindow {
     this.state = state;
     this.stats = stats;
     this.gold.textContent = `${state.sheet.gold} з.`;
+    this.viewer.show({ raceId: state.sheet.raceId, name: state.sheet.name });
+    this.doll.render(state.equipment);
     this.renderGrid(state.backpack);
     this.renderBag(state.materials.stacks);
-    this.renderSide(stats);
+    this.renderBonuses(stats);
   }
 
   private renderGrid(backpack: BackpackState): void {
@@ -103,15 +121,13 @@ export class InventoryWindow {
       cell.dataset.cell = `${index % backpack.width},${Math.floor(index / backpack.width)}`;
       return cell;
     });
-    const glowing = synergizingItems(backpack, this.catalog);
-    const items = backpack.items.map((placed) => this.placedItemElement(placed, glowing.has(placed.instanceId)));
-    replaceChildren(this.grid, ...cells, ...items);
+    replaceChildren(this.grid, ...cells, ...backpack.items.map((placed) => this.placedItemElement(placed)));
   }
 
-  private placedItemElement(placed: PlacedItem, synergizing: boolean): HTMLElement {
+  private placedItemElement(placed: PlacedItem): HTMLElement {
     const definition = this.catalog.items[placed.itemId];
     const shape = definition ? shapeCells(definition, placed.rotation) : [{ x: 0, y: 0 }];
-    const element = this.itemTiles(placed.itemId, shape, synergizing ? "synergy" : "");
+    const element = this.itemTiles(placed.itemId, shape, "");
     element.style.left = `${placed.x * CELL_PIXELS}px`;
     element.style.top = `${placed.y * CELL_PIXELS}px`;
     element.addEventListener("pointerdown", (event) => {
@@ -119,7 +135,7 @@ export class InventoryWindow {
       const grabCell = { x: grab.x - placed.x, y: grab.y - placed.y };
       this.beginDrag(event, { kind: "backpack", instanceId: placed.instanceId }, placed.itemId, placed.rotation, grabCell);
     });
-    element.addEventListener("dblclick", () => void this.run(() => this.actions.stash(placed.instanceId)));
+    element.addEventListener("dblclick", () => void this.useBackpackItem(placed));
     this.attachTooltip(element, definition);
     return element;
   }
@@ -146,21 +162,20 @@ export class InventoryWindow {
     }));
   }
 
-  private renderSide(stats: CharacterStats | null): void {
+  private renderBonuses(stats: CharacterStats | null): void {
     const bonuses = Object.entries(stats?.bonuses ?? {});
-    const fusions = (stats?.availableFusions ?? []).map((recipeId) => this.catalog.fusions[recipeId]).filter(Boolean);
     replaceChildren(this.side,
-      h("h4", {}, "Бонусы предметов"),
+      h("h4", {}, "Бонусы снаряжения"),
       bonuses.length === 0
-        ? h("p", { class: "muted" }, "Нет. Кладите рядом предметы, которые усиливают друг друга, — они подсветятся.")
-        : h("ul", { class: "bonus-list" }, ...bonuses.map(([stat, value]) => h("li", {}, `${STAT_LABELS[stat] ?? stat} ${signed(value)}`))),
-      h("h4", {}, "Слияние"),
-      fusions.length === 0
-        ? h("p", { class: "muted" }, "Положите вплотную одинаковые предметы или ингредиенты рецепта, чтобы слить их.")
-        : h("div", { class: "fusion-list" }, ...fusions.map((recipe) => h("button", {
-          class: "primary small",
-          onclick: () => void this.run(() => this.actions.fuse(recipe.id)),
-        }, `${recipe.inputs.map((input) => this.catalog.items[input]?.name ?? input).join(" + ")} → ${this.catalog.items[recipe.output]?.name ?? recipe.output}`))));
+        ? h("p", { class: "muted" }, "Нет. Бонусы дают только надетые вещи.")
+        : h("ul", { class: "bonus-list" }, ...bonuses.map(([stat, value]) => h("li", {}, `${STAT_LABELS[stat] ?? stat} ${signed(value)}`))));
+  }
+
+  private pressSlot(slot: EquipmentSlot, event: PointerEvent): void {
+    const worn = this.state?.equipment.slots[slot];
+    if (worn) {
+      this.beginDrag(event, { kind: "equipment", slot }, worn.itemId, 0, { x: 0, y: 0 });
+    }
   }
 
   private beginDrag(event: PointerEvent, source: DragSource, itemId: string, rotation: number, grabCell: Cell): void {
@@ -195,17 +210,34 @@ export class InventoryWindow {
       return;
     }
     this.cancelDrag();
-    if (!drag.active) {
+    if (drag.active) {
+      await this.drop(drag, event);
+    }
+  }
+
+  private async drop(drag: DragState, event: PointerEvent): Promise<void> {
+    const source = drag.source;
+    const slot = this.doll.slotAt(event.clientX, event.clientY);
+    if (slot && source.kind === "backpack" && slotsFor(this.catalog.items[drag.itemId]).includes(slot)) {
+      await this.run(() => this.actions.equip(source.instanceId, slot));
       return;
     }
     const placement = this.dropPlacement(event, drag);
+    if (placement && this.state && canPlace(this.state.backpack, this.catalog, drag.itemId, placement, sourceInstance(source))) {
+      await this.run(() => this.moveTo(source, drag.itemId, placement));
+      return;
+    }
     const overBag = this.bag.contains(document.elementFromPoint(event.clientX, event.clientY));
-    if (placement && this.state && canPlace(this.state.backpack, this.catalog, drag.itemId, placement, sourceInstance(drag.source))) {
-      const source = drag.source;
-      await this.run(() => source.kind === "backpack" ? this.actions.move(source.instanceId, placement) : this.actions.place(drag.itemId, placement));
-    } else if (overBag && drag.source.kind === "backpack") {
-      const instanceId = drag.source.instanceId;
-      await this.run(() => this.actions.stash(instanceId));
+    if (overBag && source.kind === "backpack") {
+      await this.run(() => this.actions.stash(source.instanceId));
+    }
+  }
+
+  private moveTo(source: DragSource, itemId: string, placement: Placement): Promise<void> {
+    switch (source.kind) {
+      case "backpack": return this.actions.move(source.instanceId, placement);
+      case "bag": return this.actions.place(itemId, placement);
+      case "equipment": return this.actions.unequip(source.slot, placement);
     }
   }
 
@@ -227,6 +259,8 @@ export class InventoryWindow {
     this.grid.querySelectorAll(".backpack-cell").forEach((cell) => cell.classList.remove("drop-ok", "drop-bad"));
     const drag = this.drag;
     const definition = drag ? this.catalog.items[drag.itemId] : undefined;
+    const accepting = drag?.source.kind === "backpack" ? slotsFor(definition) : [];
+    this.doll.highlight(accepting, drag ? this.doll.slotAt(event.clientX, event.clientY) : null);
     const placement = drag ? this.dropPlacement(event, drag) : null;
     if (!drag || !definition || !placement || !this.state) {
       return;
@@ -265,21 +299,30 @@ export class InventoryWindow {
       part.style.top = `${cell.y * CELL_PIXELS}px`;
       element.append(part);
     }
-    const icon = this.icons.urlFor(itemId);
-    if (icon) {
-      const columns = Math.max(...shape.map((cell) => cell.x)) + 1;
-      const rows = Math.max(...shape.map((cell) => cell.y)) + 1;
-      const side = Math.min(columns, rows) * CELL_PIXELS - ICON_INSET_PIXELS * 2;
-      const image = h("img", { class: "item-icon", src: icon, alt: definition?.name ?? itemId, draggable: "false" });
-      image.style.width = `${side}px`;
-      image.style.height = `${side}px`;
-      image.style.left = `${(columns * CELL_PIXELS - side) / 2}px`;
-      image.style.top = `${(rows * CELL_PIXELS - side) / 2}px`;
-      element.append(image);
-    } else {
-      element.append(h("span", { class: "item-name" }, definition?.name ?? itemId));
-    }
+    const columns = Math.max(...shape.map((cell) => cell.x)) + 1;
+    const rows = Math.max(...shape.map((cell) => cell.y)) + 1;
+    element.append(this.iconOrName(itemId, columns * CELL_PIXELS, rows * CELL_PIXELS));
     return element;
+  }
+
+  /** A worn item: one frame filling the whole doll slot. */
+  private slotTile(itemId: string, width: number, height: number): HTMLElement {
+    return h("div", { class: `slot-item ${rarityClass(this.catalog.items[itemId])}` }, this.iconOrName(itemId, width, height));
+  }
+
+  private iconOrName(itemId: string, width: number, height: number): HTMLElement {
+    const definition = this.catalog.items[itemId];
+    const icon = this.icons.urlFor(itemId);
+    if (!icon) {
+      return h("span", { class: "item-name" }, definition?.name ?? itemId);
+    }
+    const side = Math.min(width, height) - ICON_INSET_PIXELS * 2;
+    const image = h("img", { class: "item-icon", src: icon, alt: definition?.name ?? itemId, draggable: "false" });
+    image.style.width = `${side}px`;
+    image.style.height = `${side}px`;
+    image.style.left = `${(width - side) / 2}px`;
+    image.style.top = `${(height - side) / 2}px`;
+    return image;
   }
 
   private rerender(): void {
@@ -292,6 +335,21 @@ export class InventoryWindow {
     this.drag?.ghost?.remove();
     this.drag = null;
     this.grid.querySelectorAll(".backpack-cell").forEach((cell) => cell.classList.remove("drop-ok", "drop-bad"));
+    this.doll.highlight([], null);
+  }
+
+  private async useBackpackItem(placed: PlacedItem): Promise<void> {
+    const definition = this.catalog.items[placed.itemId];
+    const slot = this.state && isWearable(definition) ? preferredSlot(definition, this.state.equipment) : null;
+    await this.run(() => (slot ? this.actions.equip(placed.instanceId, slot) : this.actions.stash(placed.instanceId)));
+  }
+
+  private async unequipAnywhere(slot: EquipmentSlot): Promise<void> {
+    const worn = this.state?.equipment.slots[slot];
+    const spot = worn && this.state ? findFreeSpot(this.state.backpack, this.catalog, worn.itemId) : null;
+    if (spot) {
+      await this.run(() => this.actions.unequip(slot, spot));
+    }
   }
 
   private async placeAnywhere(itemId: string): Promise<void> {
@@ -327,19 +385,12 @@ export class InventoryWindow {
       replaceChildren(this.tooltip,
         h("strong", { class: `rarity-text-${definition.rarity.toLowerCase()}` }, definition.name),
         h("small", { class: "muted" }, RARITY_LABELS[definition.rarity] ?? definition.rarity),
-        ...itemSummary(definition).map((line) => h("p", {}, line)),
-        ...this.synergyHints(definition));
+        ...itemSummary(definition).map((line) => h("p", {}, line)));
       this.tooltip.classList.remove("hidden");
       this.moveTooltip(event);
     });
     element.addEventListener("pointermove", (event) => this.moveTooltip(event));
     element.addEventListener("pointerleave", () => this.hideTooltip());
-  }
-
-  private synergyHints(definition: ItemDefinition): HTMLElement[] {
-    return Object.values(this.catalog.synergies)
-      .filter((synergy) => definition.tags.includes(synergy.sourceTag))
-      .map((synergy) => h("p", { class: "synergy-hint" }, `Рядом с «${synergy.neighborTag}»: ${synergy.bonus.map(modifierText).join(", ")}`));
   }
 
   private moveTooltip(event: PointerEvent): void {
