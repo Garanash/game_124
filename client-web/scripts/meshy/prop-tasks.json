@@ -1,0 +1,195 @@
+{
+  "building:house_a_eldarwen": {
+    "preview": "01a20745-c667-707c-af21-cfc61c5c9fdc",
+    "refine": "01a20746-3373-7495-9fb4-e8ee15f9ca4d"
+  },
+  "nature:oak": {
+    "preview": "01a20745-c683-74a9-9713-974b4df79214",
+    "refine": "01a20746-335b-76e0-8df6-0f9fafe017db"
+  },
+  "weapon:short_sword": {
+    "preview": "01a20745-c686-7758-9bcd-36ba35bb902c",
+    "refine": "01a20746-132a-70ad-81f8-e3ca64c3fbd4"
+  },
+  "building:house_a_aldmark": {
+    "preview": "01a20748-74b1-74db-b0e6-9a64c87b12d8",
+    "refine": "01a20748-df8f-71f6-8c5b-780f0dfba203"
+  },
+  "building:tavern_aldmark": {
+    "preview": "01a20748-74a9-74bc-862e-ff8e531a9685",
+    "refine": "01a20748-bfbf-75cd-8907-344b9128dee0"
+  },
+  "building:tavern_eldarwen": {
+    "preview": "01a20748-74d1-7626-8417-1e27e74dff38",
+    "refine": "01a20748-c02b-736f-b2c9-3b6ba55a69fb"
+  },
+  "building:house_b_eldarwen": {
+    "preview": "01a20748-74d4-73fe-8710-9892801eb4ac",
+    "refine": "01a20748-c091-7080-8c0a-371b7526505b"
+  },
+  "building:house_b_aldmark": {
+    "preview": "01a20748-752e-71cb-8695-4871435f2aa5",
+    "refine": "01a20748-c00c-7085-bc98-78b4ab6e2948"
+  },
+  "building:house_a_kargath": {
+    "preview": "01a20748-74aa-75ee-acfd-657be0117b2e",
+    "refine": "01a20748-e0d4-73f4-affe-f36597d883f8"
+  },
+  "building:tavern_kargath": {
+    "preview": "01a20749-5099-767d-9e69-b49b57d6f40b",
+    "refine": "01a20749-9bce-7315-bc19-20d22874f535"
+  },
+  "building:house_b_kargath": {
+    "preview": "01a20749-5054-734f-b3f3-0147a71d6349",
+    "refine": "01a20749-9bab-74fc-a261-57e246171e23"
+  },
+  "building:market_stall": {
+    "preview": "01a20749-6ea6-76a6-83c9-aa5a633075cb",
+    "refine": "01a20749-bceb-77e1-bb46-8761f52e43f3"
+  },
+  "building:workshop": {
+    "preview": "01a20749-74b8-77bf-8580-6f9d57e7db13",
+    "refine": "01a20749-bfa3-726c-910f-76914685af1e"
+  },
+  "building:watchtower": {
+    "preview": "01a20749-7760-70b6-b297-5c633c4b9fc3",
+    "refine": "01a20749-c278-749e-a2aa-cbc309ae4cf9"
+  },
+  "building:barn": {
+    "preview": "01a20749-87c6-7392-9925-939610c77fb5",
+    "refine": "01a20749-d23b-710d-8d96-d89d6cee1adf"
+  },
+  "building:shrine": {
+    "preview": "01a2074a-26ef-747d-ae18-29890a3b3c52",
+    "refine": "01a2074a-73e2-74c5-abcf-48ace4b3db80"
+  },
+  "prop:fountain": {
+    "preview": "01a2074a-2bb4-70dc-a6b1-46f9c83b108c",
+    "refine": "01a2074a-76c6-71e7-9c68-254b84c22139"
+  },
+  "prop:well": {
+    "preview": "01a2074a-2c9e-7252-9b78-c68127ed5bd5",
+    "refine": "01a2074a-784d-715c-b162-49f180eaa4af"
+  },
+  "prop:lamp": {
+    "preview": "01a2074a-543b-7445-807f-97f9119ede80",
+    "refine": "01a2074a-8c7f-7581-92b6-ceb95cfe6860"
+  },
+  "prop:bench": {
+    "preview": "01a2074a-5c0d-7151-a2d5-19dd889cb60d",
+    "refine": "01a2074a-abfa-7755-aa54-c6b5d1eb0d0c"
+  },
+  "prop:barrel": {
+    "preview": "01a2074a-6c96-769b-a0a2-c6beeb7d22d3",
+    "refine": "01a2074a-b861-727f-a161-80b7ed11d08a"
+  },
+  "prop:crate": {
+    "preview": "01a2074b-20cd-7446-bc5a-fdfa8dda29b5",
+    "refine": "01a2074b-6bde-71af-9499-69c509dce0b8"
+  },
+  "prop:notice_board": {
+    "preview": "01a2074b-3b6a-72cb-9108-7dd28b7817ac",
+    "refine": "01a2074b-86b3-75c4-a909-b5b0746f0cfd"
+  },
+  "prop:wall_section": {
+    "preview": "01a2074b-3c93-742d-9565-1854e4b77354",
+    "refine": "01a2074b-8941-77e6-bcd3-1de7881e2453"
+  },
+  "nature:elder_tree": {
+    "preview": "01a2074b-44ad-742c-8222-bfacc987a962",
+    "refine": "01a2074b-8ec7-73a6-a067-c986fee481b7"
+  },
+  "prop:wall_tower": {
+    "preview": "01a2074b-3dc7-71bd-95c2-c80490dc3813",
+    "refine": "01a2074b-906f-73ab-b222-9227eb701a05"
+  },
+  "nature:pine": {
+    "preview": "01a2074b-8145-77b0-83fc-670886febc52",
+    "refine": "01a2074b-d18e-70ea-aedb-f3239dc915f6"
+  },
+  "nature:bush": {
+    "preview": "01a2074b-f23b-76d6-b42f-cc6424c4b69c",
+    "refine": "01a2074c-3f68-71ad-8887-37bcba9230bc"
+  },
+  "nature:rock": {
+    "preview": "01a2074b-f660-7007-b94e-6bed0f64da03",
+    "refine": "01a2074c-409a-7449-ae12-24354e0a37d2"
+  },
+  "nature:boulder": {
+    "preview": "01a2074c-103d-71c6-abb3-71f83541f746",
+    "refine": "01a2074c-5a29-73cc-be1b-4e834a0bb601"
+  },
+  "nature:cliff": {
+    "preview": "01a2074c-14e8-7613-801a-ba4308995333",
+    "refine": "01a2074c-5e55-7336-8da5-fdf6c796d7bf"
+  },
+  "weapon:dagger": {
+    "preview": "01a2074c-17a6-74a0-86cb-bf74de476944",
+    "refine": "01a2074c-63a0-7029-997d-d1708ed5feb6"
+  },
+  "weapon:long_sword": {
+    "preview": "01a2074c-5c5e-724a-ac26-b2886972c9a7",
+    "refine": "01a2074c-a5f7-71a5-af57-279b9c7285eb"
+  },
+  "weapon:great_sword": {
+    "preview": "01a2074c-e908-72e6-918c-4b2cfaa0c1ba",
+    "refine": "01a2074d-347f-762f-8a96-084992f8344f"
+  },
+  "weapon:mace": {
+    "preview": "01a2074c-ed88-7467-8250-c5245ea9f350",
+    "refine": "01a2074d-3875-741b-b64c-2e700b495c12"
+  },
+  "weapon:flame_blade": {
+    "preview": "01a2074c-ed17-73d9-a48a-f34a5a23c82e",
+    "refine": "01a2074d-3938-7351-a9f3-6de5e03a92ae"
+  },
+  "weapon:holy_mace": {
+    "preview": "01a2074d-0a64-7371-bd15-b6eea56b5e8e",
+    "refine": "01a2074d-556b-71ce-9c82-ae3fb0ba4847"
+  },
+  "weapon:short_bow": {
+    "preview": "01a2074d-249b-724c-a838-a0ca4a1c074a",
+    "refine": "01a2074d-6e81-7443-af0f-34e459a70cad"
+  },
+  "weapon:long_bow": {
+    "preview": "01a2074d-31c4-763c-be66-4734407675e9",
+    "refine": "01a2074d-7e4b-76bf-92ff-19580812c6c8"
+  },
+  "weapon:oak_staff": {
+    "preview": "01a2074d-9cbe-7336-a3b4-fe7f77ad4e1f",
+    "refine": "01a2074d-e6d3-71df-85ef-f1e9da4647c9"
+  },
+  "weapon:arcane_staff": {
+    "preview": "01a2074d-a364-7401-a69c-950522201f86",
+    "refine": "01a2074d-ee40-76a9-97fd-666f84e3c448"
+  },
+  "weapon:spellbook": {
+    "preview": "01a2074d-a59c-71c2-bf5f-e8747d06ed84",
+    "refine": "01a2074d-eee8-74d0-80f6-c6ab50c1a594"
+  },
+  "weapon:wooden_shield": {
+    "preview": "01a2074d-c0ce-71f1-a884-677a4481abee",
+    "refine": "01a2074e-0a42-74be-b476-41e939527906"
+  },
+  "weapon:iron_shield": {
+    "preview": "01a2074d-d81d-76e5-92a0-ff340edd1858",
+    "refine": "01a2074e-2415-725b-afe0-dedb2198e701"
+  },
+  "weapon:tower_shield": {
+    "preview": "01a2074d-e6d5-7653-82bc-e8263ad031ee",
+    "refine": "01a2074e-3278-7095-9cfd-38685abd80f3"
+  },
+  "ui:stone_panel": {
+    "image": "01a2074e-56ba-759f-93ff-dba9eb1a6de5"
+  },
+  "weapon:quiver": {
+    "preview": "01a2074e-4f85-73f2-9d0e-5f27598c4813",
+    "refine": "01a2074e-9c2a-7252-97a5-c1e7327a613b"
+  },
+  "ui:slot": {
+    "image": "01a2074e-9d0e-7113-85cf-ce704f37f1be"
+  },
+  "ui:frame": {
+    "image": "01a2074e-9dde-70a6-992d-7fa6e2a9141a"
+  }
+}

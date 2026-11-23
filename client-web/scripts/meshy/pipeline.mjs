@@ -137,13 +137,13 @@ export class AssetJob {
   }
 
   /** Smart-topology preview, then a textured refine. Returns the refine task id and the finished task. */
-  async textTo3d({ prompt, texturePrompt = prompt, pose }) {
+  async textTo3d({ prompt, texturePrompt = prompt, pose, polycount = TARGET_POLYCOUNT }) {
     const preview = await this.step("preview", () => this.client.create(TEXT_TO_3D, {
       mode: "preview",
       prompt: prompt.slice(0, MAX_PROMPT),
       model_type: "smart-topology",
       ai_model: GEOMETRY_MODEL,
-      target_polycount: TARGET_POLYCOUNT,
+      target_polycount: polycount,
       ...(pose ? { pose_mode: pose } : {}),
       target_formats: ["glb"],
     }));
